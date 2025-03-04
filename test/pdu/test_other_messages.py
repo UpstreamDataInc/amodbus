@@ -136,7 +136,7 @@ class TestOtherMessage:
 
             response = amodbus_message.ReportSlaveIdResponse((await request.update_datastore(None)).identifier, True)
 
-            assert response.encode() == b"\tamodbus\xff"
+            assert response.encode() == b"\x08amodbus\xff"
             response.decode(b"\x03\x12\x00")
             assert not response.status
             assert response.identifier == b"\x12\x00"

@@ -96,7 +96,7 @@ def solar_calls(client: ModbusTcpClient) -> None:
             error = True
             continue
         if rr.isError():
-            _logger.error(f"Error")
+            _logger.error("Error")
             error = True
             continue
         if isinstance(rr, ExceptionResponse):
