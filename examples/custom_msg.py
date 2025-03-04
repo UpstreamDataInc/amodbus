@@ -14,7 +14,7 @@ import asyncio
 import struct
 
 from amodbus import FramerType
-from amodbus.client import AsyncModbusTcpClient as ModbusClient
+from amodbus.client import ModbusTcpClient as ModbusClient
 from amodbus.datastore import (
     ModbusSequentialDataBlock,
     ModbusServerContext,

@@ -54,7 +54,7 @@ def setup_async_client(description: str | None = None, cmdline: str | None = Non
     _logger.info("### Create client object")
     client: modbusClient.ModbusBaseClient | None = None
     if args.comm == "tcp":
-        client = modbusClient.AsyncModbusTcpClient(
+        client = modbusClient.ModbusTcpClient(
             args.host,
             port=args.port,  # on which port
             # Common optional parameters:
@@ -66,7 +66,7 @@ def setup_async_client(description: str | None = None, cmdline: str | None = Non
             #    source_address=("localhost", 0),
         )
     elif args.comm == "udp":
-        client = modbusClient.AsyncModbusUdpClient(
+        client = modbusClient.ModbusUdpClient(
             args.host,
             port=args.port,
             # Common optional parameters:
@@ -77,7 +77,7 @@ def setup_async_client(description: str | None = None, cmdline: str | None = Non
             #    source_address=None,
         )
     elif args.comm == "serial":
-        client = modbusClient.AsyncModbusSerialClient(
+        client = modbusClient.ModbusSerialClient(
             args.port,
             # Common optional parameters:
             #    framer=FramerType.RTU,
@@ -91,7 +91,7 @@ def setup_async_client(description: str | None = None, cmdline: str | None = Non
             #    handle_local_echo=False,
         )
     elif args.comm == "tls":
-        client = modbusClient.AsyncModbusTlsClient(
+        client = modbusClient.ModbusTlsClient(
             args.host,
             port=args.port,
             # Common optional parameters:
@@ -99,7 +99,7 @@ def setup_async_client(description: str | None = None, cmdline: str | None = Non
             timeout=args.timeout,
             #    retries=3,
             # TLS setup parameters
-            sslctx=modbusClient.AsyncModbusTlsClient.generate_ssl(
+            sslctx=modbusClient.ModbusTlsClient.generate_ssl(
                 certfile=helper.get_certificate("crt"),
                 keyfile=helper.get_certificate("key"),
                 #    password="none",

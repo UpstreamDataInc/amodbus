@@ -13,8 +13,8 @@ from amodbus.transport import CommParams, CommType
 DGRAM_TYPE = socket.SOCK_DGRAM
 
 
-class AsyncModbusUdpClient(ModbusBaseClient):
-    """**AsyncModbusUdpClient**.
+class ModbusUdpClient(ModbusBaseClient):
+    """**ModbusUdpClient**.
 
     Fixed parameters:
 
@@ -44,10 +44,10 @@ class AsyncModbusUdpClient(ModbusBaseClient):
 
     Example::
 
-        from amodbus.client import AsyncModbusUdpClient
+        from amodbus.client import ModbusUdpClient
 
         async def run():
-            client = AsyncModbusUdpClient("localhost")
+            client = ModbusUdpClient("localhost")
 
             await client.connect()
             ...

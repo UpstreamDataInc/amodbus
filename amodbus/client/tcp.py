@@ -10,8 +10,8 @@ from amodbus.pdu import ModbusPDU
 from amodbus.transport import CommParams, CommType
 
 
-class AsyncModbusTcpClient(ModbusBaseClient):
-    """**AsyncModbusTcpClient**.
+class ModbusTcpClient(ModbusBaseClient):
+    """**ModbusTcpClient**.
 
     Fixed parameters:
 
@@ -41,10 +41,10 @@ class AsyncModbusTcpClient(ModbusBaseClient):
 
     Example::
 
-        from amodbus.client import AsyncModbusTcpClient
+        from amodbus.client import ModbusTcpClient
 
         async def run():
-            client = AsyncModbusTcpClient("localhost")
+            client = ModbusTcpClient("localhost")
 
             await client.connect()
             ...

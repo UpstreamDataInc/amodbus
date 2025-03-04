@@ -11,7 +11,7 @@ import asyncio
 import logging
 
 from amodbus import FramerType
-from amodbus.client import AsyncModbusTcpClient
+from amodbus.client import ModbusTcpClient
 from amodbus.datastore import ModbusSimulatorContext
 from amodbus.server import ModbusSimulatorServer, get_simulator_commandline
 
@@ -68,7 +68,7 @@ async def run_simulator():
     await task.run_forever(only_start=True)
 
     _logger.info("### start client")
-    client = AsyncModbusTcpClient(
+    client = ModbusTcpClient(
         "127.0.0.1",
         port=5020,
         framer=FramerType.SOCKET,

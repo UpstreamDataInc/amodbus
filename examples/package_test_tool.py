@@ -110,15 +110,15 @@ class ClientTester:  # pylint: disable=too-few-public-methods
         global test_port  # pylint: disable=global-statement
         self.comm = comm
         host = NULLMODEM_HOST
-        self.client: modbusClient.AsyncModbusTcpClient | modbusClient.AsyncModbusSerialClient
+        self.client: modbusClient.ModbusTcpClient | modbusClient.ModbusSerialClient
         if comm == CommType.TCP:
-            self.client = modbusClient.AsyncModbusTcpClient(
+            self.client = modbusClient.ModbusTcpClient(
                 host,
                 port=test_port,
             )
         elif comm == CommType.SERIAL:
             host = f"{NULLMODEM_HOST}:{test_port}"
-            self.client = modbusClient.AsyncModbusSerialClient(
+            self.client = modbusClient.ModbusSerialClient(
                 host,
             )
         else:

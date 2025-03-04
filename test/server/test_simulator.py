@@ -7,7 +7,7 @@ from unittest.mock import mock_open, patch
 
 import pytest
 
-from amodbus.client import AsyncModbusTcpClient
+from amodbus.client import ModbusTcpClient
 from amodbus.datastore import ModbusSimulatorContext
 from amodbus.datastore.simulator import Cell, CellType, Label
 from amodbus.server import ModbusSimulatorServer
@@ -543,7 +543,7 @@ class TestSimulator:
 
     async def test_simulator_server_end_to_end(self, simulator_server, use_port):
         """Test simulator server end to end."""
-        client = AsyncModbusTcpClient(NULLMODEM_HOST, port=use_port)
+        client = ModbusTcpClient(NULLMODEM_HOST, port=use_port)
         assert await client.connect()
         result = await client.read_holding_registers(16, count=1, slave=1)
         assert result.registers[0] == 3124
@@ -551,7 +551,7 @@ class TestSimulator:
 
     async def test_simulator_server_string(self, simulator_server, use_port):
         """Test simulator server end to end."""
-        client = AsyncModbusTcpClient(NULLMODEM_HOST, port=use_port)
+        client = ModbusTcpClient(NULLMODEM_HOST, port=use_port)
         assert await client.connect()
         result = await client.read_holding_registers(43, count=2, slave=1)
         assert result.registers[0] == int.from_bytes(bytes("St", "utf-8"), "big")
