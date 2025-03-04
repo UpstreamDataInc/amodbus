@@ -1,4 +1,5 @@
 """Diagnostic record read/write."""
+
 from __future__ import annotations
 
 import struct
@@ -7,7 +8,6 @@ from amodbus.constants import ModbusStatus
 from amodbus.datastore import ModbusSlaveContext
 from amodbus.device import DeviceInformationFactory, ModbusControlBlock
 from amodbus.pdu.pdu import ModbusPDU
-
 
 _MCB = ModbusControlBlock()
 
@@ -48,6 +48,7 @@ class ReadExceptionStatusResponse(ModbusPDU):
 
 # Encapsulate interface transport 43, 14
 # CANopen general reference 43, 13
+
 
 class GetCommEventCounterRequest(ModbusPDU):
     """GetCommEventCounterRequest."""
@@ -105,7 +106,9 @@ class GetCommEventLogRequest(ModbusPDU):
             message_count=_MCB.Counter.BusMessage,
             event_count=_MCB.Counter.Event,
             events=_MCB.getEvents(),
-            dev_id=self.dev_id, transaction_id=self.transaction_id)
+            dev_id=self.dev_id,
+            transaction_id=self.transaction_id,
+        )
 
 
 class GetCommEventLogResponse(ModbusPDU):
@@ -114,7 +117,15 @@ class GetCommEventLogResponse(ModbusPDU):
     function_code = 0x0C
     rtu_byte_count_pos = 2
 
-    def __init__(self, status: bool = True, message_count: int = 0, event_count: int = 0, events: list[int] | None = None, dev_id: int = 1, transaction_id: int = 0) -> None:
+    def __init__(
+        self,
+        status: bool = True,
+        message_count: int = 0,
+        event_count: int = 0,
+        events: list[int] | None = None,
+        dev_id: int = 1,
+        transaction_id: int = 0,
+    ) -> None:
         """Initialize a new instance."""
         super().__init__(transaction_id=transaction_id, dev_id=dev_id, status=status)
         self.message_count = message_count
@@ -171,7 +182,11 @@ class ReportSlaveIdRequest(ModbusPDU):
 
         identifier = b"-".join(id_data)
         identifier = identifier or b"amodbus"
-        return ReportSlaveIdResponse(identifier=identifier, dev_id=self.dev_id, transaction_id=self.transaction_id)
+        return ReportSlaveIdResponse(
+            identifier=identifier,
+            dev_id=self.dev_id,
+            transaction_id=self.transaction_id,
+        )
 
 
 class ReportSlaveIdResponse(ModbusPDU):
@@ -180,7 +195,13 @@ class ReportSlaveIdResponse(ModbusPDU):
     function_code = 0x11
     rtu_byte_count_pos = 2
 
-    def __init__(self, identifier: bytes = b"\x00", status: bool = True, dev_id: int = 1, transaction_id: int = 0) -> None:
+    def __init__(
+        self,
+        identifier: bytes = b"\x00",
+        status: bool = True,
+        dev_id: int = 1,
+        transaction_id: int = 0,
+    ) -> None:
         """Initialize a new instance."""
         super().__init__(transaction_id=transaction_id, dev_id=dev_id, status=status)
         self.identifier = identifier

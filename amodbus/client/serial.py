@@ -1,4 +1,5 @@
 """Modbus client async serial communication."""
+
 from __future__ import annotations
 
 import contextlib
@@ -13,7 +14,6 @@ from amodbus.framer import FramerType
 from amodbus.logging import Log
 from amodbus.pdu import ModbusPDU
 from amodbus.transport import CommParams, CommType
-
 
 with contextlib.suppress(ImportError):
     import serial
@@ -87,8 +87,7 @@ class AsyncModbusSerialClient(ModbusBaseClient):
         """Initialize Asyncio Modbus Serial Client."""
         if "serial" not in sys.modules:  # pragma: no cover
             raise RuntimeError(
-                "Serial client requires pyserial "
-                'Please install with "pip install pyserial" and try again.'
+                "Serial client requires pyserial " 'Please install with "pip install pyserial" and try again.'
             )
         if framer not in [FramerType.ASCII, FramerType.RTU]:
             raise TypeError("Only FramerType RTU/ASCII allowed.")
@@ -179,8 +178,7 @@ class ModbusSerialClient(ModbusBaseSyncClient):
         """Initialize Modbus Serial Client."""
         if "serial" not in sys.modules:  # pragma: no cover
             raise RuntimeError(
-                "Serial client requires pyserial "
-                'Please install with "pip install pyserial" and try again.'
+                "Serial client requires pyserial " 'Please install with "pip install pyserial" and try again.'
             )
         if framer not in [FramerType.ASCII, FramerType.RTU]:
             raise TypeError("Only RTU/ASCII allowed.")
@@ -259,7 +257,11 @@ class ModbusSerialClient(ModbusBaseSyncClient):
 
     def _in_waiting(self):
         """Return waiting bytes."""
-        return getattr(self.socket, "in_waiting") if hasattr(self.socket, "in_waiting") else getattr(self.socket, "inWaiting")()
+        return (
+            getattr(self.socket, "in_waiting")
+            if hasattr(self.socket, "in_waiting")
+            else getattr(self.socket, "inWaiting")()
+        )
 
     def send(self, request: bytes, addr: tuple | None = None) -> int:
         """Send data on the underlying socket."""

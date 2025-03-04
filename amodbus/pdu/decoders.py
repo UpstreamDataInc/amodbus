@@ -1,4 +1,5 @@
 """Modbus Request/Response Decoders."""
+
 from __future__ import annotations
 
 import amodbus.pdu.bit_message as bit_msg
@@ -24,7 +25,10 @@ class DecodePDU:
         (reg_msg.WriteMultipleRegistersRequest, reg_msg.WriteMultipleRegistersResponse),
         (reg_msg.WriteSingleRegisterRequest, reg_msg.WriteSingleRegisterResponse),
         (bit_msg.WriteSingleCoilRequest, bit_msg.WriteSingleCoilResponse),
-        (reg_msg.ReadWriteMultipleRegistersRequest, reg_msg.ReadWriteMultipleRegistersResponse),
+        (
+            reg_msg.ReadWriteMultipleRegistersRequest,
+            reg_msg.ReadWriteMultipleRegistersResponse,
+        ),
         (diag_msg.DiagnosticBase, diag_msg.DiagnosticBase),
         (o_msg.ReadExceptionStatusRequest, o_msg.ReadExceptionStatusResponse),
         (o_msg.GetCommEventCounterRequest, o_msg.GetCommEventCounterResponse),
@@ -39,19 +43,43 @@ class DecodePDU:
 
     _pdu_sub_class_table: set[tuple[type[base.ModbusPDU], type[base.ModbusPDU]]] = {
         (diag_msg.ReturnQueryDataRequest, diag_msg.ReturnQueryDataResponse),
-        (diag_msg.RestartCommunicationsOptionRequest, diag_msg.RestartCommunicationsOptionResponse),
-        (diag_msg.ReturnDiagnosticRegisterRequest, diag_msg.ReturnDiagnosticRegisterResponse),
-        (diag_msg.ChangeAsciiInputDelimiterRequest, diag_msg.ChangeAsciiInputDelimiterResponse),
+        (
+            diag_msg.RestartCommunicationsOptionRequest,
+            diag_msg.RestartCommunicationsOptionResponse,
+        ),
+        (
+            diag_msg.ReturnDiagnosticRegisterRequest,
+            diag_msg.ReturnDiagnosticRegisterResponse,
+        ),
+        (
+            diag_msg.ChangeAsciiInputDelimiterRequest,
+            diag_msg.ChangeAsciiInputDelimiterResponse,
+        ),
         (diag_msg.ForceListenOnlyModeRequest, diag_msg.ForceListenOnlyModeResponse),
         (diag_msg.ClearCountersRequest, diag_msg.ClearCountersResponse),
         (diag_msg.ReturnBusMessageCountRequest, diag_msg.ReturnBusMessageCountResponse),
-        (diag_msg.ReturnBusCommunicationErrorCountRequest, diag_msg.ReturnBusCommunicationErrorCountResponse),
-        (diag_msg.ReturnBusExceptionErrorCountRequest, diag_msg.ReturnBusExceptionErrorCountResponse),
-        (diag_msg.ReturnSlaveMessageCountRequest, diag_msg.ReturnSlaveMessageCountResponse),
-        (diag_msg.ReturnSlaveNoResponseCountRequest, diag_msg.ReturnSlaveNoResponseCountResponse),
+        (
+            diag_msg.ReturnBusCommunicationErrorCountRequest,
+            diag_msg.ReturnBusCommunicationErrorCountResponse,
+        ),
+        (
+            diag_msg.ReturnBusExceptionErrorCountRequest,
+            diag_msg.ReturnBusExceptionErrorCountResponse,
+        ),
+        (
+            diag_msg.ReturnSlaveMessageCountRequest,
+            diag_msg.ReturnSlaveMessageCountResponse,
+        ),
+        (
+            diag_msg.ReturnSlaveNoResponseCountRequest,
+            diag_msg.ReturnSlaveNoResponseCountResponse,
+        ),
         (diag_msg.ReturnSlaveNAKCountRequest, diag_msg.ReturnSlaveNAKCountResponse),
         (diag_msg.ReturnSlaveBusyCountRequest, diag_msg.ReturnSlaveBusyCountResponse),
-        (diag_msg.ReturnSlaveBusCharacterOverrunCountRequest, diag_msg.ReturnSlaveBusCharacterOverrunCountResponse),
+        (
+            diag_msg.ReturnSlaveBusCharacterOverrunCountRequest,
+            diag_msg.ReturnSlaveBusCharacterOverrunCountResponse,
+        ),
         (diag_msg.ReturnIopOverrunCountRequest, diag_msg.ReturnIopOverrunCountResponse),
         (diag_msg.ClearOverrunCountRequest, diag_msg.ClearOverrunCountResponse),
         (diag_msg.GetClearModbusPlusRequest, diag_msg.GetClearModbusPlusResponse),
@@ -94,9 +122,7 @@ class DecodePDU:
         if custom_class.sub_function_code >= 0:
             if custom_class.function_code not in self.sub_lookup:
                 self.sub_lookup[custom_class.function_code] = {}
-            self.sub_lookup[custom_class.function_code][
-                custom_class.sub_function_code
-            ] = custom_class
+            self.sub_lookup[custom_class.function_code][custom_class.sub_function_code] = custom_class
 
     def decode(self, frame: bytes) -> base.ModbusPDU | None:
         """Decode a frame."""
@@ -110,7 +136,12 @@ class DecodePDU:
                 raise ModbusException(f"Unknown response {function_code}")
             pdu = pdu_type()
             pdu.decode(frame[1:])
-            Log.debug("decoded PDU function_code({} sub {}) -> {} ", pdu.function_code, pdu.sub_function_code, str(pdu))
+            Log.debug(
+                "decoded PDU function_code({} sub {}) -> {} ",
+                pdu.function_code,
+                pdu.sub_function_code,
+                str(pdu),
+            )
 
             if pdu.sub_function_code >= 0:
                 lookup = self.sub_lookup.get(pdu.function_code, {})

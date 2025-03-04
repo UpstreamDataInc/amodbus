@@ -1,4 +1,5 @@
 """Configure pytest."""
+
 from __future__ import annotations
 
 import os
@@ -45,9 +46,7 @@ async def prepare_protocol(use_clc):
     """Prepare transport object."""
     if use_clc.comm_type == CommType.TLS:
         cwd = os.path.dirname(__file__) + "/../../examples/certificates/amodbus."
-        use_clc.sslctx = use_clc.generate_ssl(
-            False, certfile=cwd + "crt", keyfile=cwd + "key"
-        )
+        use_clc.sslctx = use_clc.generate_ssl(False, certfile=cwd + "crt", keyfile=cwd + "key")
     transport = DummyProtocol(params=use_clc, is_server=False)
     transport.callback_connected = mock.Mock()
     transport.callback_disconnected = mock.Mock()
@@ -62,9 +61,7 @@ async def prepare_transport_server(use_cls):
     """Prepare transport object."""
     if use_cls.comm_type == CommType.TLS:
         cwd = os.path.dirname(__file__) + "/../../examples/certificates/amodbus."
-        use_cls.sslctx = use_cls.generate_ssl(
-            True, certfile=cwd + "crt", keyfile=cwd + "key"
-        )
+        use_cls.sslctx = use_cls.generate_ssl(True, certfile=cwd + "crt", keyfile=cwd + "key")
     transport = DummyProtocol(params=use_cls, is_server=True)
     transport.callback_connected = mock.Mock()
     transport.callback_disconnected = mock.Mock()

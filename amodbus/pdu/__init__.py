@@ -1,4 +1,5 @@
 """Framer."""
+
 __all__ = [
     "DecodePDU",
     "ExceptionResponse",

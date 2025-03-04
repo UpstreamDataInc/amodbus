@@ -1,4 +1,5 @@
 """Implementation of a Threaded Modbus Server."""
+
 from __future__ import annotations
 
 from collections.abc import Callable
@@ -131,9 +132,7 @@ class ModbusTlsServer(ModbusTcpServer):
             reconnect_delay=0.0,
             reconnect_delay_max=0.0,
             timeout_connect=0.0,
-            sslctx=CommParams.generate_ssl(
-                True, certfile, keyfile, password, sslctx=sslctx
-            ),
+            sslctx=CommParams.generate_ssl(True, certfile, keyfile, password, sslctx=sslctx),
         )
         super().__init__(
             context,
@@ -230,7 +229,7 @@ class ModbusSerialServer(ModbusBaseServer):
         trace_pdu: Callable[[bool, ModbusPDU], ModbusPDU] | None = None,
         trace_connect: Callable[[bool], None] | None = None,
         custom_pdu: list[type[ModbusPDU]] | None = None,
-        **kwargs
+        **kwargs,
     ):
         """Initialize the socket server.
 
@@ -267,7 +266,7 @@ class ModbusSerialServer(ModbusBaseServer):
             parity=kwargs.get("parity", "N"),
             baudrate=kwargs.get("baudrate", 19200),
             stopbits=kwargs.get("stopbits", 1),
-            handle_local_echo=kwargs.get("handle_local_echo", False)
+            handle_local_echo=kwargs.get("handle_local_echo", False),
         )
         super().__init__(
             params,
@@ -282,5 +281,3 @@ class ModbusSerialServer(ModbusBaseServer):
             custom_pdu,
         )
         self.handle_local_echo = kwargs.get("handle_local_echo", False)
-
-

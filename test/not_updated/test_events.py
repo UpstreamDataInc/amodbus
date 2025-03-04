@@ -1,4 +1,5 @@
 """Test events."""
+
 import pytest
 
 from amodbus.events import (

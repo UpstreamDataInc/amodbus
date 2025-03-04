@@ -1,4 +1,5 @@
 """Modbus client async UDP communication."""
+
 from __future__ import annotations
 
 import socket
@@ -11,7 +12,6 @@ from amodbus.framer import FramerType
 from amodbus.logging import Log
 from amodbus.pdu import ModbusPDU
 from amodbus.transport import CommParams, CommType
-
 
 DGRAM_TYPE = socket.SOCK_DGRAM
 
@@ -213,9 +213,7 @@ class ModbusUdpClient(ModbusBaseSyncClient):
         if not self.socket:
             raise ConnectionException(str(self))
         if request:
-            return self.socket.sendto(
-                request, (self.comm_params.host, self.comm_params.port)
-            )
+            return self.socket.sendto(request, (self.comm_params.host, self.comm_params.port))
         return 0
 
     def recv(self, size: int | None) -> bytes:

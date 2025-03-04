@@ -22,20 +22,20 @@ import asyncio
 import logging
 import sys
 
-
 try:
     import helper  # type: ignore[import-not-found]
 except ImportError:
-    print("*** ERROR --> THIS EXAMPLE needs the example directory, please see \n\
+    print(
+        "*** ERROR --> THIS EXAMPLE needs the example directory, please see \n\
           https://amodbus.readthedocs.io/en/latest/source/examples.html\n\
-          for more information.")
+          for more information."
+    )
     sys.exit(-1)
 
 from amodbus.client import ModbusTcpClient
 from amodbus.datastore import ModbusServerContext
 from amodbus.datastore.remote import RemoteSlaveContext
 from amodbus.server import StartAsyncTcpServer
-
 
 _logger = logging.getLogger(__file__)
 

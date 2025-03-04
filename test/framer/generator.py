@@ -1,12 +1,7 @@
 #!/usr/bin/env python3
 """Build framer encode responses."""
 
-from amodbus.framer import (
-    FramerAscii,
-    FramerRTU,
-    FramerSocket,
-    FramerTLS,
-)
+from amodbus.framer import FramerAscii, FramerRTU, FramerSocket, FramerTLS
 from amodbus.pdu import DecodePDU, ExceptionResponse
 from amodbus.pdu.register_message import (
     ReadHoldingRegistersRequest,
@@ -29,7 +24,7 @@ def set_calls():
                 print(f"      request --> {result}")
                 print(f"      request --> {result.hex()}")
                 server = framer(DecodePDU(True))
-                response = ReadHoldingRegistersResponse(registers=[141,142])
+                response = ReadHoldingRegistersResponse(registers=[141, 142])
                 response.dev_id = dev_id
                 response.transaction_id = tid
                 result = server.buildFrame(response)
@@ -41,5 +36,6 @@ def set_calls():
                 result = server.buildFrame(exception)
                 print(f"      exception --> {result}")
                 print(f"      exception --> {result.hex()}")
+
 
 set_calls()

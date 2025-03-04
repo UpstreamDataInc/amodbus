@@ -44,6 +44,7 @@ or a range read to fail.
 I have both methods implemented, and leave it up to the user to change
 based on their preference.
 """
+
 # pylint: disable=missing-type-doc
 from __future__ import annotations
 
@@ -53,12 +54,13 @@ from typing import Any, Generic, TypeVar
 
 from amodbus.exceptions import ParameterException
 
-
 # ---------------------------------------------------------------------------#
 #  Datablock Storage
 # ---------------------------------------------------------------------------#
 
-V = TypeVar('V', list, dict[int, Any])
+V = TypeVar("V", list, dict[int, Any])
+
+
 class BaseModbusDataBlock(ABC, Generic[V]):
     """Base class for a modbus datastore.
 
@@ -92,7 +94,7 @@ class BaseModbusDataBlock(ABC, Generic[V]):
         return self.getValues(address, count)
 
     @abstractmethod
-    def getValues(self, address:int, count=1) -> Iterable:
+    def getValues(self, address: int, count=1) -> Iterable:
         """Return the requested values from the datastore.
 
         :param address: The starting address
@@ -100,7 +102,7 @@ class BaseModbusDataBlock(ABC, Generic[V]):
         :raises TypeError:
         """
 
-    async def async_setValues(self, address: int, values: list[int|bool]) -> None:
+    async def async_setValues(self, address: int, values: list[int | bool]) -> None:
         """Set the requested values in the datastore.
 
         :param address: The starting address
@@ -110,7 +112,7 @@ class BaseModbusDataBlock(ABC, Generic[V]):
         self.setValues(address, values)
 
     @abstractmethod
-    def setValues(self, address:int, values) -> None:
+    def setValues(self, address: int, values) -> None:
         """Set the requested values in the datastore.
 
         :param address: The starting address
@@ -281,9 +283,7 @@ class ModbusSparseDataBlock(BaseModbusDataBlock[dict[int, Any]]):
         elif values is None:
             values = {}  # Must make a new dict here per instance
         else:
-            raise ParameterException(
-                "Values for datastore must be a list or dictionary"
-            )
+            raise ParameterException("Values for datastore must be a list or dictionary")
         _process_as_dict(values)
 
     def setValues(self, address, values, use_as_default=False):

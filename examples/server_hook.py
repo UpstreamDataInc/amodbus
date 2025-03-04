@@ -48,9 +48,7 @@ class Manipulator:
         amodbus_apply_logging_config(logging.DEBUG)
         datablock = ModbusSequentialDataBlock(0x00, [17] * 100)
         context = ModbusServerContext(
-            slaves=ModbusSlaveContext(
-                di=datablock, co=datablock, hr=datablock, ir=datablock
-            ),
+            slaves=ModbusSlaveContext(di=datablock, co=datablock, hr=datablock, ir=datablock),
             single=True,
         )
         self.server = ModbusTcpServer(

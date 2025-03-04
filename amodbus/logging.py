@@ -2,6 +2,7 @@
 
 Released under the BSD license
 """
+
 from __future__ import annotations
 
 import logging
@@ -10,16 +11,13 @@ from logging import NullHandler as __null
 
 from amodbus.utilities import hexlify_packets
 
-
 # ---------------------------------------------------------------------------#
 #  Block unhandled logging
 # ---------------------------------------------------------------------------#
 logging.getLogger("amodbus_internal").addHandler(__null())
 
 
-def amodbus_apply_logging_config(
-    level: str | int = logging.DEBUG, log_file_name: str | None = None
-):
+def amodbus_apply_logging_config(level: str | int = logging.DEBUG, log_file_name: str | None = None):
     """Apply basic logging configuration used by default by amodbus maintainers.
 
     :param level: (optional) set log level, if not set it is inherited.
@@ -48,9 +46,7 @@ class Log:
         if isinstance(level, str):
             level = level.upper()
         log_stream_handler = logging.StreamHandler()
-        log_formatter = logging.Formatter(
-            "%(asctime)s %(levelname)-5s %(module)s:%(lineno)s %(message)s"
-        )
+        log_formatter = logging.Formatter("%(asctime)s %(levelname)-5s %(module)s:%(lineno)s %(message)s")
         log_stream_handler.setFormatter(log_formatter)
         cls._logger.addHandler(log_stream_handler)
         if log_file_name:
@@ -74,11 +70,7 @@ class Log:
             if skip:
                 skip = False
                 continue
-            if (
-                i < count_args
-                and isinstance(args[i + 1], str)
-                and args[i + 1][0] == ":"
-            ):
+            if i < count_args and isinstance(args[i + 1], str) and args[i + 1][0] == ":":
                 if args[i + 1] == ":hex":
                     string_args.append(hexlify_packets(args[i]))
                 elif args[i + 1] == ":str":

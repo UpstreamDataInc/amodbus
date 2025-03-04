@@ -32,27 +32,25 @@ import asyncio
 import logging
 import sys
 
-
 try:
     import helper  # type: ignore[import-not-found]
 except ImportError:
-    print("*** ERROR --> THIS EXAMPLE needs the example directory, please see \n\
+    print(
+        "*** ERROR --> THIS EXAMPLE needs the example directory, please see \n\
           https://amodbus.readthedocs.io/en/latest/source/examples.html\n\
-          for more information.")
+          for more information."
+    )
     sys.exit(-1)
 
 import amodbus.client as modbusClient
-
 
 _logger = logging.getLogger(__file__)
 _logger.setLevel("DEBUG")
 
 
-def setup_async_client(description: str | None =None, cmdline: str | None = None) -> modbusClient.ModbusBaseClient:
+def setup_async_client(description: str | None = None, cmdline: str | None = None) -> modbusClient.ModbusBaseClient:
     """Run client setup."""
-    args = helper.get_commandline(
-        server=False, description=description, cmdline=cmdline
-    )
+    args = helper.get_commandline(server=False, description=description, cmdline=cmdline)
     _logger.info("### Create client object")
     client: modbusClient.ModbusBaseClient | None = None
     if args.comm == "tcp":
@@ -104,7 +102,7 @@ def setup_async_client(description: str | None =None, cmdline: str | None = None
             sslctx=modbusClient.AsyncModbusTlsClient.generate_ssl(
                 certfile=helper.get_certificate("crt"),
                 keyfile=helper.get_certificate("key"),
-            #    password="none",
+                #    password="none",
             ),
         )
     else:
@@ -130,6 +128,7 @@ async def run_a_few_calls(client):
     rr = await client.read_holding_registers(4, count=2, slave=1)
     assert rr.registers[0] == 17
     assert rr.registers[1] == 17
+
 
 async def main(cmdline=None):
     """Combine setup and run."""

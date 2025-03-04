@@ -1,4 +1,5 @@
 """Diagnostic Record Read/Write."""
+
 from __future__ import annotations
 
 import struct
@@ -10,7 +11,6 @@ from amodbus.device import ModbusControlBlock
 from amodbus.pdu.pdu import ModbusPDU
 from amodbus.utilities import pack_bitstring
 
-
 _MCB = ModbusControlBlock()
 
 
@@ -21,7 +21,12 @@ class DiagnosticBase(ModbusPDU):
     sub_function_code: int = 9999
     rtu_frame_size = 8
 
-    def __init__(self, message: bytes | int | list | tuple | None = 0, dev_id: int = 1, transaction_id: int = 0) -> None:
+    def __init__(
+        self,
+        message: bytes | int | list | tuple | None = 0,
+        dev_id: int = 1,
+        transaction_id: int = 0,
+    ) -> None:
         """Initialize a diagnostic request."""
         super().__init__(transaction_id=transaction_id, dev_id=dev_id)
         self.message: bytes | int | list | tuple | None = message
@@ -45,11 +50,11 @@ class DiagnosticBase(ModbusPDU):
 
     def decode(self, data: bytes) -> None:
         """Decode a diagnostic request."""
-        (self.sub_function_code, ) = struct.unpack(">H", data[:2])
+        (self.sub_function_code,) = struct.unpack(">H", data[:2])
         data = data[2:]
         if self.sub_function_code == ReturnQueryDataRequest.sub_function_code:
             self.message = data
-        elif (data_len := len(data)):
+        elif data_len := len(data):
             if data_len % 2:
                 data_len += 1
                 data += b"0"
@@ -107,7 +112,9 @@ class ReturnDiagnosticRegisterRequest(DiagnosticBase):
     async def update_datastore(self, _context: ModbusSlaveContext) -> ModbusPDU:
         """update_datastore the diagnostic request on the given device."""
         register = pack_bitstring(_MCB.getDiagnosticRegister())
-        return ReturnDiagnosticRegisterResponse(message=register, dev_id=self.dev_id, transaction_id=self.transaction_id)
+        return ReturnDiagnosticRegisterResponse(
+            message=register, dev_id=self.dev_id, transaction_id=self.transaction_id
+        )
 
 
 class ReturnDiagnosticRegisterResponse(DiagnosticBase):
@@ -125,7 +132,9 @@ class ChangeAsciiInputDelimiterRequest(DiagnosticBase):
         """update_datastore the diagnostic request on the given device."""
         char = (cast(int, self.message) & 0xFF00) >> 8
         _MCB.Delimiter = char
-        return ChangeAsciiInputDelimiterResponse(message=self.message, dev_id=self.dev_id, transaction_id=self.transaction_id)
+        return ChangeAsciiInputDelimiterResponse(
+            message=self.message, dev_id=self.dev_id, transaction_id=self.transaction_id
+        )
 
 
 class ChangeAsciiInputDelimiterResponse(DiagnosticBase):
@@ -201,7 +210,9 @@ class ReturnBusCommunicationErrorCountRequest(DiagnosticBase):
     async def update_datastore(self, _context: ModbusSlaveContext) -> ModbusPDU:
         """update_datastore the diagnostic request on the given device."""
         count = _MCB.Counter.BusCommunicationError
-        return ReturnBusCommunicationErrorCountResponse(message=count, dev_id=self.dev_id, transaction_id=self.transaction_id)
+        return ReturnBusCommunicationErrorCountResponse(
+            message=count, dev_id=self.dev_id, transaction_id=self.transaction_id
+        )
 
 
 class ReturnBusCommunicationErrorCountResponse(DiagnosticBase):
@@ -218,7 +229,9 @@ class ReturnBusExceptionErrorCountRequest(DiagnosticBase):
     async def update_datastore(self, _context: ModbusSlaveContext) -> ModbusPDU:
         """update_datastore the diagnostic request on the given device."""
         count = _MCB.Counter.BusExceptionError
-        return ReturnBusExceptionErrorCountResponse(message=count, dev_id=self.dev_id, transaction_id=self.transaction_id)
+        return ReturnBusExceptionErrorCountResponse(
+            message=count, dev_id=self.dev_id, transaction_id=self.transaction_id
+        )
 
 
 class ReturnBusExceptionErrorCountResponse(DiagnosticBase):
@@ -303,7 +316,9 @@ class ReturnSlaveBusCharacterOverrunCountRequest(DiagnosticBase):
     async def update_datastore(self, _context: ModbusSlaveContext) -> ModbusPDU:
         """update_datastore the diagnostic request on the given device."""
         count = _MCB.Counter.BusCharacterOverrun
-        return ReturnSlaveBusCharacterOverrunCountResponse(message=count, dev_id=self.dev_id, transaction_id=self.transaction_id)
+        return ReturnSlaveBusCharacterOverrunCountResponse(
+            message=count, dev_id=self.dev_id, transaction_id=self.transaction_id
+        )
 
 
 class ReturnSlaveBusCharacterOverrunCountResponse(DiagnosticBase):

@@ -1,4 +1,5 @@
 """Register Reading Request/Response."""
+
 from __future__ import annotations
 
 import struct
@@ -34,10 +35,11 @@ class ReadHoldingRegistersRequest(ModbusPDU):
 
     async def update_datastore(self, context: ModbusSlaveContext) -> ModbusPDU:
         """Run a read holding request against a datastore."""
-        values = cast(list[int], await context.async_getValues(
-            self.function_code, self.address, self.count
-        ))
-        response_class = (ReadHoldingRegistersResponse if self.function_code == 3 else ReadInputRegistersResponse)
+        values = cast(
+            list[int],
+            await context.async_getValues(self.function_code, self.address, self.count),
+        )
+        response_class = ReadHoldingRegistersResponse if self.function_code == 3 else ReadInputRegistersResponse
         return response_class(registers=values, dev_id=self.dev_id, transaction_id=self.transaction_id)
 
 
@@ -81,13 +83,15 @@ class ReadWriteMultipleRegistersRequest(ModbusPDU):
     function_code = 23
     rtu_byte_count_pos = 10
 
-    def __init__(self,
-            read_address: int = 0x00,
-            read_count: int = 0,
-            write_address: int = 0x00,
-            write_registers: list[int] | None = None,
-            dev_id: int = 1,
-            transaction_id: int = 0) -> None:
+    def __init__(
+        self,
+        read_address: int = 0x00,
+        read_count: int = 0,
+        write_address: int = 0x00,
+        write_registers: list[int] | None = None,
+        dev_id: int = 1,
+        transaction_id: int = 0,
+    ) -> None:
         """Initialize a new request message."""
         if not write_registers:
             write_registers = []
@@ -137,13 +141,14 @@ class ReadWriteMultipleRegistersRequest(ModbusPDU):
             return ExceptionResponse(self.function_code, ExceptionResponse.ILLEGAL_VALUE)
         if not 1 <= self.write_count <= 0x079:
             return ExceptionResponse(self.function_code, ExceptionResponse.ILLEGAL_VALUE)
-        await context.async_setValues(
-            self.function_code, self.write_address, self.write_registers
+        await context.async_setValues(self.function_code, self.write_address, self.write_registers)
+        registers = cast(
+            list[int],
+            await context.async_getValues(self.function_code, self.read_address, self.read_count),
         )
-        registers = cast(list[int], await context.async_getValues(
-            self.function_code, self.read_address, self.read_count
-        ))
-        return ReadWriteMultipleRegistersResponse(registers=registers, dev_id=self.dev_id, transaction_id=self.transaction_id)
+        return ReadWriteMultipleRegistersResponse(
+            registers=registers, dev_id=self.dev_id, transaction_id=self.transaction_id
+        )
 
     def get_response_pdu_size(self) -> int:
         """Get response pdu size.
@@ -182,10 +187,11 @@ class WriteSingleRegisterRequest(WriteSingleRegisterResponse):
         """Run a write single register request against a datastore."""
         if not 0 <= self.registers[0] <= 0xFFFF:
             return ExceptionResponse(self.function_code, ExceptionResponse.ILLEGAL_VALUE)
-        await context.async_setValues(
-            self.function_code, self.address, self.registers
+        await context.async_setValues(self.function_code, self.address, self.registers)
+        values = cast(
+            list[int],
+            await context.async_getValues(self.function_code, self.address, 1),
         )
-        values = cast(list[int], await context.async_getValues(self.function_code, self.address, 1))
         return WriteSingleRegisterResponse(address=self.address, registers=values)
 
     def get_response_pdu_size(self) -> int:
@@ -221,10 +227,13 @@ class WriteMultipleRegistersRequest(ModbusPDU):
         """Run a write single register request against a datastore."""
         if not 1 <= self.count <= 0x07B:
             return ExceptionResponse(self.function_code, ExceptionResponse.ILLEGAL_VALUE)
-        await context.async_setValues(
-            self.function_code, self.address, self.registers
-          )
-        return WriteMultipleRegistersResponse(address=self.address, count=self.count, dev_id=self.dev_id, transaction_id=self.transaction_id)
+        await context.async_setValues(self.function_code, self.address, self.registers)
+        return WriteMultipleRegistersResponse(
+            address=self.address,
+            count=self.count,
+            dev_id=self.dev_id,
+            transaction_id=self.transaction_id,
+        )
 
     def get_response_pdu_size(self) -> int:
         """Get response pdu size.
@@ -255,7 +264,14 @@ class MaskWriteRegisterRequest(ModbusPDU):
     function_code = 0x16
     rtu_frame_size = 10
 
-    def __init__(self, address=0x0000, and_mask=0xFFFF, or_mask=0x0000, dev_id=1, transaction_id=0) -> None:
+    def __init__(
+        self,
+        address=0x0000,
+        and_mask=0xFFFF,
+        or_mask=0x0000,
+        dev_id=1,
+        transaction_id=0,
+    ) -> None:
         """Initialize a new instance."""
         super().__init__(transaction_id=transaction_id, dev_id=dev_id, address=address)
         self.and_mask = and_mask
@@ -277,10 +293,14 @@ class MaskWriteRegisterRequest(ModbusPDU):
             return ExceptionResponse(self.function_code, ExceptionResponse.ILLEGAL_VALUE)
         values = (await context.async_getValues(self.function_code, self.address, 1))[0]
         values = (values & self.and_mask) | (self.or_mask & ~self.and_mask)
-        await context.async_setValues(
-            self.function_code, self.address, [values]
+        await context.async_setValues(self.function_code, self.address, [values])
+        return MaskWriteRegisterResponse(
+            address=self.address,
+            and_mask=self.and_mask,
+            or_mask=self.or_mask,
+            dev_id=self.dev_id,
+            transaction_id=self.transaction_id,
         )
-        return MaskWriteRegisterResponse(address=self.address, and_mask=self.and_mask, or_mask=self.or_mask, dev_id=self.dev_id, transaction_id=self.transaction_id)
 
 
 class MaskWriteRegisterResponse(ModbusPDU):
@@ -289,7 +309,14 @@ class MaskWriteRegisterResponse(ModbusPDU):
     function_code = 0x16
     rtu_frame_size = 10
 
-    def __init__(self, address=0x0000, and_mask=0xFFFF, or_mask=0x0000, dev_id=1, transaction_id=0) -> None:
+    def __init__(
+        self,
+        address=0x0000,
+        and_mask=0xFFFF,
+        or_mask=0x0000,
+        dev_id=1,
+        transaction_id=0,
+    ) -> None:
         """Initialize new instance."""
         super().__init__(transaction_id=transaction_id, dev_id=dev_id, address=address)
         self.and_mask = and_mask

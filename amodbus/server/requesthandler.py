@@ -1,4 +1,5 @@
 """Implementation of a Threaded Modbus Server."""
+
 from __future__ import annotations
 
 import asyncio
@@ -57,7 +58,8 @@ class ServerRequestHandler(TransactionManager):
         try:
             if call_exc is None:
                 Log.debug(
-                    "Handler for stream [{}] has been canceled", self.comm_params.comm_name
+                    "Handler for stream [{}] has been canceled",
+                    self.comm_params.comm_name,
                 )
             else:
                 Log.debug(
@@ -78,12 +80,9 @@ class ServerRequestHandler(TransactionManager):
         try:
             used_len = super().callback_data(data, addr)
         except ModbusIOException:
-            response = ExceptionResponse(
-                40,
-                exception_code=ExceptionResponse.ILLEGAL_FUNCTION
-            )
+            response = ExceptionResponse(40, exception_code=ExceptionResponse.ILLEGAL_FUNCTION)
             self.server_send(response, 0)
-            return(len(data))
+            return len(data)
         if self.last_pdu:
             self.loop.call_soon(self.handle_later)
         return used_len

@@ -37,14 +37,15 @@ a lot slower.
 import logging
 import sys
 
-
 try:
     import helper  # type: ignore[import-not-found]
     import server_async  # type: ignore[import-not-found]
 except ImportError:
-    print("*** ERROR --> THIS EXAMPLE needs the example directory, please see \n\
+    print(
+        "*** ERROR --> THIS EXAMPLE needs the example directory, please see \n\
           https://amodbus.readthedocs.io/en/latest/source/examples.html\n\
-          for more information.")
+          for more information."
+    )
     sys.exit(-1)
 
 # --------------------------------------------------------------------------- #
@@ -56,7 +57,6 @@ from amodbus.server import (
     StartTlsServer,
     StartUdpServer,
 )
-
 
 _logger = logging.getLogger(__name__)
 _logger.setLevel("DEBUG")
@@ -117,13 +117,9 @@ def run_sync_server(args) -> None:
             # custom_functions=[],  # allow custom handling
             address=address,  # listen address
             framer=args.framer,  # The framer strategy to use
-            certfile=helper.get_certificate(
-                "crt"
-            ),  # The cert file path for TLS (used if sslctx is None)
+            certfile=helper.get_certificate("crt"),  # The cert file path for TLS (used if sslctx is None)
             # sslctx=None,  # The SSLContext to use for TLS (default None and auto create)
-            keyfile=helper.get_certificate(
-                "key"
-            ),  # The key file path for TLS (used if sslctx is None)
+            keyfile=helper.get_certificate("key"),  # The key file path for TLS (used if sslctx is None)
             # password=None,  # The password for for decrypting the private key file
             # ignore_missing_slaves=True,  # ignore request to a missing slave
             # broadcast_enable=False,  # treat slave 0 as broadcast address,

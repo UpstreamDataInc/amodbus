@@ -1,4 +1,5 @@
 """Test diag messages."""
+
 import pytest
 
 from amodbus.constants import ModbusPlusOperation, ModbusStatus
@@ -93,8 +94,8 @@ class TestDataStore:
     ]
 
     responses = [
-        (DiagnosticBase,                     b"\x00\x00\x00\x00"),
-        (DiagnosticBase,               b"\x00\x00\x00\x00"),
+        (DiagnosticBase, b"\x00\x00\x00\x00"),
+        (DiagnosticBase, b"\x00\x00\x00\x00"),
         (ReturnQueryDataResponse, b"\x00\x00\x00\x00"),
         (RestartCommunicationsOptionResponse, b"\x00\x01\x00\x00"),
         (ReturnDiagnosticRegisterResponse, b"\x00\x02\x00\x00"),

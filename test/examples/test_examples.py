@@ -3,6 +3,7 @@
 This is a thorough test of the clientexamples.
 
 """
+
 import asyncio
 from threading import Thread
 from time import sleep
@@ -10,6 +11,9 @@ from unittest import mock
 
 import pytest
 
+from amodbus.exceptions import ModbusException
+from amodbus.pdu import ExceptionResponse
+from amodbus.server import ServerAsyncStop, ServerStop
 from examples.client_async import run_a_few_calls, run_async_client, setup_async_client
 from examples.client_async_calls import async_template_call
 from examples.client_async_calls import main as main_client_async_calls
@@ -28,9 +32,6 @@ from examples.simple_async_client import run_async_simple_client
 from examples.simple_sync_client import run_sync_simple_client
 from examples.simulator import run_simulator as run_simulator3
 from examples.simulator_datamodel import main as run_main_simulator_datamodel
-from amodbus.exceptions import ModbusException
-from amodbus.pdu import ExceptionResponse
-from amodbus.server import ServerAsyncStop, ServerStop
 
 
 class TestExamples:
@@ -173,9 +174,7 @@ class TestAsyncExamples:
         task.cancel()
         await task
 
-    async def test_async_simple_client(
-        self, use_comm, use_port, use_framer, mock_server, use_host
-    ):
+    async def test_async_simple_client(self, use_comm, use_port, use_framer, mock_server, use_host):
         """Run simple async client."""
         _cmdline = mock_server
         if use_comm == "tls":
@@ -219,9 +218,7 @@ class TestSyncExamples:
         main_client_calls(cmdline=mock_clc)
         ServerStop()
 
-    def test_sync_simple_client(
-        self, use_framer, use_comm, use_host, use_port, mock_cls
-    ):
+    def test_sync_simple_client(self, use_framer, use_comm, use_host, use_port, mock_cls):
         """Run simple async client."""
         server_args = setup_server(cmdline=mock_cls)
         thread = Thread(target=run_sync_server, args=(server_args,))

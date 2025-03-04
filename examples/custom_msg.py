@@ -25,7 +25,6 @@ from amodbus.pdu import ModbusPDU
 from amodbus.pdu.bit_message import ReadCoilsRequest
 from amodbus.server import ServerAsyncStop, StartAsyncTcpServer
 
-
 # --------------------------------------------------------------------------- #
 # create your custom message
 # --------------------------------------------------------------------------- #
@@ -121,18 +120,17 @@ class Read16CoilsRequest(ReadCoilsRequest):
 
 async def main(host="localhost", port=5020):
     """Run versions of read coil."""
-    store = ModbusServerContext(slaves=ModbusSlaveContext(
+    store = ModbusServerContext(
+        slaves=ModbusSlaveContext(
             di=ModbusSequentialDataBlock(0, [17] * 100),
             co=ModbusSequentialDataBlock(0, [17] * 100),
             hr=ModbusSequentialDataBlock(0, [17] * 100),
             ir=ModbusSequentialDataBlock(0, [17] * 100),
         ),
-        single=True
+        single=True,
     )
-    task = asyncio.create_task(StartAsyncTcpServer(
-        context=store,
-        address=(host, port),
-        custom_functions=[CustomRequest])
+    task = asyncio.create_task(
+        StartAsyncTcpServer(context=store, address=(host, port), custom_functions=[CustomRequest])
     )
     await asyncio.sleep(0.1)
     async with ModbusClient(host=host, port=port, framer=FramerType.SOCKET) as client:
@@ -140,7 +138,7 @@ async def main(host="localhost", port=5020):
 
         # add new modbus function code.
         client.register(CustomModbusResponse)
-        slave=1
+        slave = 1
         request1 = CustomRequest(32, slave=slave)
         try:
             result = await client.execute(False, request1)

@@ -1,4 +1,5 @@
 """Remote datastore."""
+
 from amodbus.datastore import ModbusBaseSlaveContext
 from amodbus.exceptions import NotImplementedException
 from amodbus.logging import Log
@@ -66,44 +67,20 @@ class RemoteSlaveContext(ModbusBaseSlaveContext):
         if self.slave:
             params["slave"] = self.slave
         self.__get_callbacks = {
-            "d": lambda a, c: self._client.read_discrete_inputs(
-                a, count=c, **params
-            ),
-            "c": lambda a, c: self._client.read_coils(
-                a, count=c, **params
-            ),
-            "h": lambda a, c: self._client.read_holding_registers(
-                a, count=c, **params
-            ),
-            "i": lambda a, c: self._client.read_input_registers(
-                a, count=c, **params
-            ),
+            "d": lambda a, c: self._client.read_discrete_inputs(a, count=c, **params),
+            "c": lambda a, c: self._client.read_coils(a, count=c, **params),
+            "h": lambda a, c: self._client.read_holding_registers(a, count=c, **params),
+            "i": lambda a, c: self._client.read_input_registers(a, count=c, **params),
         }
         self.__set_callbacks = {
-            "d5": lambda a, v: self._client.write_coil(
-                a, v, **params
-            ),
-            "d15": lambda a, v: self._client.write_coils(
-                a, v, **params
-            ),
-            "c5": lambda a, v: self._client.write_coil(
-                a, v, **params
-            ),
-            "c15": lambda a, v: self._client.write_coils(
-                a, v, **params
-            ),
-            "h6": lambda a, v: self._client.write_register(
-                a, v, **params
-            ),
-            "h16": lambda a, v: self._client.write_registers(
-                a, v, **params
-            ),
-            "i6": lambda a, v: self._client.write_register(
-                a, v, **params
-            ),
-            "i16": lambda a, v: self._client.write_registers(
-                a, v, **params
-            ),
+            "d5": lambda a, v: self._client.write_coil(a, v, **params),
+            "d15": lambda a, v: self._client.write_coils(a, v, **params),
+            "c5": lambda a, v: self._client.write_coil(a, v, **params),
+            "c15": lambda a, v: self._client.write_coils(a, v, **params),
+            "h6": lambda a, v: self._client.write_register(a, v, **params),
+            "h16": lambda a, v: self._client.write_registers(a, v, **params),
+            "i6": lambda a, v: self._client.write_register(a, v, **params),
+            "i16": lambda a, v: self._client.write_registers(a, v, **params),
         }
         self._write_fc = (0x05, 0x06, 0x0F, 0x10)
 

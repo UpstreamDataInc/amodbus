@@ -1,4 +1,5 @@
 """Document configuration."""
+
 #
 # amodbus documentation build configuration file,
 #
@@ -13,15 +14,14 @@ from recommonmark.transform import AutoStructify
 
 from amodbus import __version__ as amodbus_version
 
-
 # -- General configuration ------------------------------------------------
 extensions = [
     "sphinx.ext.autodoc",
     "sphinx.ext.extlinks",
     "sphinx_rtd_theme",
-    "sphinx.ext.autosectionlabel"
+    "sphinx.ext.autosectionlabel",
 ]
-source_suffix = {'.rst': 'restructuredtext'}
+source_suffix = {".rst": "restructuredtext"}
 root_doc = "index"
 project = "amodbus"
 copyright = "See license"
@@ -51,7 +51,8 @@ parent_dir = os.path.abspath(os.pardir)
 sys.path.insert(0, parent_dir)
 sys.path.append(os.path.join(parent_dir, "examples"))
 github = f"https://github.com/UpstreamDataInc/amodbus/blob/{version}/"
-extlinks = {'github': (github + '%s', '%s')}
+extlinks = {"github": (github + "%s", "%s")}
+
 
 def setup(app):
     """Do setup."""

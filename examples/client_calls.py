@@ -34,15 +34,15 @@ import sys
 
 from amodbus.pdu import FileRecord
 
-
 try:
     import client_sync  # type: ignore[import-not-found]
 except ImportError:
-    print("*** ERROR --> THIS EXAMPLE needs the example directory, please see \n\
+    print(
+        "*** ERROR --> THIS EXAMPLE needs the example directory, please see \n\
           https://amodbus.readthedocs.io/en/latest/source/examples.html\n\
-          for more information.")
+          for more information."
+    )
     sys.exit(-1)
-
 
 
 _logger = logging.getLogger(__file__)
@@ -171,11 +171,11 @@ def handle_file_records(client):
     rr = client.read_file_record([record, record], slave=SLAVE)
     assert not rr.isError()
     assert len(rr.records) == 2
-    assert rr.records[0].record_data == b'SERVER DUMMY RECORD.'
-    assert rr.records[1].record_data == b'SERVER DUMMY RECORD.'
-    record.record_data = b'Pure test '
+    assert rr.records[0].record_data == b"SERVER DUMMY RECORD."
+    assert rr.records[1].record_data == b"SERVER DUMMY RECORD."
+    record.record_data = b"Pure test "
     record.record_length = len(record.record_data) // 2
-    record = FileRecord(file_number=14, record_number=12, record_data=b'Pure test ')
+    record = FileRecord(file_number=14, record_number=12, record_data=b"Pure test ")
     rr = client.write_file_record([record], slave=1)
     assert not rr.isError()
 
@@ -247,7 +247,6 @@ def execute_diagnostic_requests(client):
     assert not rr.isError()  # test that call was OK
 
 
-
 # ------------------------
 # Run the calls in groups.
 # ------------------------
@@ -265,9 +264,7 @@ def run_sync_calls(client):
 
 def main(cmdline=None):
     """Combine setup and run."""
-    client = client_sync.setup_sync_client(
-        description="Run synchronous client.", cmdline=cmdline
-    )
+    client = client_sync.setup_sync_client(description="Run synchronous client.", cmdline=cmdline)
     client_sync.run_sync_client(client, modbus_calls=run_sync_calls)
 
 

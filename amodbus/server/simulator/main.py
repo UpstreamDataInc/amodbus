@@ -7,7 +7,8 @@ The modbus simulator contain 3 distinct parts:
 - Modbus server: (server)(./http_server.py)
 - HTTP server with REST API and web pages providing an online console in your browser
 
-Multiple setups for different server types and/or devices are prepared in a (json file)(./setup.json), the detailed configuration is explained in (doc)(README.rst)
+Multiple setups for different server types and/or devices are prepared in a (json file)(./setup.json),
+the detailed configuration is explained in (doc)(README.rst)
 
 The command line parameters are kept to a minimum:
 
@@ -50,9 +51,7 @@ from amodbus.server.simulator.http_server import ModbusSimulatorServer
 
 def get_commandline(extras=None, cmdline=None):
     """Get command line arguments."""
-    parser = argparse.ArgumentParser(
-        description="Modbus server with REST-API and web server"
-    )
+    parser = argparse.ArgumentParser(description="Modbus server with REST-API and web server")
     parser.add_argument(
         "--modbus_server",
         help="use <modbus_server> from server_list in json file",

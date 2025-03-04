@@ -1,4 +1,5 @@
 """Modbus RTU frame implementation."""
+
 from __future__ import annotations
 
 from amodbus.framer.base import FramerBase
@@ -97,8 +98,8 @@ class FramerRTU(FramerBase):
                 byte >>= 1
             result.append(crc)
         return result
-    crc16_table: list[int] = [0]
 
+    crc16_table: list[int] = [0]
 
     def decode(self, data: bytes) -> tuple[int, int, int, bytes]:
         """Decode ADU."""
@@ -111,25 +112,24 @@ class FramerRTU(FramerBase):
             if not (pdu_class := self.decoder.lookupPduClass(data[used_len:])):
                 continue
             if not (size := pdu_class.calculateRtuFrameSize(data[used_len:])):
-                size = data_len +1
-            if data_len < used_len +size:
+                size = data_len + 1
+            if data_len < used_len + size:
                 Log.debug("Frame - not ready")
                 return 0, dev_id, 0, self.EMPTY
             for test_len in range(data_len, used_len + size - 1, -1):
-                start_crc = test_len -2
+                start_crc = test_len - 2
                 crc = data[start_crc : start_crc + 2]
                 crc_val = (int(crc[0]) << 8) + int(crc[1])
-                if not FramerRTU.check_CRC(data[used_len : start_crc], crc_val):
+                if not FramerRTU.check_CRC(data[used_len:start_crc], crc_val):
                     Log.debug("Frame check failed, possible garbage after frame, testing..")
                     continue
                 return start_crc + 2, dev_id, 0, data[used_len + 1 : start_crc]
         return 0, 0, 0, self.EMPTY
 
-
     def encode(self, pdu: bytes, device_id: int, _tid: int) -> bytes:
         """Encode ADU."""
-        frame = device_id.to_bytes(1,'big') + pdu
-        return frame + FramerRTU.compute_CRC(frame).to_bytes(2,'big')
+        frame = device_id.to_bytes(1, "big") + pdu
+        return frame + FramerRTU.compute_CRC(frame).to_bytes(2, "big")
 
     @classmethod
     def check_CRC(cls, data: bytes, check: int) -> bool:
@@ -157,5 +157,6 @@ class FramerRTU(FramerBase):
             crc = ((crc >> 8) & 0xFF) ^ idx
         swapped = ((crc << 8) & 0xFF00) | ((crc >> 8) & 0x00FF)
         return swapped
+
 
 FramerRTU.crc16_table = FramerRTU.generate_crc16_table()

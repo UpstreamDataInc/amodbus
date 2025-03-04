@@ -35,18 +35,18 @@ from __future__ import annotations
 import logging
 import sys
 
-
 try:
     import helper  # type: ignore[import-not-found]
 except ImportError:
-    print("*** ERROR --> THIS EXAMPLE needs the example directory, please see \n\
+    print(
+        "*** ERROR --> THIS EXAMPLE needs the example directory, please see \n\
           https://amodbus.readthedocs.io/en/latest/source/examples.html\n\
-          for more information.")
+          for more information."
+    )
     sys.exit(-1)
 
 import amodbus.client as modbusClient
 from amodbus import ModbusException
-
 
 _logger = logging.getLogger(__file__)
 _logger.setLevel("DEBUG")
@@ -109,7 +109,7 @@ def setup_sync_client(description=None, cmdline=None):
             sslctx=modbusClient.ModbusTlsClient.generate_ssl(
                 certfile=helper.get_certificate("crt"),
                 keyfile=helper.get_certificate("key"),
-            #    password=None,
+                #    password=None,
             ),
         )
     return client
@@ -136,11 +136,10 @@ def run_a_few_calls(client):
     except ModbusException as exc:
         raise exc
 
+
 def main(cmdline=None):
     """Combine setup and run."""
-    testclient = setup_sync_client(
-        description="Run synchronous client.", cmdline=cmdline
-    )
+    testclient = setup_sync_client(description="Run synchronous client.", cmdline=cmdline)
     run_sync_client(testclient, modbus_calls=run_a_few_calls)
 
 

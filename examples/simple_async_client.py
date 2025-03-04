@@ -12,11 +12,7 @@ The corresponding server must be started before e.g. as:
 import asyncio
 
 import amodbus.client as ModbusClient
-from amodbus import (
-    FramerType,
-    ModbusException,
-    amodbus_apply_logging_config,
-)
+from amodbus import FramerType, ModbusException, amodbus_apply_logging_config
 
 
 async def run_async_simple_client(comm, host, port, framer=FramerType.SOCKET):
@@ -97,6 +93,4 @@ async def run_async_simple_client(comm, host, port, framer=FramerType.SOCKET):
 
 
 if __name__ == "__main__":
-    asyncio.run(
-        run_async_simple_client("tcp", "127.0.0.1", 5020), debug=True
-    )
+    asyncio.run(run_async_simple_client("tcp", "127.0.0.1", 5020), debug=True)

@@ -82,12 +82,14 @@ class ModbusSlaveContext(ModbusBaseSlaveContext):
     :param ir: input registers initializer ModbusDataBlock
     """
 
-    def __init__(self, *_args,
-                    di=ModbusSequentialDataBlock.create(),
-                    co=ModbusSequentialDataBlock.create(),
-                    ir=ModbusSequentialDataBlock.create(),
-                    hr=ModbusSequentialDataBlock.create(),
-                ):
+    def __init__(
+        self,
+        *_args,
+        di=ModbusSequentialDataBlock.create(),
+        co=ModbusSequentialDataBlock.create(),
+        ir=ModbusSequentialDataBlock.create(),
+        hr=ModbusSequentialDataBlock.create(),
+    ):
         """Initialize the datastores."""
         self.store = {}
         self.store["d"] = di
@@ -214,9 +216,7 @@ class ModbusServerContext:
             slave = 0
         if slave in self._slaves:
             return self._slaves.get(slave)
-        raise NoSuchSlaveException(
-            f"slave - {slave} does not exist, or is out of range"
-        )
+        raise NoSuchSlaveException(f"slave - {slave} does not exist, or is out of range")
 
     def slaves(self):
         """Define slaves."""

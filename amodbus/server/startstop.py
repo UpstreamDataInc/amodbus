@@ -1,4 +1,5 @@
 """Implementation of a Threaded Modbus Server."""
+
 from __future__ import annotations
 
 import asyncio
@@ -38,7 +39,7 @@ async def StartAsyncTcpServer(
 def StartTcpServer(
     context: ModbusServerContext,
     custom_functions: list[type[ModbusPDU]] | None = None,
-    **kwargs
+    **kwargs,
 ) -> None:
     """Start and run a modbus TCP server.
 
@@ -76,7 +77,7 @@ async def StartAsyncTlsServer(
 def StartTlsServer(
     context: ModbusServerContext,
     custom_functions: list[type[ModbusPDU]] | None = None,
-    **kwargs
+    **kwargs,
 ) -> None:
     """Start and run a modbus TLS server.
 
@@ -114,7 +115,7 @@ async def StartAsyncUdpServer(
 def StartUdpServer(
     context: ModbusServerContext,
     custom_functions: list[type[ModbusPDU]] | None = None,
-    **kwargs
+    **kwargs,
 ) -> None:
     """Start and run a modbus UDP server.
 
@@ -152,7 +153,7 @@ async def StartAsyncSerialServer(
 def StartSerialServer(
     context: ModbusServerContext,
     custom_functions: list[type[ModbusPDU]] | None = None,
-    **kwargs
+    **kwargs,
 ) -> None:
     """Start and run a modbus serial server.
 
@@ -181,4 +182,4 @@ def ServerStop() -> None:
     if not ModbusBaseServer.active_server:
         raise RuntimeError("Modbus server not running.")
     future = asyncio.run_coroutine_threadsafe(ServerAsyncStop(), ModbusBaseServer.active_server.loop)
-    future.result(timeout=10 if os.name == 'nt' else 0.1)
+    future.result(timeout=10 if os.name == "nt" else 0.1)

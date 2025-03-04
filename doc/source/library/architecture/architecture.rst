@@ -25,4 +25,3 @@ In detail the packages can viewed as:
 In detail the classes can be viewed as:
 
 .. image:: classes.png
-

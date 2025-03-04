@@ -1,4 +1,5 @@
 """Contains base classes for modbus request/response/error packets."""
+
 from __future__ import annotations
 
 import asyncio
@@ -18,15 +19,16 @@ class ModbusPDU:
     rtu_frame_size: int = 0
     rtu_byte_count_pos: int = 0
 
-    def __init__(self,
-            dev_id: int = 0,
-            transaction_id: int = 0,
-            address: int = 0,
-            count: int = 0,
-            bits: list[bool] | None = None,
-            registers: list[int] | None = None,
-            status: int = 1,
-        ) -> None:
+    def __init__(
+        self,
+        dev_id: int = 0,
+        transaction_id: int = 0,
+        address: int = 0,
+        count: int = 0,
+        bits: list[bool] | None = None,
+        registers: list[int] | None = None,
+        status: int = 1,
+    ) -> None:
         """Initialize the base data for a modbus request."""
         self.dev_id: int = dev_id
         self.transaction_id: int = transaction_id
@@ -91,12 +93,10 @@ class ModbusPDU:
         if cls.rtu_frame_size:
             return cls.rtu_frame_size
         if cls.rtu_byte_count_pos:
-            if len(data) < cls.rtu_byte_count_pos +1:
+            if len(data) < cls.rtu_byte_count_pos + 1:
                 return 0
             return int(data[cls.rtu_byte_count_pos]) + cls.rtu_byte_count_pos + 3
-        raise NotImplementedException(
-            f"Cannot determine RTU frame size for {cls.__name__}"
-        )
+        raise NotImplementedException(f"Cannot determine RTU frame size for {cls.__name__}")
 
 
 class ExceptionResponse(ModbusPDU):
@@ -116,11 +116,12 @@ class ExceptionResponse(ModbusPDU):
     GATEWAY_NO_RESPONSE = 0x0B
 
     def __init__(
-            self,
-            function_code: int,
-            exception_code: int = 0,
-            slave: int = 1,
-            transaction: int = 0) -> None:
+        self,
+        function_code: int,
+        exception_code: int = 0,
+        slave: int = 1,
+        transaction: int = 0,
+    ) -> None:
         """Initialize the modbus exception response."""
         super().__init__(transaction_id=transaction, dev_id=slave)
         self.function_code = function_code | 0x80

@@ -12,4 +12,3 @@ amodbus internals
    library/amodbus.rst
 
    library/architecture/architecture.rst
-

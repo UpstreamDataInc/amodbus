@@ -19,7 +19,6 @@ import time
 from amodbus import FramerType
 from amodbus.client import AsyncModbusSerialClient, ModbusSerialClient
 
-
 LOOP_COUNT = 1000
 REGISTER_COUNT = 10
 
@@ -45,9 +44,7 @@ def run_sync_client_test():
     run_time = time.time() - start_time
     avg_call = (run_time / LOOP_COUNT) * 1000
     avg_register = avg_call / REGISTER_COUNT
-    print(
-        f"running {LOOP_COUNT} call (each {REGISTER_COUNT} registers), took {run_time:.2f} seconds"
-    )
+    print(f"running {LOOP_COUNT} call (each {REGISTER_COUNT} registers), took {run_time:.2f} seconds")
     print(f"Averages {avg_call:.2f} ms pr call and {avg_register:.2f} ms pr register.")
 
 
@@ -72,9 +69,7 @@ async def run_async_client_test():
     run_time = time.time() - start_time
     avg_call = (run_time / LOOP_COUNT) * 1000
     avg_register = avg_call / REGISTER_COUNT
-    print(
-        f"running {LOOP_COUNT} call (each {REGISTER_COUNT} registers), took {run_time:.2f} seconds"
-    )
+    print(f"running {LOOP_COUNT} call (each {REGISTER_COUNT} registers), took {run_time:.2f} seconds")
     print(f"Averages {avg_call:.2f} ms pr call and {avg_register:.2f} ms pr register.")
 
 

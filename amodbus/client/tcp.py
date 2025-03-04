@@ -1,4 +1,5 @@
 """Modbus client async TCP communication."""
+
 from __future__ import annotations
 
 import select
@@ -75,7 +76,7 @@ class AsyncModbusTcpClient(ModbusBaseClient):
         trace_connect: Callable[[bool], None] | None = None,
     ) -> None:
         """Initialize Asyncio Modbus TCP Client."""
-        if not hasattr(self,"comm_params"):
+        if not hasattr(self, "comm_params"):
             if framer not in [FramerType.SOCKET, FramerType.RTU, FramerType.ASCII]:
                 raise TypeError("Only FramerType SOCKET/RTU/ASCII allowed.")
             self.comm_params = CommParams(
@@ -154,7 +155,7 @@ class ModbusTcpClient(ModbusBaseSyncClient):
         trace_connect: Callable[[bool], None] | None = None,
     ) -> None:
         """Initialize Modbus TCP Client."""
-        if not hasattr(self,"comm_params"):
+        if not hasattr(self, "comm_params"):
             if framer not in [FramerType.SOCKET, FramerType.RTU, FramerType.ASCII]:
                 raise TypeError("Only FramerType SOCKET/RTU/ASCII allowed.")
             self.comm_params = CommParams(
@@ -256,9 +257,7 @@ class ModbusTcpClient(ModbusBaseSyncClient):
             if ready[0]:
                 try:
                     if (recv_data := self.socket.recv(recv_size)) == b"":
-                        return self._handle_abrupt_socket_close(
-                            size, data, time.time() - time_
-                        )
+                        return self._handle_abrupt_socket_close(size, data, time.time() - time_)
                 except SSLWantReadError:
                     continue
                 data.append(recv_data)
@@ -298,10 +297,7 @@ class ModbusTcpClient(ModbusBaseSyncClient):
         self.close()
         size_txt = size if size else "unbounded read"
         readsize = f"read of {size_txt} bytes"
-        msg = (
-            f"{self}: Connection unexpectedly closed "
-            f"{duration:.3f} seconds into {readsize}"
-        )
+        msg = f"{self}: Connection unexpectedly closed " f"{duration:.3f} seconds into {readsize}"
         if data:
             result = b"".join(data)
             Log.warning(" after returning {} bytes: {} ", len(result), result)

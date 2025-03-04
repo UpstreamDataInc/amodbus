@@ -1,4 +1,5 @@
 """Implementation of a Threaded Modbus Server."""
+
 from __future__ import annotations
 
 import asyncio
@@ -62,12 +63,7 @@ class ModbusBaseServer(ModbusProtocol):
         """Handle incoming connect."""
         if self.trace_connect:
             self.trace_connect(True)
-        return ServerRequestHandler(
-            self,
-            self.trace_packet,
-            self.trace_pdu,
-            self.trace_connect
-        )
+        return ServerRequestHandler(self, self.trace_packet, self.trace_pdu, self.trace_connect)
 
     async def shutdown(self):
         """Close server."""
@@ -78,9 +74,7 @@ class ModbusBaseServer(ModbusProtocol):
     async def serve_forever(self, *, background: bool = False):
         """Start endless loop."""
         if self.transport:
-            raise RuntimeError(
-                "Can't call serve_forever on an already running server object"
-            )
+            raise RuntimeError("Can't call serve_forever on an already running server object")
         await self.listen()
         Log.info("Server listening.")
         if not background:

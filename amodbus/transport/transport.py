@@ -46,6 +46,7 @@ The class is designed to take care of differences between the different
 transport mediums, and provide a neutral interface for the upper layers.
 It basically provides a pipe, without caring about the actual data content.
 """
+
 from __future__ import annotations
 
 import asyncio
@@ -60,7 +61,6 @@ from typing import Any
 
 from amodbus.logging import Log
 from amodbus.transport.serialtransport import create_serial_connection
-
 
 NULLMODEM_HOST = "__amodbus_nullmodem"
 
@@ -84,7 +84,7 @@ class CommParams:
     reconnect_delay: float | None = None
     reconnect_delay_max: float = 0.0
     timeout_connect: float = 0.0
-    host: str = "localhost" # On some machines this will now be ::1
+    host: str = "localhost"  # On some machines this will now be ::1
     port: int = 0
     source_address: tuple[str, int] | None = None
     handle_local_echo: bool = False
@@ -95,7 +95,7 @@ class CommParams:
     # serial
     baudrate: int = -1
     bytesize: int = -1
-    parity: str = ''
+    parity: str = ""
     stopbits: int = -1
 
     @classmethod
@@ -113,17 +113,13 @@ class CommParams:
         """
         if sslctx:
             return sslctx
-        new_sslctx = ssl.SSLContext(
-            ssl.PROTOCOL_TLS_SERVER if is_server else ssl.PROTOCOL_TLS_CLIENT
-        )
+        new_sslctx = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER if is_server else ssl.PROTOCOL_TLS_CLIENT)
         new_sslctx.check_hostname = False
         new_sslctx.verify_mode = ssl.CERT_NONE
         new_sslctx.minimum_version = ssl.TLSVersion.TLSv1_2
         new_sslctx.maximum_version = ssl.TLSVersion.TLSv1_3
         if certfile:
-            new_sslctx.load_cert_chain(
-                certfile=certfile, keyfile=keyfile, password=password
-            )
+            new_sslctx.load_cert_chain(certfile=certfile, keyfile=keyfile, password=password)
         return new_sslctx
 
     def copy(self) -> CommParams:
@@ -134,12 +130,7 @@ class CommParams:
 class ModbusProtocol(asyncio.BaseProtocol):
     """Protocol layer including transport."""
 
-    def __init__(
-        self,
-        params: CommParams,
-        is_server: bool,
-        is_sync: bool = False
-    ) -> None:
+    def __init__(self, params: CommParams, is_server: bool, is_sync: bool = False) -> None:
         """Initialize a transport instance.
 
         :param params: parameter dataclass
@@ -171,8 +162,8 @@ class ModbusProtocol(asyncio.BaseProtocol):
             else:
                 # This behaviour isn't quite right.
                 # It listens on any IPv4 address rather than the more natural default of any address (v6 or v4).
-                host = "0.0.0.0" # Any IPv4 host
-                port = 502 # Server will listen on standard modbus port
+                host = "0.0.0.0"  # Any IPv4 host
+                port = 502  # Server will listen on standard modbus port
         else:
             host = self.comm_params.host
             port = int(self.comm_params.port)
@@ -181,11 +172,7 @@ class ModbusProtocol(asyncio.BaseProtocol):
         if host == NULLMODEM_HOST:
             self.call_create = partial(self.create_nullmodem, port)
             return
-        if (
-            self.comm_params.comm_type == CommType.SERIAL
-            and self.is_server
-            and host.startswith("socket")
-        ):
+        if self.comm_params.comm_type == CommType.SERIAL and self.is_server and host.startswith("socket"):
             # format is "socket://<host>:port"
             self.comm_params.comm_type = CommType.TCP
             parts = host.split(":")
@@ -195,7 +182,8 @@ class ModbusProtocol(asyncio.BaseProtocol):
     def init_setup_connect_listen(self, host: str, port: int) -> None:
         """Handle connect/listen handler."""
         if self.comm_params.comm_type == CommType.SERIAL:
-            self.call_create = partial(create_serial_connection,
+            self.call_create = partial(
+                create_serial_connection,
                 self.loop,
                 self.handle_new_connection,
                 host,
@@ -208,19 +196,22 @@ class ModbusProtocol(asyncio.BaseProtocol):
             return
         if self.comm_params.comm_type == CommType.UDP:
             if self.is_server:
-                self.call_create = partial(self.loop.create_datagram_endpoint,
+                self.call_create = partial(
+                    self.loop.create_datagram_endpoint,
                     self.handle_new_connection,
                     local_addr=(host, port),
                 )
             else:
-                self.call_create = partial(self.loop.create_datagram_endpoint,
+                self.call_create = partial(
+                    self.loop.create_datagram_endpoint,
                     self.handle_new_connection,
                     remote_addr=(host, port),
                 )
             return
         # TLS and TCP
         if self.is_server:
-            self.call_create = partial(self.loop.create_server,
+            self.call_create = partial(
+                self.loop.create_server,
                 self.handle_new_connection,
                 host,
                 port,
@@ -229,7 +220,8 @@ class ModbusProtocol(asyncio.BaseProtocol):
                 start_serving=True,
             )
         else:
-            self.call_create = partial(self.loop.create_connection,
+            self.call_create = partial(
+                self.loop.create_connection,
                 self.handle_new_connection,
                 host,
                 port,
@@ -246,7 +238,10 @@ class ModbusProtocol(asyncio.BaseProtocol):
                 self.call_create(),
                 timeout=self.comm_params.timeout_connect,
             )
-        except (asyncio.TimeoutError, OSError) as exc:  # pylint: disable=overlapping-except
+        except (
+            asyncio.TimeoutError,
+            OSError,
+        ) as exc:  # pylint: disable=overlapping-except
             Log.warning("Failed to connect {}", exc)
             return False
         return bool(self.transport)
@@ -316,9 +311,7 @@ class ModbusProtocol(asyncio.BaseProtocol):
                 data = data[len(self.sent_buffer) :]
                 self.sent_buffer = b""
             elif self.sent_buffer.startswith(data):
-                Log.debug(
-                    "recv skipping (partial local_echo): {} addr={}", data, ":hex", addr
-                )
+                Log.debug("recv skipping (partial local_echo): {} addr={}", data, ":hex", addr)
                 self.sent_buffer = self.sent_buffer[len(data) :]
                 return
             else:
@@ -439,9 +432,7 @@ class ModbusProtocol(asyncio.BaseProtocol):
     # ---------------- #
     # Internal methods #
     # ---------------- #
-    async def create_nullmodem(
-        self, port
-    ) -> tuple[asyncio.Transport, asyncio.BaseProtocol]:
+    async def create_nullmodem(self, port) -> tuple[asyncio.Transport, asyncio.BaseProtocol]:
         """Bypass create_ and use null modem."""
         if self.is_server:
             # Listener object
@@ -541,9 +532,7 @@ class NullModem(asyncio.DatagramTransport, asyncio.Transport):
         return NullModem(parent, listen=port)
 
     @classmethod
-    def set_connection(
-        cls, port: int, parent: ModbusProtocol
-    ) -> tuple[NullModem, ModbusProtocol]:
+    def set_connection(cls, port: int, parent: ModbusProtocol) -> tuple[NullModem, ModbusProtocol]:
         """Connect to listener."""
         if port not in cls.listeners:
             raise asyncio.TimeoutError(f"Port {port} not being listened on !")
@@ -637,9 +626,7 @@ class NullModem(asyncio.DatagramTransport, asyncio.Transport):
         """Set flush limits."""
         return (1, 1024)
 
-    def set_write_buffer_limits(
-        self, high: int | None = None, low: int | None = None
-    ) -> None:
+    def set_write_buffer_limits(self, high: int | None = None, low: int | None = None) -> None:
         """Set flush limits."""
 
     def write_eof(self) -> None:

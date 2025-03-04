@@ -1,4 +1,5 @@
 """Test other messages."""
+
 from unittest import mock
 
 import amodbus.pdu.other_message as amodbus_message
@@ -35,8 +36,7 @@ class TestOtherMessage:
         assert not request.encode()
         assert (await request.update_datastore(None)).function_code == 0x07
 
-        response = amodbus_message.ReadExceptionStatusResponse(status=
-                                                                0x12)
+        response = amodbus_message.ReadExceptionStatusResponse(status=0x12)
         assert response.encode() == b"\x12"
         response.decode(b"\x12")
         assert response.status == 0x12
@@ -134,9 +134,7 @@ class TestOtherMessage:
             assert not request.encode()
             assert (await request.update_datastore(None)).function_code == 0x11
 
-            response = amodbus_message.ReportSlaveIdResponse(
-                (await request.update_datastore(None)).identifier, True
-            )
+            response = amodbus_message.ReportSlaveIdResponse((await request.update_datastore(None)).identifier, True)
 
             assert response.encode() == b"\tamodbus\xff"
             response.decode(b"\x03\x12\x00")

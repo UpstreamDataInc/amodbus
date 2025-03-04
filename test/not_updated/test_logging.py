@@ -1,4 +1,5 @@
 """Test datastore."""
+
 import logging
 from unittest import mock
 

@@ -1,4 +1,5 @@
 """Simulator data model classes."""
+
 from __future__ import annotations
 
 from collections.abc import Callable
@@ -6,8 +7,8 @@ from dataclasses import dataclass
 from enum import Enum
 from typing import TypeAlias
 
-
 SimValueType: TypeAlias = int | float | str | bool | bytes
+
 
 class SimDataType(Enum):
     """Register types, used to define group of registers.
@@ -47,6 +48,7 @@ class SimDataType(Enum):
     #:
     #: .. tip:: It a single but special register, and therefore improves speed and memory usage compared to REGISTERS.
     DEFAULT = 12
+
 
 @dataclass(frozen=True)
 class SimData:
@@ -271,7 +273,8 @@ class SimDevice:
                 (self.block_coil, "coil"),
                 (self.block_direct, "direct"),
                 (self.block_holding, "holding"),
-                (self.block_input, "input")]
+                (self.block_input, "input"),
+            ]
 
         for block, name in blocks:
             if not block:

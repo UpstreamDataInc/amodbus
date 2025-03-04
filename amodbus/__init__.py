@@ -17,6 +17,5 @@ from amodbus.framer import FramerType
 from amodbus.logging import amodbus_apply_logging_config
 from amodbus.pdu import ExceptionResponse
 
-
 __version__ = "3.9.0dev2"
 __version_full__ = f"[amodbus, version {__version__}]"

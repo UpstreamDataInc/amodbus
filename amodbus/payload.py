@@ -3,8 +3,8 @@
 A collection of utilities for building and decoding
 modbus messages payloads.
 """
-from __future__ import annotations
 
+from __future__ import annotations
 
 __all__ = [
     "BinaryPayloadBuilder",
@@ -19,10 +19,7 @@ from struct import pack, unpack
 from amodbus.constants import Endian
 from amodbus.exceptions import ParameterException
 from amodbus.logging import Log
-from amodbus.utilities import (
-    pack_bitstring,
-    unpack_bitstring,
-)
+from amodbus.utilities import pack_bitstring, unpack_bitstring
 
 
 class BinaryPayloadBuilder:
@@ -43,13 +40,11 @@ class BinaryPayloadBuilder:
         """Log warning."""
         Log.warning(
             "BinaryPayloadBuilder is deprecated and will be removed in v3.9.0 !\n"
-            "Please use \"client.convert_from_registers()\" or \"client.convert_to_registers\"\n"
-            "See documentation: \"https://amodbus.readthedocs.io/en/latest/source/client.html#amodbus.client.mixin.ModbusClientMixin.convert_from_registers\""
+            'Please use "client.convert_from_registers()" or "client.convert_to_registers"\n'
+            'See documentation: "https://amodbus.readthedocs.io/en/latest/source/client.html#amodbus.client.mixin.ModbusClientMixin.convert_from_registers"'
         )
 
-    def __init__(
-        self, payload=None, byteorder=Endian.LITTLE, wordorder=Endian.BIG, repack=False
-    ):
+    def __init__(self, payload=None, byteorder=Endian.LITTLE, wordorder=Endian.BIG, repack=False):
         """Initialize a new instance of the payload builder.
 
         :param payload: Raw binary payload data to initialize with
@@ -291,8 +286,8 @@ class BinaryPayloadDecoder:
         """Log warning."""
         Log.warning(
             "BinaryPayloadDecoder is deprecated and will be removed in v3.9.0 !\n"
-            "Please use \"client.convert_from_registers()\" or \"client.convert_to_registers\"\n"
-            "See documentation: \"https://amodbus.readthedocs.io/en/latest/source/client.html#amodbus.client.mixin.ModbusClientMixin.convert_from_registers\""
+            'Please use "client.convert_from_registers()" or "client.convert_to_registers"\n'
+            'See documentation: "https://amodbus.readthedocs.io/en/latest/source/client.html#amodbus.client.mixin.ModbusClientMixin.convert_from_registers"'
         )
 
     def __init__(self, payload, byteorder=Endian.LITTLE, wordorder=Endian.BIG):
@@ -307,7 +302,6 @@ class BinaryPayloadDecoder:
         self._pointer = 0x00
         self._byteorder = byteorder
         self._wordorder = wordorder
-
 
     @classmethod
     def fromRegisters(

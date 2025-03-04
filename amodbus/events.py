@@ -4,6 +4,7 @@ An event byte returned by the Get Communications Event Log function
 can be any one of four types. The type is defined by bit 7
 (the high-order bit) in each byte. It may be further defined by bit 6.
 """
+
 # pylint: disable=missing-type-doc
 from abc import ABC, abstractmethod
 
@@ -96,7 +97,15 @@ class RemoteSendEvent(ModbusEvent):
         7   0
     """
 
-    def __init__(self, read=False, slave_abort=False, slave_busy=False, slave_nak=False, write_timeout=False, listen=False):
+    def __init__(
+        self,
+        read=False,
+        slave_abort=False,
+        slave_busy=False,
+        slave_nak=False,
+        write_timeout=False,
+        listen=False,
+    ):
         """Initialize a new event instance."""
         self.read = read
         self.slave_abort = slave_abort

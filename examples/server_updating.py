@@ -35,13 +35,14 @@ import asyncio
 import logging
 import sys
 
-
 try:
     import server_async  # type: ignore[import-not-found]
 except ImportError:
-    print("*** ERROR --> THIS EXAMPLE needs the example directory, please see \n\
+    print(
+        "*** ERROR --> THIS EXAMPLE needs the example directory, please see \n\
           https://amodbus.readthedocs.io/en/latest/source/examples.html\n\
-          for more information.")
+          for more information."
+    )
     sys.exit(-1)
 
 from amodbus.datastore import (
@@ -49,7 +50,6 @@ from amodbus.datastore import (
     ModbusServerContext,
     ModbusSlaveContext,
 )
-
 
 _logger = logging.getLogger(__name__)
 
@@ -73,9 +73,7 @@ async def updating_task(context):
     values = [0 for v in values]
     context[slave_id].setValues(fc_as_hex, address, values)
 
-    txt = (
-        f"updating_task: started: initialised values: {values!s} at address {address!s}"
-    )
+    txt = f"updating_task: started: initialised values: {values!s} at address {address!s}"
     print(txt)
     _logger.debug(txt)
 
@@ -103,9 +101,7 @@ def setup_updating_server(cmdline=None):
     datablock = ModbusSequentialDataBlock(0x00, [17] * 100)
     slavecontext = ModbusSlaveContext(di=datablock, co=datablock, hr=datablock, ir=datablock)
     context = ModbusServerContext(slaves=slavecontext, single=True)
-    return server_async.setup_server(
-        description="Run asynchronous server.", context=context, cmdline=cmdline
-    )
+    return server_async.setup_server(description="Run asynchronous server.", context=context, cmdline=cmdline)
 
 
 async def run_updating_server(args):

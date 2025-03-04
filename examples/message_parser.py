@@ -12,13 +12,8 @@ import logging
 import textwrap
 
 from amodbus import amodbus_apply_logging_config
-from amodbus.framer import (
-    FramerAscii,
-    FramerRTU,
-    FramerSocket,
-)
+from amodbus.framer import FramerAscii, FramerRTU, FramerSocket
 from amodbus.pdu import DecodePDU
-
 
 _logger = logging.getLogger(__file__)
 
@@ -92,15 +87,12 @@ class Decoder:
 
     def report(self, message):
         """Print the message information."""
-        print(
-            f"{'name':.15s} = {message.__class__.__name__}"
-        )
+        print(f"{'name':.15s} = {message.__class__.__name__}")
         for k_dict, v_dict in message.__dict__.items():
             if isinstance(v_dict, dict):
                 print(f"{k_dict:.15s} =")
                 for k_item, v_item in v_dict.items():
-                    print(f"  {k_item:.12s} => {v_item}"
-                    )
+                    print(f"  {k_item:.12s} => {v_item}")
             elif isinstance(v_dict, collections.abc.Iterable):
                 print(f"{k_dict:.15s} =")
                 value = str([int(x) for x in v_dict])

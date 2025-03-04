@@ -1,4 +1,7 @@
 """Test register write messages."""
+
+from test.conftest import MockLastValuesContext
+
 from amodbus.payload import BinaryPayloadBuilder, Endian
 from amodbus.pdu import ExceptionResponse
 from amodbus.pdu.register_message import (
@@ -9,8 +12,6 @@ from amodbus.pdu.register_message import (
     WriteSingleRegisterRequest,
     WriteSingleRegisterResponse,
 )
-from test.conftest import MockLastValuesContext
-
 
 # ---------------------------------------------------------------------------#
 #  Fixture

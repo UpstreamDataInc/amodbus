@@ -37,7 +37,6 @@ from amodbus.datastore import ModbusServerContext, ModbusSimulatorContext
 from amodbus.device import ModbusDeviceIdentification
 from amodbus.server import StartAsyncTcpServer
 
-
 _logger = logging.getLogger(__file__)
 
 demo_config = {
@@ -144,9 +143,9 @@ def get_commandline(cmdline=None):
 def setup_simulator(setup=None, actions=None, cmdline=None):
     """Run server setup."""
     if not setup:
-        setup=demo_config
+        setup = demo_config
     if not actions:
-        actions=demo_actions
+        actions = demo_actions
     args = get_commandline(cmdline=cmdline)
     amodbus_apply_logging_config(args.log.upper())
     _logger.setLevel(args.log.upper())

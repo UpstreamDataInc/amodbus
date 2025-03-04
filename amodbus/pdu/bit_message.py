@@ -35,11 +35,13 @@ class ReadCoilsRequest(ModbusPDU):
 
     async def update_datastore(self, context: ModbusSlaveContext) -> ModbusPDU:
         """Run request against a datastore."""
-        values = await context.async_getValues(
-            self.function_code, self.address, self.count
+        values = await context.async_getValues(self.function_code, self.address, self.count)
+        response_class = ReadCoilsResponse if self.function_code == 1 else ReadDiscreteInputsResponse
+        return response_class(
+            dev_id=self.dev_id,
+            transaction_id=self.transaction_id,
+            bits=cast(list[bool], values),
         )
-        response_class = (ReadCoilsResponse if self.function_code == 1 else ReadDiscreteInputsResponse)
-        return response_class(dev_id=self.dev_id, transaction_id=self.transaction_id, bits=cast(list[bool], values))
 
 
 class ReadDiscreteInputsRequest(ReadCoilsRequest):
@@ -94,8 +96,16 @@ class WriteSingleCoilRequest(WriteSingleCoilResponse):
     async def update_datastore(self, context: ModbusSlaveContext) -> ModbusPDU:
         """Run a request against a datastore."""
         await context.async_setValues(self.function_code, self.address, self.bits)
-        values = cast(list[bool], await context.async_getValues(self.function_code, self.address, 1))
-        return WriteSingleCoilResponse(address=self.address, bits=values, dev_id=self.dev_id, transaction_id=self.transaction_id)
+        values = cast(
+            list[bool],
+            await context.async_getValues(self.function_code, self.address, 1),
+        )
+        return WriteSingleCoilResponse(
+            address=self.address,
+            bits=values,
+            dev_id=self.dev_id,
+            transaction_id=self.transaction_id,
+        )
 
     def get_response_pdu_size(self) -> int:
         """Get response pdu size.
@@ -127,10 +137,13 @@ class WriteMultipleCoilsRequest(ModbusPDU):
     async def update_datastore(self, context: ModbusSlaveContext) -> ModbusPDU:
         """Run a request against a datastore."""
         count = len(self.bits)
-        await context.async_setValues(
-            self.function_code, self.address, self.bits
+        await context.async_setValues(self.function_code, self.address, self.bits)
+        return WriteMultipleCoilsResponse(
+            address=self.address,
+            count=count,
+            dev_id=self.dev_id,
+            transaction_id=self.transaction_id,
         )
-        return WriteMultipleCoilsResponse(address=self.address, count=count, dev_id=self.dev_id, transaction_id=self.transaction_id)
 
     def get_response_pdu_size(self) -> int:
         """Get response pdu size.

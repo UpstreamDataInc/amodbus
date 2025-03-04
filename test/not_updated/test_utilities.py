@@ -1,14 +1,10 @@
 """Test utilities."""
+
 import struct
 
 import pytest
 
-from amodbus.utilities import (
-    dict_property,
-    pack_bitstring,
-    unpack_bitstring,
-)
-
+from amodbus.utilities import dict_property, pack_bitstring, unpack_bitstring
 
 _test_master = {4: "d"}
 
@@ -38,9 +34,7 @@ class TestUtility:
         self.data = struct.pack(  # pylint: disable=attribute-defined-outside-init
             ">HHHH", 0x1234, 0x2345, 0x3456, 0x4567
         )
-        self.string = (  # pylint: disable=attribute-defined-outside-init
-            b"test the computation"
-        )
+        self.string = b"test the computation"  # pylint: disable=attribute-defined-outside-init
 
     def teardown_method(self):
         """Clean up the test environment."""
@@ -66,14 +60,14 @@ class TestUtility:
         assert result.g_1 == "x"
 
     @pytest.mark.parametrize(
-            ("bytestream", "bitlist"),
-            [
-                (b"\x55", [True, False, True, False, True, False, True, False]),
-                (b"\x80", [False] * 7 + [True]),
-                (b"\x01", [True] + [False] * 7),
-                (b"\x80\x00", [False] * 7 + [True] + [False] * 8),
-                (b"\x01\x00", [True] + [False] * 15),
-            ]
+        ("bytestream", "bitlist"),
+        [
+            (b"\x55", [True, False, True, False, True, False, True, False]),
+            (b"\x80", [False] * 7 + [True]),
+            (b"\x01", [True] + [False] * 7),
+            (b"\x80\x00", [False] * 7 + [True] + [False] * 8),
+            (b"\x01\x00", [True] + [False] * 15),
+        ],
     )
     def test_bit_packing(self, bytestream, bitlist):
         """Test all string <=> bit packing functions."""

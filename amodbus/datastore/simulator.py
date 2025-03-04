@@ -1,4 +1,5 @@
 """amodbus ModbusSimulatorContext."""
+
 from __future__ import annotations
 
 import dataclasses
@@ -9,7 +10,6 @@ from datetime import datetime
 from typing import Any
 
 from amodbus.datastore.context import ModbusBaseSlaveContext
-
 
 WORD_SIZE = 16
 
@@ -201,9 +201,7 @@ class Setup:
         regs = stop - start
         reg_len = regs * 2
         if len(value) > reg_len:
-            raise RuntimeError(
-                f'ERROR "{Label.type_string}" {start} too long "{value}"'
-            )
+            raise RuntimeError(f'ERROR "{Label.type_string}" {start} too long "{value}"')
         value = value.ljust(reg_len)
         for i in range(stop - start):
             reg = self.runtime.registers[start + i]
@@ -237,9 +235,7 @@ class Setup:
                 self.runtime.fc_offset[i] = total_size
             total_size += size_hr
         first_cell = Cell()
-        self.runtime.registers = [
-            dataclasses.replace(first_cell) for i in range(total_size)
-        ]
+        self.runtime.registers = [dataclasses.replace(first_cell) for i in range(total_size)]
         self.runtime.register_count = total_size
         self.runtime.type_exception = bool(Label.try_get(Label.type_exception, layout))
         defaults = Label.try_get(Label.defaults, layout)
@@ -247,9 +243,7 @@ class Setup:
         defaults_action = Label.try_get(Label.action, defaults)
         for key, entry in self.config_types.items():
             entry[Label.value] = Label.try_get(key, defaults_value)
-            if (
-                action := Label.try_get(key, defaults_action)
-            ) not in self.runtime.action_name_to_id:
+            if (action := Label.try_get(key, defaults_action)) not in self.runtime.action_name_to_id:
                 raise RuntimeError(f"ERROR illegal action {key} in {defaults_action}")
             entry[Label.action] = action
         del self.config[Label.setup]
@@ -261,9 +255,7 @@ class Setup:
                 entry = [entry, entry]
             for i in range(entry[0], entry[1] + 1):
                 if i >= self.runtime.register_count:
-                    raise RuntimeError(
-                        f'Error section "{Label.invalid}" addr {entry} out of range'
-                    )
+                    raise RuntimeError(f'Error section "{Label.invalid}" addr {entry} out of range')
                 reg = self.runtime.registers[i]
                 reg.type = CellType.INVALID
         del self.config[Label.invalid]
@@ -275,9 +267,7 @@ class Setup:
                 entry = [entry, entry]
             for i in range(entry[0], entry[1] + 1):
                 if i >= self.runtime.register_count:
-                    raise RuntimeError(
-                        f'Error section "{Label.write}" addr {entry} out of range'
-                    )
+                    raise RuntimeError(f'Error section "{Label.write}" addr {entry} out of range')
                 reg = self.runtime.registers[i]
                 if reg.type == CellType.INVALID:
                     txt = f'ERROR Configuration invalid in section "write" register {i} not defined'
@@ -302,9 +292,7 @@ class Setup:
                     start,
                     stop + 1,
                     entry.get(Label.value, type_entry[Label.value]),
-                    self.runtime.action_name_to_id[
-                        entry.get(Label.action, type_entry[Label.action])
-                    ],
+                    self.runtime.action_name_to_id[entry.get(Label.action, type_entry[Label.action])],
                     entry.get(Label.parameters, None),
                 )
             del self.config[section]
@@ -320,12 +308,8 @@ class Setup:
             for inx in range(addr_to[0], addr_to[1] + 1):
                 copy_inx = copy_start if copy_inx >= copy_end else copy_inx + 1
                 if inx >= self.runtime.register_count:
-                    raise RuntimeError(
-                        f'Error section "{Label.repeat}" entry {entry} out of range'
-                    )
-                self.runtime.registers[inx] = dataclasses.replace(
-                    self.runtime.registers[copy_inx]
-                )
+                    raise RuntimeError(f'Error section "{Label.repeat}" entry {entry} out of range')
+                self.runtime.registers[inx] = dataclasses.replace(self.runtime.registers[copy_inx])
         del self.config[Label.repeat]
 
     def setup(self, config, custom_actions) -> None:
@@ -357,9 +341,7 @@ class Setup:
             Label.next: CellType.NEXT,
             Label.invalid: CellType.INVALID,
         }
-        self.runtime.registerType_id_to_name = [None] * len(
-            self.runtime.registerType_name_to_id
-        )
+        self.runtime.registerType_id_to_name = [None] * len(self.runtime.registerType_name_to_id)
         for name, cell_type in self.runtime.registerType_name_to_id.items():
             self.runtime.registerType_id_to_name[cell_type] = name
 
@@ -468,9 +450,7 @@ class ModbusSimulatorContext(ModbusBaseSlaveContext):
     # --------------------------------------------
     start_time = int(datetime.now().timestamp())
 
-    def __init__(
-        self, config: dict[str, Any], custom_actions: dict[str, Callable] | None
-    ) -> None:
+    def __init__(self, config: dict[str, Any], custom_actions: dict[str, Callable] | None) -> None:
         """Initialize."""
         self.registers: list[Cell] = []
         self.fc_offset: dict[int, int] = {}
@@ -558,9 +538,7 @@ class ModbusSimulatorContext(ModbusBaseSlaveContext):
                 reg = self.registers[i]
                 if reg.action:
                     parameters = reg.action_parameters or {}
-                    self.action_methods[reg.action](
-                        self.registers, i, reg, **parameters
-                    )
+                    self.action_methods[reg.action](self.registers, i, reg, **parameters)
                 self.registers[i].count_read += 1
                 while count and bit_index < 16:
                     result.append(bool(reg.value & (2**bit_index)))
@@ -611,15 +589,11 @@ class ModbusSimulatorContext(ModbusBaseSlaveContext):
         if cell.type in (CellType.BITS, CellType.UINT16):
             registers[inx].value = random.randint(int(minval), int(maxval))
         elif cell.type == CellType.FLOAT32:
-            regs = cls.build_registers_from_value(
-                random.uniform(float(minval), float(maxval)), False
-            )
+            regs = cls.build_registers_from_value(random.uniform(float(minval), float(maxval)), False)
             registers[inx].value = regs[0]
             registers[inx + 1].value = regs[1]
         elif cell.type == CellType.UINT32:
-            regs = cls.build_registers_from_value(
-                random.randint(int(minval), int(maxval)), True
-            )
+            regs = cls.build_registers_from_value(random.randint(int(minval), int(maxval)), True)
             registers[inx].value = regs[0]
             registers[inx + 1].value = regs[1]
 
@@ -722,9 +696,7 @@ class ModbusSimulatorContext(ModbusBaseSlaveContext):
     @classmethod
     def build_value_from_registers(cls, registers, is_int):
         """Build int32 or float32 value from registers."""
-        value_bytes = int.to_bytes(registers[0], 2, "big") + int.to_bytes(
-            registers[1], 2, "big"
-        )
+        value_bytes = int.to_bytes(registers[0], 2, "big") + int.to_bytes(registers[1], 2, "big")
         if is_int:
             value = int.from_bytes(value_bytes, "big")
         else:

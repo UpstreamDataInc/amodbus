@@ -4,8 +4,8 @@ These are the device management handlers.  They should be
 maintained in the server context and the various methods
 should be inserted in the correct locations.
 """
-from __future__ import annotations
 
+from __future__ import annotations
 
 __all__ = [
     "DeviceInformationFactory",
@@ -241,24 +241,20 @@ class DeviceInformationFactory:  # pylint: disable=too-few-public-methods
     """
 
     __lookup = {
-        DeviceInformation.BASIC: lambda c, r, i: c.__gets(  # pylint: disable=protected-access
-            r, list(range(i, 0x03))
-        ),
+        DeviceInformation.BASIC: lambda c, r, i: c.__gets(r, list(range(i, 0x03))),  # pylint: disable=protected-access
         DeviceInformation.REGULAR: lambda c, r, i: c.__gets(  # pylint: disable=protected-access
             r,
-            list(range(i, 0x07))
-            if c.__get(r, i)[i]  # pylint: disable=protected-access
-            else list(range(0, 0x07)),
+            (list(range(i, 0x07)) if c.__get(r, i)[i] else list(range(0, 0x07))),  # pylint: disable=protected-access
         ),
         DeviceInformation.EXTENDED: lambda c, r, i: c.__gets(  # pylint: disable=protected-access
             r,
-            [x for x in range(i, 0x100) if x not in range(0x07, 0x80)]
-            if c.__get(r, i)[i]  # pylint: disable=protected-access
-            else [x for x in range(0, 0x100) if x not in range(0x07, 0x80)],
+            (
+                [x for x in range(i, 0x100) if x not in range(0x07, 0x80)]
+                if c.__get(r, i)[i]  # pylint: disable=protected-access
+                else [x for x in range(0, 0x100) if x not in range(0x07, 0x80)]
+            ),
         ),
-        DeviceInformation.SPECIFIC: lambda c, r, i: c.__get(  # pylint: disable=protected-access
-            r, i
-        ),
+        DeviceInformation.SPECIFIC: lambda c, r, i: c.__get(r, i),  # pylint: disable=protected-access
     }
 
     @classmethod
@@ -394,9 +390,7 @@ class ModbusCountersHandler:
         :param values: The value to copy values from
         """
         for k, v_item in iter(values.items()):
-            v_item += self.__getattribute__(  # pylint: disable=unnecessary-dunder-call
-                k
-            )
+            v_item += self.__getattribute__(k)  # pylint: disable=unnecessary-dunder-call
             self.__setattr__(k, v_item)  # pylint: disable=unnecessary-dunder-call
 
     def reset(self):

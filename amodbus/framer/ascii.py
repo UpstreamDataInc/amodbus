@@ -4,6 +4,7 @@ is extending ModbusProtocol to handle receiving and sending of messsagees.
 
 ModbusMessage provides a unified interface to send/receive Modbus requests/responses.
 """
+
 from __future__ import annotations
 
 from binascii import a2b_hex, b2a_hex
@@ -28,10 +29,9 @@ class FramerAscii(FramerBase):
     the data in this framer is transferred in plain text ascii.
     """
 
-    START = b':'
-    END = b'\r\n'
+    START = b":"
+    END = b"\r\n"
     MIN_SIZE = 10
-
 
     def decode(self, data: bytes) -> tuple[int, int, int, bytes]:
         """Decode ADU."""
@@ -52,7 +52,7 @@ class FramerAscii(FramerBase):
                 Log.debug("Incomplete frame: {} wait for more data", data, ":hex")
                 return used_len, 0, 0, self.EMPTY
             dev_id = int(buffer[1:3], 16)
-            lrc = int(buffer[end - 2: end], 16)
+            lrc = int(buffer[end - 2 : end], 16)
             msg = a2b_hex(buffer[1 : end - 2])
             used_len += end + 2
             if not self.check_LRC(msg, lrc):
@@ -62,14 +62,10 @@ class FramerAscii(FramerBase):
 
     def encode(self, data: bytes, device_id: int, _tid: int) -> bytes:
         """Encode ADU."""
-        dev_id = device_id.to_bytes(1,'big')
+        dev_id = device_id.to_bytes(1, "big")
         checksum = self.compute_LRC(dev_id + data)
         frame = (
-            self.START +
-            f"{device_id:02x}".encode() +
-            b2a_hex(data) +
-            f"{checksum:02x}".encode() +
-            self.END
+            self.START + f"{device_id:02x}".encode() + b2a_hex(data) + f"{checksum:02x}".encode() + self.END
         ).upper()
         return frame
 

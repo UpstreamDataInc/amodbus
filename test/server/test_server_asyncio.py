@@ -1,4 +1,5 @@
 """Test server asyncio."""
+
 import asyncio
 import logging
 import ssl
@@ -18,7 +19,6 @@ from amodbus.datastore import (
 from amodbus.device import ModbusDeviceIdentification
 from amodbus.exceptions import NoSuchSlaveException
 from amodbus.server import ModbusTcpServer, ModbusTlsServer, ModbusUdpServer
-
 
 _logger = logging.getLogger()
 
@@ -119,9 +119,7 @@ class TestAsyncioServer:
             ir=ModbusSequentialDataBlock(0, [17] * 100),
         )
         self.context = ModbusServerContext(slaves=self.store, single=True)
-        self.identity = ModbusDeviceIdentification(
-            info_name={"VendorName": "VendorName"}
-        )
+        self.identity = ModbusDeviceIdentification(info_name={"VendorName": "VendorName"})
         yield
 
         # teardown
@@ -144,7 +142,12 @@ class TestAsyncioServer:
             result = result.result()
 
     async def start_server(
-        self, do_forever=True, do_tls=False, do_udp=False, do_ident=False, serv_addr=SERV_ADDR,
+        self,
+        do_forever=True,
+        do_tls=False,
+        do_udp=False,
+        do_ident=False,
+        serv_addr=SERV_ADDR,
     ):
         """Handle setup and control of tcp server."""
         args = {
@@ -158,21 +161,21 @@ class TestAsyncioServer:
                 self.context,
                 framer=FramerType.TLS,
                 identity=self.identity,
-                address=serv_addr
+                address=serv_addr,
             )
         elif do_udp:
             self.server = ModbusUdpServer(
                 self.context,
                 framer=FramerType.SOCKET,
                 identity=self.identity,
-                address=serv_addr
+                address=serv_addr,
             )
         else:
             self.server = ModbusTcpServer(
                 self.context,
                 framer=FramerType.SOCKET,
                 identity=self.identity,
-                address=serv_addr
+                address=serv_addr,
             )
         assert self.server
         if do_forever:
@@ -194,15 +197,11 @@ class TestAsyncioServer:
         BasicClient.connected = asyncio.Future()
         BasicClient.done = asyncio.Future()
         BasicClient.eof = asyncio.Future()
-        random_port = self.server.transport.sockets[0].getsockname()[
-            1
-        ]  # get the random server port
+        random_port = self.server.transport.sockets[0].getsockname()[1]  # get the random server port
         (
             BasicClient.transport,
             BasicClient.my_protocol,
-        ) = await self.loop.create_connection(
-            BasicClient, host="127.0.0.1", port=random_port
-        )
+        ) = await self.loop.create_connection(BasicClient, host="127.0.0.1", port=random_port)
         await asyncio.wait_for(BasicClient.connected, timeout=0.1)
         await asyncio.sleep(0.1)
 
@@ -276,9 +275,7 @@ class TestAsyncioServer:
 
     async def test_async_tcp_server_no_slave(self):
         """Test unknown slave exception."""
-        self.context = ModbusServerContext(
-            slaves={0x01: self.store, 0x02: self.store}, single=False
-        )
+        self.context = ModbusServerContext(slaves={0x01: self.store, 0x02: self.store}, single=False)
         BasicClient.data = b"\x01\x00\x00\x00\x00\x06\x05\x03\x00\x00\x00\x01"
         await self.start_server()
         await self.connect_server()
@@ -349,16 +346,12 @@ class TestAsyncioServer:
 
     async def test_async_udp_server_roundtrip(self):
         """Test sending and receiving data on udp socket."""
-        expected_response = (
-            b"\x01\x00\x00\x00\x00\x05\x01\x03\x02\x00\x11"
-        )  # value of 17 as per context
+        expected_response = b"\x01\x00\x00\x00\x00\x05\x01\x03\x02\x00\x11"  # value of 17 as per context
         BasicClient.dataTo = TEST_DATA  # slave 1, read register
         BasicClient.done = asyncio.Future()
         await self.start_server(do_udp=True)
         random_port = self.server.transport._sock.getsockname()[1]  # pylint: disable=protected-access
-        transport, _ = await self.loop.create_datagram_endpoint(
-            BasicClient, remote_addr=("127.0.0.1", random_port)
-        )
+        transport, _ = await self.loop.create_datagram_endpoint(BasicClient, remote_addr=("127.0.0.1", random_port))
         await asyncio.wait_for(BasicClient.done, timeout=0.1)
         assert BasicClient.received_data == expected_response
         transport.close()
@@ -375,9 +368,7 @@ class TestAsyncioServer:
         ):
             # get the random server port pylint: disable=protected-access
             random_port = self.server.transport._sock.getsockname()[1]
-            _, _ = await self.loop.create_datagram_endpoint(
-                BasicClient, remote_addr=("127.0.0.1", random_port)
-            )
+            _, _ = await self.loop.create_datagram_endpoint(BasicClient, remote_addr=("127.0.0.1", random_port))
             await asyncio.wait_for(BasicClient.connected, timeout=0.1)
             assert not BasicClient.done.done()
 

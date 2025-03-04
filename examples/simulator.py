@@ -15,13 +15,10 @@ from amodbus.client import AsyncModbusTcpClient
 from amodbus.datastore import ModbusSimulatorContext
 from amodbus.server import ModbusSimulatorServer, get_simulator_commandline
 
-
 _logger = logging.getLogger(__file__)
 
 
-async def read_registers(
-    client, addr, count, is_int, curval=None, minval=None, maxval=None
-):
+async def read_registers(client, addr, count, is_int, curval=None, minval=None, maxval=None):
     """Run modbus call."""
     rr = await client.read_holding_registers(addr, count=count, slave=1)
     assert not rr.isError()

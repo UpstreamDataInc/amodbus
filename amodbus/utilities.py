@@ -3,6 +3,7 @@
 A collection of utilities for packing data, unpacking
 data computing checksums, and decode checksums.
 """
+
 from __future__ import annotations
 
 # pylint: disable=missing-type-doc
@@ -20,26 +21,24 @@ def dict_property(store, index):
     :returns: An initialized property set
     """
     if hasattr(store, "__call__"):
-        getter = lambda self: store(  # pylint: disable=unnecessary-lambda-assignment
-            self
-        )[index]
-        setter = lambda self, value: store(  # pylint: disable=unnecessary-lambda-assignment
-            self
-        ).__setitem__(index, value)
-    elif isinstance(store, str):
-        getter = lambda self: self.__getattribute__(  # pylint: disable=unnecessary-dunder-call,unnecessary-lambda-assignment
-            store
-        )[index]
-        setter = lambda self, value: self.__getattribute__(  # pylint: disable=unnecessary-dunder-call,unnecessary-lambda-assignment
-            store
-        ).__setitem__(index, value)
-    else:
-        getter = (
-            lambda self: store[index]  # pylint: disable=unnecessary-lambda-assignment
-        )
-        setter = lambda self, value: store.__setitem__(  # pylint: disable=unnecessary-lambda-assignment
+        getter = lambda self: store(self)[index]  # pylint: disable=unnecessary-lambda-assignment
+        setter = lambda self, value: store(self).__setitem__(  # pylint: disable=unnecessary-lambda-assignment
             index, value
         )
+    elif isinstance(store, str):
+        getter = (
+            lambda self: self.__getattribute__(  # pylint: disable=unnecessary-dunder-call,unnecessary-lambda-assignment
+                store
+            )[index]
+        )
+        setter = lambda self, value: self.__getattribute__(  # pylint: disable=unnecessary-dunder-call,unnecessary-lambda-assignment
+            store
+        ).__setitem__(
+            index, value
+        )
+    else:
+        getter = lambda self: store[index]  # pylint: disable=unnecessary-lambda-assignment
+        setter = lambda self, value: store.__setitem__(index, value)  # pylint: disable=unnecessary-lambda-assignment
 
     return property(getter, setter)
 

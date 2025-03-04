@@ -1,4 +1,5 @@
 """Collection of transaction based abstractions."""
+
 from __future__ import annotations
 
 import asyncio
@@ -40,8 +41,8 @@ class TransactionManager(ModbusProtocol):
         trace_packet: Callable[[bool, bytes], bytes] | None,
         trace_pdu: Callable[[bool, ModbusPDU], ModbusPDU] | None,
         trace_connect: Callable[[bool], None] | None,
-        sync_client = None,
-        ) -> None:
+        sync_client=None,
+    ) -> None:
         """Initialize an instance of the ModbusTransactionManager."""
         self.is_sync = bool(sync_client)
         super().__init__(params, is_server, is_sync=self.is_sync)
@@ -80,7 +81,7 @@ class TransactionManager(ModbusProtocol):
 
     def sync_get_response(self, dev_id) -> ModbusPDU:
         """Receive until PDU is correct or timeout."""
-        databuffer = b''
+        databuffer = b""
         while True:
             if not (data := self.sync_client.recv(None)):
                 raise asyncio.exceptions.TimeoutError()
@@ -95,9 +96,7 @@ class TransactionManager(ModbusProtocol):
                     data = data[len(self.sent_buffer) :]
                     self.sent_buffer = b""
                 elif self.sent_buffer.startswith(data):
-                    Log.debug(
-                        "sync recv skipping (partial local_echo): {}", data, ":hex"
-                    )
+                    Log.debug("sync recv skipping (partial local_echo): {}", data, ":hex")
                     self.sent_buffer = self.sent_buffer[len(data) :]
                     continue
                 else:
@@ -130,7 +129,7 @@ class TransactionManager(ModbusProtocol):
             while count_retries <= self.retries:
                 self.pdu_send(request)
                 if no_response_expected:
-                    return ExceptionResponse(0xff)
+                    return ExceptionResponse(0xFF)
                 try:
                     return self.sync_get_response(request.dev_id)
                 except asyncio.exceptions.TimeoutError:
@@ -163,12 +162,10 @@ class TransactionManager(ModbusProtocol):
                 self.response_future = asyncio.Future()
                 self.pdu_send(request)
                 if no_response_expected:
-                    return ExceptionResponse(0xff)
+                    return ExceptionResponse(0xFF)
                 try:
-                    response = await asyncio.wait_for(
-                        self.response_future, timeout=self.comm_params.timeout_connect
-                    )
-                    self.count_until_disconnect= self.max_until_disconnect
+                    response = await asyncio.wait_for(self.response_future, timeout=self.comm_params.timeout_connect)
+                    self.count_until_disconnect = self.max_until_disconnect
                     if response.dev_id != request.dev_id:
                         raise ModbusIOException(
                             f"ERROR: request ask for id={request.dev_id} but got id={response.dev_id}, CLOSING CONNECTION."
@@ -223,9 +220,7 @@ class TransactionManager(ModbusProtocol):
                     )
                 if self.response_future.done():
                     raise ModbusIOException("received pdu without a corresponding request")
-                self.response_future.set_result(self.last_pdu
-
-                                                )
+                self.response_future.set_result(self.last_pdu)
         return used_len
 
     def getNextTID(self) -> int:

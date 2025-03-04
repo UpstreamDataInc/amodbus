@@ -1,5 +1,7 @@
 """Test client sync."""
+
 from itertools import count
+from test.conftest import mockSocket
 from unittest import mock
 
 import pytest
@@ -13,13 +15,7 @@ from amodbus.client import (
     ModbusUdpClient,
 )
 from amodbus.exceptions import ConnectionException
-from amodbus.framer import (
-    FramerAscii,
-    FramerRTU,
-    FramerTLS,
-)
-from test.conftest import mockSocket
-
+from amodbus.framer import FramerAscii, FramerRTU, FramerTLS
 
 # ---------------------------------------------------------------------------#
 # Fixture
@@ -190,6 +186,7 @@ class TestSyncClientTcp:
         assert repr(client) == rep
         client.set_max_no_responses(110)
 
+
 class TestSyncClientTls:
     """Unittest for the amodbus.client module."""
 
@@ -265,6 +262,7 @@ class TestSyncClientTls:
             f"timeout={client.comm_params.timeout_connect}>"
         )
         assert repr(client) == rep
+
 
 class TestSyncClientSerial:
     """Unittest for the amodbus.client module."""
@@ -355,7 +353,6 @@ class TestSyncClientSerial:
         client.state = 0
         assert client.send("1234") == 4
 
-
     @mock.patch("serial.Serial")
     def test_serial_client_cleanup_buffer_before_send(self, mock_serial):
         """Test the serial client send method."""
@@ -392,14 +389,13 @@ class TestSyncClientSerial:
         with pytest.raises(ConnectionException):
             client.recv(1024)
         client.socket = mockSocket(copy_send=False)
-        client.socket.mock_prepare_receive(b'')
-        client.socket.mock_prepare_receive(b'\x11\x03\x06\xAE')
-        client.socket.mock_prepare_receive(b'\x41\x56\x52\x43\x40\x49')
-        client.socket.mock_prepare_receive(b'\xAD')
+        client.socket.mock_prepare_receive(b"")
+        client.socket.mock_prepare_receive(b"\x11\x03\x06\xAE")
+        client.socket.mock_prepare_receive(b"\x41\x56\x52\x43\x40\x49")
+        client.socket.mock_prepare_receive(b"\xAD")
         reply_ok = client.read_input_registers(0x820, count=3, slave=17)
         assert not reply_ok.isError()
         client.close()
-
 
     def test_serial_client_repr(self):
         """Test serial client."""
@@ -412,6 +408,9 @@ class TestSyncClientSerial:
 
     def test_serial_client_with(self):
         """Test with block."""
-        with mock.patch("amodbus.client.serial.ModbusSerialClient.connect"), ModbusSerialClient("/dev/null") as client:
-                assert client
-                client.socket = mockSocket()
+        with (
+            mock.patch("amodbus.client.serial.ModbusSerialClient.connect"),
+            ModbusSerialClient("/dev/null") as client,
+        ):
+            assert client
+            client.socket = mockSocket()

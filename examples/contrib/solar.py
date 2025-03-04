@@ -12,7 +12,7 @@ from enum import Enum
 from math import log10
 from time import sleep
 
-from amodbus import amodbus_apply_logging_config
+from amodbus import FramerType, amodbus_apply_logging_config
 
 # --------------------------------------------------------------------------- #
 # import the various client implementations
@@ -20,8 +20,6 @@ from amodbus import amodbus_apply_logging_config
 from amodbus.client import ModbusTcpClient
 from amodbus.exceptions import ModbusException
 from amodbus.pdu import ExceptionResponse
-from amodbus import FramerType
-
 
 HOST = "modbusServer.lan"
 PORT = 502
@@ -29,8 +27,7 @@ CYCLES = 4
 
 
 amodbus_apply_logging_config(logging.ERROR)
-logging.basicConfig(level=logging.DEBUG,
-                    format='%(asctime)s %(levelname)s %(message)s')
+logging.basicConfig(level=logging.DEBUG, format="%(asctime)s %(levelname)s %(message)s")
 _logger = logging.getLogger(__file__)
 
 
@@ -59,19 +56,25 @@ def main() -> None:
 def solar_calls(client: ModbusTcpClient) -> None:
     """Read registers."""
     error = False
-        
-    for addr, format, factor, comment, unit in ( # data_type according to ModbusClientMixin.DATATYPE.value[0]
-        (32008, "H", 1,     "Alarm 1",                          "(bitfield)"),
-        (32009, "H", 1,     "Alarm 2",                          "(bitfield)"),
-        (32010, "H", 1,     "Alarm 3",                          "(bitfield)"),
-        (32016, "h", 0.1,   "PV 1 voltage",                     "V"),
-        (32017, "h", 0.01,  "PV 1 current",                     "A"),
-        (32018, "h", 0.1,   "PV 2 voltage",                     "V"),
-        (32019, "h", 0.01,  "PV 2 current",                     "A"),
-        (32064, "i", 0.001, "Input power",                      "kW"),
+
+    for (
+        addr,
+        format,
+        factor,
+        comment,
+        unit,
+    ) in (  # data_type according to ModbusClientMixin.DATATYPE.value[0]
+        (32008, "H", 1, "Alarm 1", "(bitfield)"),
+        (32009, "H", 1, "Alarm 2", "(bitfield)"),
+        (32010, "H", 1, "Alarm 3", "(bitfield)"),
+        (32016, "h", 0.1, "PV 1 voltage", "V"),
+        (32017, "h", 0.01, "PV 1 current", "A"),
+        (32018, "h", 0.1, "PV 2 voltage", "V"),
+        (32019, "h", 0.01, "PV 2 current", "A"),
+        (32064, "i", 0.001, "Input power", "kW"),
         (32078, "i", 0.001, "Peak active power of current day", "kW"),
-        (32080, "i", 0.001, "Active power",                     "kW"),
-        (32114, "I", 0.001, "Daily energy yield",               "kWh"),
+        (32080, "i", 0.001, "Active power", "kW"),
+        (32114, "I", 0.001, "Daily energy yield", "kWh"),
     ):
         if error:
             error = False
@@ -79,13 +82,13 @@ def solar_calls(client: ModbusTcpClient) -> None:
             sleep(0.1)
             client.connect()
             sleep(1)
-        
+
         data_type = get_data_type(format)
         count = data_type.value[1]
         var_type = data_type.name
 
         _logger.info(f"*** Reading {comment} ({var_type})")
-        
+
         try:
             rr = client.read_holding_registers(address=addr, count=count, slave=1)
         except ModbusException as exc:
@@ -100,7 +103,7 @@ def solar_calls(client: ModbusTcpClient) -> None:
             _logger.error(f"Response exception: {rr!s}")
             error = True
             continue
-        
+
         value = client.convert_from_registers(rr.registers, data_type) * factor
         if factor < 1:
             value = round(value, int(log10(factor) * -1))

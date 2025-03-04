@@ -1,4 +1,5 @@
 """Test device."""
+
 from amodbus.constants import DeviceInformation
 from amodbus.device import (
     DeviceInformationFactory,
@@ -7,7 +8,6 @@ from amodbus.device import (
     ModbusPlusStatistics,
 )
 from amodbus.events import RemoteReceiveEvent
-
 
 # ---------------------------------------------------------------------------#
 #  Fixture
@@ -60,21 +60,15 @@ class TestDataStore:
     def test_device_identification_factory(self):
         """Test device identification reading."""
         self.control.Identity.update(self.ident)
-        result = DeviceInformationFactory.get(
-            self.control, DeviceInformation.SPECIFIC, 0x00
-        )
+        result = DeviceInformationFactory.get(self.control, DeviceInformation.SPECIFIC, 0x00)
         assert result[0x00] == "Bashwork"
 
-        result = DeviceInformationFactory.get(
-            self.control, DeviceInformation.BASIC, 0x00
-        )
+        result = DeviceInformationFactory.get(self.control, DeviceInformation.BASIC, 0x00)
         assert result[0x00] == "Bashwork"
         assert result[0x01] == "PTM"
         assert result[0x02] == "1.0"
 
-        result = DeviceInformationFactory.get(
-            self.control, DeviceInformation.REGULAR, 0x00
-        )
+        result = DeviceInformationFactory.get(self.control, DeviceInformation.REGULAR, 0x00)
         assert result[0x00] == "Bashwork"
         assert result[0x01] == "PTM"
         assert result[0x02] == "1.0"
@@ -85,29 +79,17 @@ class TestDataStore:
 
     def test_device_identification_factory_lookup(self):
         """Test device identification factory lookup."""
-        result = DeviceInformationFactory.get(
-            self.control, DeviceInformation.BASIC, 0x00
-        )
+        result = DeviceInformationFactory.get(self.control, DeviceInformation.BASIC, 0x00)
         assert sorted(result.keys()) == [0x00, 0x01, 0x02]
-        result = DeviceInformationFactory.get(
-            self.control, DeviceInformation.BASIC, 0x02
-        )
+        result = DeviceInformationFactory.get(self.control, DeviceInformation.BASIC, 0x02)
         assert sorted(result.keys()) == [0x02]
-        result = DeviceInformationFactory.get(
-            self.control, DeviceInformation.REGULAR, 0x00
-        )
+        result = DeviceInformationFactory.get(self.control, DeviceInformation.REGULAR, 0x00)
         assert sorted(result.keys()) == [0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06]
-        result = DeviceInformationFactory.get(
-            self.control, DeviceInformation.REGULAR, 0x01
-        )
+        result = DeviceInformationFactory.get(self.control, DeviceInformation.REGULAR, 0x01)
         assert sorted(result.keys()) == [0x01, 0x02, 0x03, 0x04, 0x05, 0x06]
-        result = DeviceInformationFactory.get(
-            self.control, DeviceInformation.REGULAR, 0x05
-        )
+        result = DeviceInformationFactory.get(self.control, DeviceInformation.REGULAR, 0x05)
         assert sorted(result.keys()) == [0x05, 0x06]
-        result = DeviceInformationFactory.get(
-            self.control, DeviceInformation.EXTENDED, 0x00
-        )
+        result = DeviceInformationFactory.get(self.control, DeviceInformation.EXTENDED, 0x00)
         assert sorted(result.keys()) == [
             0x00,
             0x01,
@@ -120,25 +102,15 @@ class TestDataStore:
             0x82,
             0xFF,
         ]
-        result = DeviceInformationFactory.get(
-            self.control, DeviceInformation.EXTENDED, 0x02
-        )
+        result = DeviceInformationFactory.get(self.control, DeviceInformation.EXTENDED, 0x02)
         assert sorted(result.keys()) == [0x02, 0x03, 0x04, 0x05, 0x06, 0x80, 0x82, 0xFF]
-        result = DeviceInformationFactory.get(
-            self.control, DeviceInformation.EXTENDED, 0x06
-        )
+        result = DeviceInformationFactory.get(self.control, DeviceInformation.EXTENDED, 0x06)
         assert sorted(result.keys()) == [0x06, 0x80, 0x82, 0xFF]
-        result = DeviceInformationFactory.get(
-            self.control, DeviceInformation.EXTENDED, 0x80
-        )
+        result = DeviceInformationFactory.get(self.control, DeviceInformation.EXTENDED, 0x80)
         assert sorted(result.keys()) == [0x80, 0x82, 0xFF]
-        result = DeviceInformationFactory.get(
-            self.control, DeviceInformation.EXTENDED, 0x82
-        )
+        result = DeviceInformationFactory.get(self.control, DeviceInformation.EXTENDED, 0x82)
         assert sorted(result.keys()) == [0x82, 0xFF]
-        result = DeviceInformationFactory.get(
-            self.control, DeviceInformation.EXTENDED, 0x81
-        )
+        result = DeviceInformationFactory.get(self.control, DeviceInformation.EXTENDED, 0x81)
         assert sorted(result.keys()) == [
             0x00,
             0x01,

@@ -14,11 +14,7 @@ The corresponding server must be started before e.g. as:
 # import the various client implementations
 # --------------------------------------------------------------------------- #
 import amodbus.client as ModbusClient
-from amodbus import (
-    FramerType,
-    ModbusException,
-    amodbus_apply_logging_config,
-)
+from amodbus import FramerType, ModbusException, amodbus_apply_logging_config
 
 
 def run_sync_simple_client(comm, host, port, framer=FramerType.SOCKET):

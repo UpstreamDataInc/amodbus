@@ -1,14 +1,11 @@
 """Test transport."""
+
 import asyncio
 from unittest import mock
 
 import pytest
 
-from amodbus.transport import (
-    CommType,
-    ModbusProtocol,
-)
-
+from amodbus.transport import CommType, ModbusProtocol
 
 COMM_TYPES = [
     CommType.TCP,
@@ -28,12 +25,10 @@ class TestTransportProtocol1:
         base_ports[__class__.__name__] += 1
         return base_ports[__class__.__name__]
 
-
     @pytest.mark.parametrize("use_comm_type", COMM_TYPES)
     async def test_init_client(self, client):
         """Test init client."""
         assert not client.is_server
-
 
     @pytest.mark.parametrize("use_comm_type", COMM_TYPES)
     async def test_init_server(self, server):
@@ -216,7 +211,6 @@ class TestTransportProtocol2:
         base_ports[__class__.__name__] += 1
         return base_ports[__class__.__name__]
 
-
     async def test_eof_received(self, client):
         """Test eof_received."""
         client.eof_received()
@@ -334,16 +328,12 @@ class TestTransportProtocol2:
     def test_generate_ssl_ctx(self, use_clc):
         """Test ssl generation."""
         test_value = "test igen"
-        assert test_value == use_clc.generate_ssl(
-            True, "cert_file", "key_file", sslctx=test_value
-        )
+        assert test_value == use_clc.generate_ssl(True, "cert_file", "key_file", sslctx=test_value)
 
     def test_generate_ssl_client(self, use_clc):
         """Test ssl generation."""
         test_value = "test igen"
-        assert test_value == use_clc.generate_ssl(
-            False, "cert_file", "key_file", sslctx=test_value
-        )
+        assert test_value == use_clc.generate_ssl(False, "cert_file", "key_file", sslctx=test_value)
 
     def test_generate_ssl_no_file(self, use_clc):
         """Test ssl generation."""

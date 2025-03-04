@@ -1,4 +1,5 @@
 """HTTP server for modbus simulator."""
+
 from __future__ import annotations
 
 import asyncio
@@ -8,7 +9,6 @@ import importlib
 import json
 import os
 from typing import TYPE_CHECKING
-
 
 try:
     from aiohttp import web
@@ -31,7 +31,6 @@ from amodbus.server.server import (
     ModbusTlsServer,
     ModbusUdpServer,
 )
-
 
 MAX_FILTER = 1000
 
@@ -126,8 +125,7 @@ class ModbusSimulatorServer:
         """Initialize http interface."""
         if AIOHTTP_MISSING:
             raise RuntimeError(
-                "Simulator server requires aiohttp. "
-                'Please install with "pip install aiohttp" and try again.'
+                "Simulator server requires aiohttp. " 'Please install with "pip install aiohttp" and try again.'
             )
         with open(json_file, encoding="utf-8") as file:
             setup = json.load(file)
@@ -149,9 +147,7 @@ class ModbusSimulatorServer:
             del server["host"]
             del server["port"]
         device = setup["device_list"][modbus_device]
-        self.datastore_context = ModbusSimulatorContext(
-            device, custom_actions_dict or {}
-        )
+        self.datastore_context = ModbusSimulatorContext(device, custom_actions_dict or {})
         datastore = None
         if "device_id" in server:
             # Designated ModBus unit address. Will only serve data if the address matches
@@ -164,9 +160,7 @@ class ModbusSimulatorServer:
         comm = comm_class[server.pop("comm")]
         framer = server.pop("framer")
         if "identity" in server:
-            server["identity"] = ModbusDeviceIdentification(
-                info_name=server["identity"]
-            )
+            server["identity"] = ModbusDeviceIdentification(info_name=server["identity"])
         self.modbus_server = comm(framer=framer, context=datastore, **server)
         self.serving: asyncio.Future = asyncio.Future()
         self.log_file = log_file
@@ -217,7 +211,7 @@ class ModbusSimulatorServer:
         self.request_lookup = DecodePDU(True).lookup
         self.call_monitor = CallTypeMonitor()
         self.call_response = CallTypeResponse()
-        app_key = getattr(web, 'AppKey', str)  # fall back to str for aiohttp < 3.9.0
+        app_key = getattr(web, "AppKey", str)  # fall back to str for aiohttp < 3.9.0
         self.api_key = app_key("modbus_server")
 
     async def start_modbus_server(self, app):
@@ -225,16 +219,12 @@ class ModbusSimulatorServer:
         try:
             if getattr(self.modbus_server, "start", None):
                 await self.modbus_server.start()
-            app[self.api_key] = asyncio.create_task(
-                self.modbus_server.serve_forever()
-            )
+            app[self.api_key] = asyncio.create_task(self.modbus_server.serve_forever())
             app[self.api_key].set_name("simulator modbus server")
         except Exception as exc:
             Log.error("Error starting modbus server, reason: {}", exc)
             raise exc
-        Log.info(
-            "Modbus server started on {}", self.modbus_server.comm_params.source_address
-        )
+        Log.info("Modbus server started on {}", self.modbus_server.comm_params.source_address)
 
     async def stop_modbus_server(self, app):
         """Stop modbus server."""
@@ -376,27 +366,13 @@ class ModbusSimulatorServer:
         ):
             selected = "selected" if i == self.call_response.error_response else ""
             function_error += f"<option value={i} {selected}>{txt}</option>"
-        range_start_html = (
-            str(self.call_monitor.range_start)
-            if self.call_monitor.range_start != -1
-            else ""
-        )
-        range_stop_html = (
-            str(self.call_monitor.range_stop)
-            if self.call_monitor.range_stop != -1
-            else ""
-        )
+        range_start_html = str(self.call_monitor.range_start) if self.call_monitor.range_start != -1 else ""
+        range_stop_html = str(self.call_monitor.range_stop) if self.call_monitor.range_stop != -1 else ""
         function_codes = ""
         for function in self.request_lookup.values():
-            selected = (
-                "selected"
-                if function.function_code == self.call_monitor.function
-                else ""
-            )
+            selected = "selected" if function.function_code == self.call_monitor.function else ""
             function_codes += f"<option value={function.function_code} {selected}>function code name</option>"
-        simulation_action = (
-            "ACTIVE" if self.call_response.active != RESPONSE_INACTIVE else ""
-        )
+        simulation_action = "ACTIVE" if self.call_response.active != RESPONSE_INACTIVE else ""
 
         max_len = MAX_FILTER if self.call_monitor.active else 0
         while len(self.call_list) > max_len:
@@ -404,16 +380,19 @@ class ModbusSimulatorServer:
         call_rows = ""
         for entry in reversed(self.call_list):
             # req_obj = self.request_lookup[entry[1]]
-            call_rows += f"<tr><td>{entry.call} - {entry.fc}</td><td>{entry.address}</td><td>{entry.count}</td><td>{entry.data.decode()}</td></tr>"
+            call_rows += (
+                f"<tr><td>{entry.call} - {entry.fc}</td>"
+                f"<td>{entry.address}</td>"
+                f"<td>{entry.count}</td>"
+                f"<td>{entry.data.decode()}</td></tr>"
+            )
             # line += req_obj.funcion_code_name
         new_html = (
             html.replace("<!--SIMULATION_ACTIVE-->", simulation_action)
             .replace("FUNCTION_RANGE_START", range_start_html)
             .replace("FUNCTION_RANGE_STOP", range_stop_html)
             .replace("<!--FUNCTION_CODES-->", function_codes)
-            .replace(
-                "FUNCTION_SHOW_HEX_CHECKED", "checked" if self.call_monitor.hex else ""
-            )
+            .replace("FUNCTION_SHOW_HEX_CHECKED", "checked" if self.call_monitor.hex else "")
             .replace(
                 "FUNCTION_SHOW_DECODED_CHECKED",
                 "checked" if self.call_monitor.decode else "",
@@ -447,9 +426,7 @@ class ModbusSimulatorServer:
             .replace("FUNCTION_RESPONSE_DELAY", str(self.call_response.delay))
             .replace("FUNCTION_RESPONSE_JUNK", str(self.call_response.junk_len))
             .replace("<!--FUNCTION_ERROR-->", function_error)
-            .replace(
-                "FUNCTION_RESPONSE_CLEAR_AFTER", str(self.call_response.clear_after)
-            )
+            .replace("FUNCTION_RESPONSE_CLEAR_AFTER", str(self.call_response.clear_after))
             .replace("<!--FC_ROWS-->", call_rows)
             .replace("<!--FC_FOOT-->", foot)
         )
@@ -466,9 +443,12 @@ class ModbusSimulatorServer:
     def build_json_registers(self, params):
         """Build json registers response."""
         # Process params using the helper function
-        result_txt, foot = self.helper_handle_submit(params, {
-            "Set": self.action_set,
-        })
+        result_txt, foot = self.helper_handle_submit(
+            params,
+            {
+                "Set": self.action_set,
+            },
+        )
 
         if not result_txt:
             result_txt = "ok"
@@ -493,7 +473,7 @@ class ModbusSimulatorServer:
                 "action": reg.action,
                 "value": reg.value,
                 "count_read": reg.count_read,
-                "count_write": reg.count_write
+                "count_write": reg.count_write,
             }
             register_rows.append(row)
 
@@ -514,11 +494,14 @@ class ModbusSimulatorServer:
 
     def build_json_calls(self, params: dict) -> dict:
         """Build json calls response."""
-        result_txt, foot = self.helper_handle_submit(params, {
-            "Reset": self.action_reset,
-            "Add": self.action_add,
-            "Simulate": self.action_simulate,
-        })
+        result_txt, foot = self.helper_handle_submit(
+            params,
+            {
+                "Reset": self.action_reset,
+                "Add": self.action_add,
+                "Simulate": self.action_simulate,
+            },
+        )
         if not foot:
             foot = "Monitoring active" if self.call_monitor.active else "not active"
         if not result_txt:
@@ -536,30 +519,26 @@ class ModbusSimulatorServer:
             (10, "GATEWAY_PATH_UNAVIABLE"),
             (11, "GATEWAY_NO_RESPONSE"),
         ):
-            function_error.append({
-                "value": i,
-                "text": txt,
-                "selected": i == self.call_response.error_response
-            })
+            function_error.append(
+                {
+                    "value": i,
+                    "text": txt,
+                    "selected": i == self.call_response.error_response,
+                }
+            )
 
-        range_start = (
-            self.call_monitor.range_start
-            if self.call_monitor.range_start != -1
-            else None
-        )
-        range_stop = (
-            self.call_monitor.range_stop
-            if self.call_monitor.range_stop != -1
-            else None
-        )
+        range_start = self.call_monitor.range_start if self.call_monitor.range_start != -1 else None
+        range_stop = self.call_monitor.range_stop if self.call_monitor.range_stop != -1 else None
 
         function_codes = []
         for function in self.request_lookup.values():
-            function_codes.append({
-                "value": function.function_code,
-                "text": "function code name",
-                "selected": function.function_code == self.call_monitor.function
-            })
+            function_codes.append(
+                {
+                    "value": function.function_code,
+                    "text": "function code name",
+                    "selected": function.function_code == self.call_monitor.function,
+                }
+            )
 
         simulation_action = "ACTIVE" if self.call_response.active != RESPONSE_INACTIVE else ""
 
@@ -568,13 +547,15 @@ class ModbusSimulatorServer:
             del self.call_list[0]
         call_rows = []
         for entry in reversed(self.call_list):
-            call_rows.append({
-                "call": entry.call,
-                "fc": entry.fc,
-                "address": entry.address,
-                "count": entry.count,
-                "data": entry.data.decode()
-            })
+            call_rows.append(
+                {
+                    "call": entry.call,
+                    "fc": entry.fc,
+                    "address": entry.address,
+                    "count": entry.count,
+                    "data": entry.data.decode(),
+                }
+            )
 
         json_response = {
             "simulation_action": simulation_action,
@@ -597,18 +578,26 @@ class ModbusSimulatorServer:
             "function_response_clear_after": self.call_response.clear_after,
             "call_rows": call_rows,
             "foot": foot,
-            "result": result_txt
+            "result": result_txt,
         }
 
         return json_response
 
     def build_json_log(self, params):
         """Build json log page."""
-        return {"result": "error", "error": "log endpoint not implemented", "params": params}
+        return {
+            "result": "error",
+            "error": "log endpoint not implemented",
+            "params": params,
+        }
 
     def build_json_server(self, params):
         """Build html server page."""
-        return {"result": "error", "error": "server endpoint not implemented", "params": params}
+        return {
+            "result": "error",
+            "error": "server endpoint not implemented",
+            "params": params,
+        }
 
     def helper_handle_submit(self, params, submit_actions):
         """Build html register submit."""
@@ -671,9 +660,7 @@ class ModbusSimulatorServer:
         """Start monitoring calls."""
         self.call_monitor.range_start = range_start
         self.call_monitor.range_stop = range_stop
-        self.call_monitor.function = (
-            int(params["function"]) if params["function"] else -1
-        )
+        self.call_monitor.function = int(params["function"]) if params["function"] else -1
         self.call_monitor.hex = "show_hex" in params
         self.call_monitor.decode = "show_decode" in params
         self.call_monitor.active = True

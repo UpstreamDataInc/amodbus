@@ -8,13 +8,14 @@ import asyncio
 import logging
 import sys
 
-
 try:
     import server_async  # type: ignore[import-not-found]
 except ImportError:
-    print("*** ERROR --> THIS EXAMPLE needs the example directory, please see \n\
+    print(
+        "*** ERROR --> THIS EXAMPLE needs the example directory, please see \n\
           https://amodbus.readthedocs.io/en/latest/source/examples.html\n\
-          for more information.")
+          for more information."
+    )
     sys.exit(-1)
 
 
@@ -25,7 +26,6 @@ from amodbus.datastore import (
     ModbusSlaveContext,
 )
 from amodbus.payload import BinaryPayloadBuilder
-
 
 _logger = logging.getLogger(__name__)
 
@@ -62,9 +62,7 @@ def setup_payload_server(cmdline=None):
     block = ModbusSequentialDataBlock(1, builder.to_registers())
     store = ModbusSlaveContext(di=block, co=block, hr=block, ir=block)
     context = ModbusServerContext(slaves=store, single=True)
-    return server_async.setup_server(
-        description="Run payload server.", cmdline=cmdline, context=context
-    )
+    return server_async.setup_server(description="Run payload server.", cmdline=cmdline, context=context)
 
 
 async def main(cmdline=None):

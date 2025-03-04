@@ -3,8 +3,8 @@
 This is the single location for storing default
 values for the servers and clients.
 """
-import enum
 
+import enum
 
 INTERNAL_ERROR = "Pymodbus internal error"
 
@@ -141,4 +141,3 @@ class MoreData(int, enum.Enum):
 
     NOTHING = 0x00
     KEEP_READING = 0xFF
-

@@ -76,7 +76,7 @@ class TransportStub(ModbusProtocol):
 
     async def start_run(self):
         """Call need functions to start server/client."""
-        if  self.is_server:
+        if self.is_server:
             return await self.listen()
         return await self.connect()
 
@@ -101,6 +101,7 @@ class TransportStub(ModbusProtocol):
 
 test_port = 5004  # pylint: disable=invalid-name
 
+
 class ClientTester:  # pylint: disable=too-few-public-methods
     """Main program."""
 
@@ -112,13 +113,13 @@ class ClientTester:  # pylint: disable=too-few-public-methods
         self.client: modbusClient.AsyncModbusTcpClient | modbusClient.AsyncModbusSerialClient
         if comm == CommType.TCP:
             self.client = modbusClient.AsyncModbusTcpClient(
-                        host,
-                        port=test_port,
+                host,
+                port=test_port,
             )
         elif comm == CommType.SERIAL:
             host = f"{NULLMODEM_HOST}:{test_port}"
             self.client = modbusClient.AsyncModbusSerialClient(
-                        host,
+                host,
             )
         else:
             raise RuntimeError("ERROR: CommType not implemented")
@@ -126,7 +127,6 @@ class ClientTester:  # pylint: disable=too-few-public-methods
         server_params.source_address = (host, test_port)
         self.stub = TransportStub(server_params, True, simulate_server)
         test_port += 1
-
 
     async def run(self):
         """Execute test run."""
@@ -154,9 +154,7 @@ class ServerTester:  # pylint: disable=too-few-public-methods
             ir=ModbusSequentialDataBlock(0, [17] * 100),
         )
         self.context = ModbusServerContext(slaves=self.store, single=True)
-        self.identity = ModbusDeviceIdentification(
-            info_name={"VendorName": "VendorName"}
-        )
+        self.identity = ModbusDeviceIdentification(info_name={"VendorName": "VendorName"})
         self.server: modbusServer.ModbusTcpServer | modbusServer.ModbusSerialServer
         if comm == CommType.TCP:
             self.server = modbusServer.ModbusTcpServer(
@@ -182,7 +180,6 @@ class ServerTester:  # pylint: disable=too-few-public-methods
         self.stub = TransportStub(client_params, False, simulate_client)
         test_port += 1
 
-
     async def run(self):
         """Execute test run."""
         amodbus_apply_logging_config()
@@ -206,6 +203,7 @@ async def main(comm: CommType, use_server: bool):
 
 # -------------- USER CHANGES --------------
 
+
 async def client_calls(client):
     """Test client API."""
     Log.debug("--> Client calls starting.")
@@ -222,30 +220,32 @@ async def client_calls(client):
     client.close()
     print("---> CLIENT all done")
 
+
 async def server_calls(transport: ModbusProtocol, is_tcp: bool):
     """Test server functionality."""
     Log.debug("--> Server calls starting.")
 
     if is_tcp:
-        request = b'\x00\x02\x00\x00\x00\x06\x01\x03\x00\x00\x00\x01'
+        request = b"\x00\x02\x00\x00\x00\x06\x01\x03\x00\x00\x00\x01"
     else:
         # 2 responses:
         # response = b'\x00\x02\x00\x00\x00\x06\x01\x03\x00\x00\x00\x01' +
         #    b'\x07\x00\x03\x00\x00\x06\x01\x03\x00\x00\x00\x01')
         # 1 response:
-        request = b'\x00\x02\x00\x00\x00\x06\x01\x03\x00\x00\x00\x01'
+        request = b"\x00\x02\x00\x00\x00\x06\x01\x03\x00\x00\x00\x01"
     transport.send(request)
     await asyncio.sleep(1)
     transport.close()
     print("---> SERVER all done")
 
+
 def simulate_server(transport: ModbusProtocol, is_tcp: bool, request: bytes):
     """Respond to request at transport level."""
     Log.debug("--> Server simulator called with request {}.", request, ":hex")
     if is_tcp:
-        response = b'\x00\x01\x00\x00\x00\x06\x00\x03\x00\x7c\x00\x04'
+        response = b"\x00\x01\x00\x00\x00\x06\x00\x03\x00\x7c\x00\x04"
     else:
-        response = b'\x01\x03\x08\x00\x05\x00\x05\x00\x00\x00\x00\x0c\xd7'
+        response = b"\x01\x03\x08\x00\x05\x00\x05\x00\x00\x00\x00\x0c\xd7"
 
     # Multiple send is allowed, to test fragmentation
     #  for data in response:

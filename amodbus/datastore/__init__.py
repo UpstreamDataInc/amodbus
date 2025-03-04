@@ -15,7 +15,4 @@ from amodbus.datastore.context import (
     ModbusSlaveContext,
 )
 from amodbus.datastore.simulator import ModbusSimulatorContext
-from amodbus.datastore.store import (
-    ModbusSequentialDataBlock,
-    ModbusSparseDataBlock,
-)
+from amodbus.datastore.store import ModbusSequentialDataBlock, ModbusSparseDataBlock

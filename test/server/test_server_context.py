@@ -1,4 +1,5 @@
 """Test server context."""
+
 import pytest
 
 from amodbus.datastore import ModbusServerContext, ModbusSlaveContext

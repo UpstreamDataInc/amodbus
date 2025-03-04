@@ -38,13 +38,14 @@ import sys
 from collections.abc import Callable
 from typing import Any
 
-
 try:
     import helper  # type: ignore[import-not-found]
 except ImportError:
-    print("*** ERROR --> THIS EXAMPLE needs the example directory, please see \n\
+    print(
+        "*** ERROR --> THIS EXAMPLE needs the example directory, please see \n\
           https://amodbus.readthedocs.io/en/latest/source/examples.html\n\
-          for more information.")
+          for more information."
+    )
     sys.exit(-1)
 
 from amodbus import __version__ as amodbus_version
@@ -61,7 +62,6 @@ from amodbus.server import (
     StartAsyncTlsServer,
     StartAsyncUdpServer,
 )
-
 
 _logger = logging.getLogger(__file__)
 _logger.setLevel(logging.INFO)
@@ -81,15 +81,21 @@ def setup_server(description=None, context=None, cmdline=None):
         # This is because many devices exhibit this kind of behavior (but not all)
         if args.store == "sequential":
             # Continuing, use a sequential block without gaps.
-            datablock = lambda : ModbusSequentialDataBlock(0x00, [17] * 100)  # pylint: disable=unnecessary-lambda-assignment
+            datablock = lambda: ModbusSequentialDataBlock(
+                0x00, [17] * 100
+            )  # pylint: disable=unnecessary-lambda-assignment
         elif args.store == "sparse":
             # Continuing, or use a sparse DataBlock which can have gaps
-            datablock = lambda : ModbusSparseDataBlock({0x00: 0, 0x05: 1})  # pylint: disable=unnecessary-lambda-assignment
+            datablock = lambda: ModbusSparseDataBlock(
+                {0x00: 0, 0x05: 1}
+            )  # pylint: disable=unnecessary-lambda-assignment
         elif args.store == "factory":
             # Alternately, use the factory methods to initialize the DataBlocks
             # or simply do not pass them to have them initialized to 0x00 on the
             # full address range::
-            datablock = lambda : ModbusSequentialDataBlock.create()  # pylint: disable=unnecessary-lambda-assignment,unnecessary-lambda
+            datablock = (
+                lambda: ModbusSequentialDataBlock.create()
+            )  # pylint: disable=unnecessary-lambda-assignment,unnecessary-lambda
 
         if args.slaves > 1:
             # The server then makes use of a server context that allows the server
@@ -110,9 +116,7 @@ def setup_server(description=None, context=None, cmdline=None):
 
             single = False
         else:
-            context = ModbusSlaveContext(
-                di=datablock(), co=datablock(), hr=datablock(), ir=datablock()
-            )
+            context = ModbusSlaveContext(di=datablock(), co=datablock(), hr=datablock(), ir=datablock())
             single = True
 
         # Build data storage
@@ -194,13 +198,9 @@ async def run_async_server(args) -> None:
             # custom_functions=[],  # allow custom handling
             address=address,  # listen address
             framer=args.framer,  # The framer strategy to use
-            certfile=helper.get_certificate(
-                "crt"
-            ),  # The cert file path for TLS (used if sslctx is None)
+            certfile=helper.get_certificate("crt"),  # The cert file path for TLS (used if sslctx is None)
             # sslctx=sslctx,  # The SSLContext to use for TLS (default None and auto create)
-            keyfile=helper.get_certificate(
-                "key"
-            ),  # The key file path for TLS (used if sslctx is None)
+            keyfile=helper.get_certificate("key"),  # The key file path for TLS (used if sslctx is None)
             # password="none",  # The password for for decrypting the private key file
             # ignore_missing_slaves=True,  # ignore request to a missing slave
             # broadcast_enable=False,  # treat slave 0 as broadcast address,

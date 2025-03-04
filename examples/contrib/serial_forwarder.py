@@ -3,6 +3,7 @@
 usage :
 python3 serial_forwarder.py --log DEBUG --port "/dev/ttyUSB0" --baudrate 9600 --server_ip "192.168.1.27" --server_port 5020 --slaves 1 2 3
 """
+
 import argparse
 import asyncio
 import logging
@@ -12,7 +13,6 @@ from amodbus.client import ModbusSerialClient
 from amodbus.datastore import ModbusServerContext
 from amodbus.datastore.remote import RemoteSlaveContext
 from amodbus.server import ModbusTcpServer
-
 
 _logger = logging.getLogger(__file__)
 
@@ -67,15 +67,11 @@ def get_commandline():
         default="info",
         type=str,
     )
-    parser.add_argument(
-        "--port", help="RTU serial port", default="/dev/ttyUSB0", type=str
-    )
+    parser.add_argument("--port", help="RTU serial port", default="/dev/ttyUSB0", type=str)
     parser.add_argument("--baudrate", help="RTU baudrate", default=9600, type=int)
     parser.add_argument("--server_port", help="server port", default=5020, type=int)
     parser.add_argument("--server_ip", help="server IP", default="127.0.0.1", type=str)
-    parser.add_argument(
-        "--slaves", help="list of slaves to forward", type=int, nargs="+"
-    )
+    parser.add_argument("--slaves", help="list of slaves to forward", type=int, nargs="+")
 
     args = parser.parse_args()
 

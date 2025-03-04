@@ -10,18 +10,18 @@ import asyncio
 import sys
 from collections import OrderedDict
 
-
 try:
     import client_async  # type: ignore[import-not-found]
 except ImportError:
-    print("*** ERROR --> THIS EXAMPLE needs the example directory, please see \n\
+    print(
+        "*** ERROR --> THIS EXAMPLE needs the example directory, please see \n\
           https://amodbus.readthedocs.io/en/latest/source/examples.html\n\
-          for more information.")
+          for more information."
+    )
     sys.exit(-1)
 
 from amodbus.constants import Endian
 from amodbus.payload import BinaryPayloadBuilder, BinaryPayloadDecoder
-
 
 ORDER_DICT = {"<": "LITTLE", ">": "BIG"}
 
@@ -101,16 +101,10 @@ async def run_payload_calls(client):
         assert not rr.isError()
         print(rr.registers)
         print("\n")
-        decoder = BinaryPayloadDecoder.fromRegisters(
-            rr.registers, byteorder=byte_endian, wordorder=word_endian
-        )
+        decoder = BinaryPayloadDecoder.fromRegisters(rr.registers, byteorder=byte_endian, wordorder=word_endian)
         # Make sure word/byte order is consistent between BinaryPayloadBuilder and BinaryPayloadDecoder
-        assert (
-            decoder._byteorder == builder._byteorder  # pylint: disable=protected-access
-        )
-        assert (
-            decoder._wordorder == builder._wordorder  # pylint: disable=protected-access
-        )
+        assert decoder._byteorder == builder._byteorder  # pylint: disable=protected-access
+        assert decoder._wordorder == builder._wordorder  # pylint: disable=protected-access
 
         decoded = OrderedDict(
             [
@@ -141,9 +135,7 @@ async def run_payload_calls(client):
 
 async def main(cmdline=None):
     """Combine the setup and run."""
-    client = client_async.setup_async_client(
-        description="Run asynchronous client.", cmdline=cmdline
-    )
+    client = client_async.setup_async_client(description="Run asynchronous client.", cmdline=cmdline)
     await client_async.run_async_client(client, modbus_calls=run_payload_calls)
 
 
