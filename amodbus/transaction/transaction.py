@@ -41,11 +41,9 @@ class TransactionManager(ModbusProtocol):
         trace_packet: Callable[[bool, bytes], bytes] | None,
         trace_pdu: Callable[[bool, ModbusPDU], ModbusPDU] | None,
         trace_connect: Callable[[bool], None] | None,
-        sync_client=None,
     ) -> None:
         """Initialize an instance of the ModbusTransactionManager."""
-        self.is_sync = bool(sync_client)
-        super().__init__(params, is_server, is_sync=self.is_sync)
+        super().__init__(params, is_server)
         self.framer = framer
         self.retries = retries
         self.next_tid: int = 0
@@ -54,16 +52,11 @@ class TransactionManager(ModbusProtocol):
         self.trace_pdu = trace_pdu or self.dummy_trace_pdu
         self.trace_connect = trace_connect or self.dummy_trace_connect
         self.max_until_disconnect = self.count_until_disconnect = retries + 3
-        if sync_client:
-            self.sync_client = sync_client
-            self._sync_lock = RLock()
-            self.low_level_send = self.sync_client.send
-        else:
-            self._lock = asyncio.Lock()
-            self.low_level_send = self.send
-            self.response_future: asyncio.Future = asyncio.Future()
-            self.last_pdu: ModbusPDU | None
-            self.last_addr: tuple | None
+        self._lock = asyncio.Lock()
+        self.low_level_send = self.send
+        self.response_future: asyncio.Future = asyncio.Future()
+        self.last_pdu: ModbusPDU | None
+        self.last_addr: tuple | None
 
     def dummy_trace_packet(self, sending: bool, data: bytes) -> bytes:
         """Do dummy trace."""
@@ -78,71 +71,6 @@ class TransactionManager(ModbusProtocol):
     def dummy_trace_connect(self, connect: bool) -> None:
         """Do dummy trace."""
         _ = connect
-
-    def sync_get_response(self, dev_id) -> ModbusPDU:
-        """Receive until PDU is correct or timeout."""
-        databuffer = b""
-        while True:
-            if not (data := self.sync_client.recv(None)):
-                raise asyncio.exceptions.TimeoutError()
-
-            if self.sent_buffer:
-                if data.startswith(self.sent_buffer):
-                    Log.debug(
-                        "sync recv skipping (local_echo): {}",
-                        self.sent_buffer,
-                        ":hex",
-                    )
-                    data = data[len(self.sent_buffer) :]
-                    self.sent_buffer = b""
-                elif self.sent_buffer.startswith(data):
-                    Log.debug("sync recv skipping (partial local_echo): {}", data, ":hex")
-                    self.sent_buffer = self.sent_buffer[len(data) :]
-                    continue
-                else:
-                    Log.debug("did not sync receive local echo: {}", data, ":hex")
-                    self.sent_buffer = b""
-                if not data:
-                    continue
-
-            databuffer += data
-            used_len, pdu = self.framer.processIncomingFrame(self.trace_packet(False, databuffer))
-            databuffer = databuffer[used_len:]
-            if pdu:
-                if pdu.dev_id != dev_id:
-                    raise ModbusIOException(
-                        f"ERROR: request ask for id={dev_id} but id={pdu.dev_id}, CLOSING CONNECTION."
-                    )
-                return self.trace_pdu(False, pdu)
-
-    def sync_execute(self, no_response_expected: bool, request: ModbusPDU) -> ModbusPDU:
-        """Execute requests asynchronously.
-
-        REMARK: this method is identical to execute, apart from the lock and sync_receive.
-                any changes in either method MUST be mirrored !!!
-        """
-        if not self.sync_client.connect():
-            raise ConnectionException("Client cannot connect (automatic retry continuing) !!")
-        with self._sync_lock:
-            request.transaction_id = self.getNextTID()
-            count_retries = 0
-            while count_retries <= self.retries:
-                self.pdu_send(request)
-                if no_response_expected:
-                    return ExceptionResponse(0xFF)
-                try:
-                    return self.sync_get_response(request.dev_id)
-                except asyncio.exceptions.TimeoutError:
-                    count_retries += 1
-            if self.count_until_disconnect < 0:
-                self.connection_lost(asyncio.TimeoutError("Server not responding"))
-                raise ModbusIOException(
-                    "ERROR: No response received of the last requests (default: retries+3), CLOSING CONNECTION."
-                )
-            self.count_until_disconnect -= 1
-            txt = f"No response received after {self.retries} retries, continue with next request"
-            Log.error(txt)
-            raise ModbusIOException(txt)
 
     async def execute(self, no_response_expected: bool, request: ModbusPDU) -> ModbusPDU:
         """Execute requests asynchronously.
@@ -189,8 +117,6 @@ class TransactionManager(ModbusProtocol):
         """Build byte stream and send."""
         self.request_dev_id = pdu.dev_id
         packet = self.framer.buildFrame(self.trace_pdu(True, pdu))
-        if self.is_sync and self.comm_params.handle_local_echo:
-            self.sent_buffer = packet
         self.low_level_send(self.trace_packet(True, packet), addr=addr)
 
     def callback_new_connection(self):

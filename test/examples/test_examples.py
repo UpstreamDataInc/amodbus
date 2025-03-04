@@ -17,8 +17,6 @@ from amodbus.server import ServerAsyncStop, ServerStop
 from examples.client_async import run_a_few_calls, run_async_client, setup_async_client
 from examples.client_async_calls import async_template_call
 from examples.client_async_calls import main as main_client_async_calls
-from examples.client_calls import main as main_client_calls
-from examples.client_calls import template_call
 from examples.client_payload import main as main_payload_calls
 from examples.custom_msg import main as main_custom_client
 from examples.datastore_simulator_share import main as main_datastore_simulator_share3
@@ -26,10 +24,8 @@ from examples.message_parser import main as main_parse_messages
 from examples.server_async import setup_server
 from examples.server_callback import run_callback_server
 from examples.server_payload import main as main_payload_server
-from examples.server_sync import run_sync_server
 from examples.server_updating import main as main_updating_server
 from examples.simple_async_client import run_async_simple_client
-from examples.simple_sync_client import run_sync_simple_client
 from examples.simulator import run_simulator as run_simulator3
 from examples.simulator_datamodel import main as run_main_simulator_datamodel
 
@@ -150,9 +146,9 @@ class TestAsyncExamples:
         with pytest.raises(ModbusException):
             await run_async_client(client, modbus_calls=async_template_call)
         client.close()
-        client.read_coils = mock.Mock(return_value=ExceptionResponse(0x05, 0x10))
+        client.read_coils = mock.AsyncMock(side_effect=lambda *args, **kwargs: ExceptionResponse(0x05, 0x10))
         with pytest.raises(ModbusException):
-            await run_async_client(client, modbus_calls=template_call)
+            await run_async_client(client, modbus_calls=async_template_call)
         client.close()
 
     async def test_custom_msg(self, use_comm, use_port, use_framer, use_host):
@@ -184,48 +180,3 @@ class TestAsyncExamples:
         if use_comm == "serial":
             use_port = f"socket://{use_host}:{use_port}"
         await run_async_simple_client(use_comm, use_host, use_port, framer=use_framer)
-
-
-@pytest.mark.parametrize("use_host", ["localhost"])
-@pytest.mark.parametrize(
-    ("use_comm", "use_framer"),
-    [
-        ("tcp", "socket"),
-        ("tcp", "rtu"),
-        # awaiting fix: ("tls", "tls"),
-        ("udp", "socket"),
-        ("udp", "rtu"),
-        ("serial", "rtu"),
-    ],
-)
-class TestSyncExamples:
-    """Test examples."""
-
-    @staticmethod
-    @pytest.fixture(name="use_port")
-    def get_port_in_class(base_ports):
-        """Return next port."""
-        base_ports[__class__.__name__] += 1
-        return base_ports[__class__.__name__]
-
-    def test_client_calls(self, mock_clc, mock_cls):
-        """Test client_calls."""
-        server_args = setup_server(cmdline=mock_cls)
-        thread = Thread(target=run_sync_server, args=(server_args,))
-        thread.daemon = True
-        thread.start()
-        sleep(1)
-        main_client_calls(cmdline=mock_clc)
-        ServerStop()
-
-    def test_sync_simple_client(self, use_framer, use_comm, use_host, use_port, mock_cls):
-        """Run simple async client."""
-        server_args = setup_server(cmdline=mock_cls)
-        thread = Thread(target=run_sync_server, args=(server_args,))
-        thread.daemon = True
-        thread.start()
-        sleep(1)
-        if use_comm == "serial":
-            use_port = f"socket://{use_host}:{use_port}"
-        run_sync_simple_client(use_comm, use_host, use_port, framer=use_framer)
-        ServerStop()
