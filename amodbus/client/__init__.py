@@ -6,15 +6,10 @@ __all__ = [
     "AsyncModbusTlsClient",
     "AsyncModbusUdpClient",
     "ModbusBaseClient",
-    "ModbusBaseSyncClient",
-    "ModbusSerialClient",
-    "ModbusTcpClient",
-    "ModbusTlsClient",
-    "ModbusUdpClient",
 ]
 
-from amodbus.client.base import ModbusBaseClient, ModbusBaseSyncClient
-from amodbus.client.serial import AsyncModbusSerialClient, ModbusSerialClient
-from amodbus.client.tcp import AsyncModbusTcpClient, ModbusTcpClient
-from amodbus.client.tls import AsyncModbusTlsClient, ModbusTlsClient
-from amodbus.client.udp import AsyncModbusUdpClient, ModbusUdpClient
+from amodbus.client.base import ModbusBaseClient
+from amodbus.client.serial import AsyncModbusSerialClient
+from amodbus.client.tcp import AsyncModbusTcpClient
+from amodbus.client.tls import AsyncModbusTlsClient
+from amodbus.client.udp import AsyncModbusUdpClient
