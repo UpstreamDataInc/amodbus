@@ -1,4 +1,4 @@
-"""Pymodbus SerialRTU2TCP Forwarder
+"""amodbus SerialRTU2TCP Forwarder
 
 usage :
 python3 serial_forwarder.py --log DEBUG --port "/dev/ttyUSB0" --baudrate 9600 --server_ip "192.168.1.27" --server_port 5020 --slaves 1 2 3
@@ -8,10 +8,10 @@ import asyncio
 import logging
 import signal
 
-from pymodbus.client import ModbusSerialClient
-from pymodbus.datastore import ModbusServerContext
-from pymodbus.datastore.remote import RemoteSlaveContext
-from pymodbus.server import ModbusTcpServer
+from amodbus.client import ModbusSerialClient
+from amodbus.datastore import ModbusServerContext
+from amodbus.datastore.remote import RemoteSlaveContext
+from amodbus.server import ModbusTcpServer
 
 
 _logger = logging.getLogger(__file__)

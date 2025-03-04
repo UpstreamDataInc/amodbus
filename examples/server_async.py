@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Pymodbus asynchronous Server Example.
+"""amodbus asynchronous Server Example.
 
 An example of a multi threaded asynchronous server.
 
@@ -43,19 +43,19 @@ try:
     import helper  # type: ignore[import-not-found]
 except ImportError:
     print("*** ERROR --> THIS EXAMPLE needs the example directory, please see \n\
-          https://pymodbus.readthedocs.io/en/latest/source/examples.html\n\
+          https://amodbus.readthedocs.io/en/latest/source/examples.html\n\
           for more information.")
     sys.exit(-1)
 
-from pymodbus import __version__ as pymodbus_version
-from pymodbus.datastore import (
+from amodbus import __version__ as amodbus_version
+from amodbus.datastore import (
     ModbusSequentialDataBlock,
     ModbusServerContext,
     ModbusSlaveContext,
     ModbusSparseDataBlock,
 )
-from pymodbus.device import ModbusDeviceIdentification
-from pymodbus.server import (
+from amodbus.device import ModbusDeviceIdentification
+from amodbus.server import (
     StartAsyncSerialServer,
     StartAsyncTcpServer,
     StartAsyncTlsServer,
@@ -125,12 +125,12 @@ def setup_server(description=None, context=None, cmdline=None):
     # ----------------------------------------------------------------------- #
     args.identity = ModbusDeviceIdentification(
         info_name={
-            "VendorName": "Pymodbus",
+            "VendorName": "amodbus",
             "ProductCode": "PM",
-            "VendorUrl": "https://github.com/pymodbus-dev/pymodbus/",
-            "ProductName": "Pymodbus Server",
-            "ModelName": "Pymodbus Server",
-            "MajorMinorRevision": pymodbus_version,
+            "VendorUrl": "https://github.com/UpstreamDataInc/amodbus/",
+            "ProductName": "amodbus Server",
+            "ModelName": "amodbus Server",
+            "MajorMinorRevision": amodbus_version,
         }
     )
     return args

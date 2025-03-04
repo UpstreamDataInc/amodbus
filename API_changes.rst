@@ -29,7 +29,7 @@ API changes 3.7.0
 - on_connect_callback(true/false) added to async clients.
 - binary framer no longer supported
 - Framer.<type> renamed to FramerType.<type>
-- PDU classes moved to pymodbus/pdu
+- PDU classes moved to amodbus/pdu
 - Simulator config custom actions kwargs -> parameters
 - Non defined parameters (kwargs) no longer valid
 - Drop support for Python 3.8 (its no longer tested, but will probably work)
@@ -37,7 +37,7 @@ API changes 3.7.0
 
 API changes 3.6.0
 -----------------
-- framer= is an enum: pymodbus.Framer, but still accept a framer class
+- framer= is an enum: amodbus.Framer, but still accept a framer class
 
 
 API changes 3.5.0
@@ -80,12 +80,12 @@ API changes 3.3.0
 API changes 3.2.0
 -----------------
 - helper to convert values in mixin: convert_from_registers, convert_to_registers
-- import pymodbus.version -> from pymodbus import __version__, __version_full__
-- pymodbus.pymodbus_apply_logging_config(log_file_name="pymodbus.log") to enable file pymodbus_apply_logging_config
-- pymodbus.pymodbus_apply_logging_config have default DEBUG, it not called root settings will be used.
-- pymodbus/interfaces/IModbusDecoder removed.
-- pymodbus/interfaces/IModbusFramer removed.
-- pymodbus/interfaces/IModbusSlaveContext -> pymodbus/datastore/ModbusBaseSlaveContext.
+- import amodbus.version -> from amodbus import __version__, __version_full__
+- amodbus.amodbus_apply_logging_config(log_file_name="amodbus.log") to enable file amodbus_apply_logging_config
+- amodbus.amodbus_apply_logging_config have default DEBUG, it not called root settings will be used.
+- amodbus/interfaces/IModbusDecoder removed.
+- amodbus/interfaces/IModbusFramer removed.
+- amodbus/interfaces/IModbusSlaveContext -> amodbus/datastore/ModbusBaseSlaveContext.
 - StartAsync<type>Server, removed defer_start argument, return is None.
   instead of using defer_start instantiate the Modbus<type>Server directly.
 - `ReturnSlaveNoReponseCountResponse` has been corrected to

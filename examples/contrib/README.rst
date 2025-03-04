@@ -2,7 +2,7 @@
 Contributed Implementations.
 ============================
 
-These examples are submitted by users of pymodbus. These examples
+These examples are submitted by users of amodbus. These examples
 are NOT included in the automated test suite, and thus not guaranteed
 to work.
 

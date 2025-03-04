@@ -3,7 +3,7 @@ import struct
 
 import pytest
 
-from pymodbus.utilities import (
+from amodbus.utilities import (
     dict_property,
     pack_bitstring,
     unpack_bitstring,

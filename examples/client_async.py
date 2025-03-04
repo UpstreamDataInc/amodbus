@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Pymodbus asynchronous client example.
+"""amodbus asynchronous client example.
 
 usage::
 
@@ -37,11 +37,11 @@ try:
     import helper  # type: ignore[import-not-found]
 except ImportError:
     print("*** ERROR --> THIS EXAMPLE needs the example directory, please see \n\
-          https://pymodbus.readthedocs.io/en/latest/source/examples.html\n\
+          https://amodbus.readthedocs.io/en/latest/source/examples.html\n\
           for more information.")
     sys.exit(-1)
 
-import pymodbus.client as modbusClient
+import amodbus.client as modbusClient
 
 
 _logger = logging.getLogger(__file__)

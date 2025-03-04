@@ -2,7 +2,7 @@
 
 import pytest
 
-from pymodbus.simulator import SimData, SimDataType, SimDevice
+from amodbus.simulator import SimData, SimDataType, SimDevice
 
 
 class TestSimData:

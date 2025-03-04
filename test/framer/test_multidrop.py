@@ -2,9 +2,9 @@
 
 import pytest
 
-from pymodbus.exceptions import ModbusIOException
-from pymodbus.framer import FramerAscii, FramerRTU
-from pymodbus.pdu import DecodePDU
+from amodbus.exceptions import ModbusIOException
+from amodbus.framer import FramerAscii, FramerRTU
+from amodbus.pdu import DecodePDU
 
 
 class TestMultidrop:

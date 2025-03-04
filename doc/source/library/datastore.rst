@@ -7,18 +7,18 @@ Datastore is responsible for managing registers for a server.
 Datastore classes
 -----------------
 
-.. autoclass:: pymodbus.datastore.ModbusSparseDataBlock
+.. autoclass:: amodbus.datastore.ModbusSparseDataBlock
     :members:
     :member-order: bysource
 
-.. autoclass:: pymodbus.datastore.ModbusSlaveContext
+.. autoclass:: amodbus.datastore.ModbusSlaveContext
     :members:
     :member-order: bysource
 
-.. autoclass:: pymodbus.datastore.ModbusServerContext
+.. autoclass:: amodbus.datastore.ModbusServerContext
     :members:
     :member-order: bysource
 
-.. autoclass:: pymodbus.datastore.ModbusSimulatorContext
+.. autoclass:: amodbus.datastore.ModbusSimulatorContext
     :members:
     :member-order: bysource

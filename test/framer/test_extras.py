@@ -1,12 +1,12 @@
 """Test transaction."""
 
-from pymodbus.framer import (
+from amodbus.framer import (
     FramerAscii,
     FramerRTU,
     FramerSocket,
     FramerTLS,
 )
-from pymodbus.pdu import DecodePDU
+from amodbus.pdu import DecodePDU
 
 
 TEST_MESSAGE = b"\x7b\x01\x03\x00\x00\x00\x05\x85\xC9\x7d"

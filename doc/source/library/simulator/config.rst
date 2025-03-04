@@ -1,7 +1,7 @@
 Configuration
 =============
 
-Configuring the pymodbus simulator is done with a json file, or if only
+Configuring the amodbus simulator is done with a json file, or if only
 using the datastore simulator a python dict (same structure as the
 device part of the json file).
 
@@ -25,7 +25,7 @@ each containing a list of servers/devices
     }
 
 You can define as many server and devices as you like, when starting
-:ref:`pymodbus.simulator (v3.x)` you select one server and one device to simulate.
+:ref:`amodbus.simulator (v3.x)` you select one server and one device to simulate.
 
 A entry in “device_list” correspond to the dict you can use as parameter
 to datastore_simulator is you want to construct your own simulator.
@@ -52,21 +52,21 @@ The entries for a tcp server with minimal parameters look like:
         }
    }
 
-The example uses ``“comm”: “tcp”``, so the entries are arguments to :class:`pymodbus.server.ModbusTcpServer`, where detailed information are available.
+The example uses ``“comm”: “tcp”``, so the entries are arguments to :class:`amodbus.server.ModbusTcpServer`, where detailed information are available.
 
 The entry “comm” allows the following values:
 
-- “serial”, to use :class:`pymodbus.server.ModbusSerialServer`,
-- “tcp”, to use :class:`pymodbus.server.ModbusTcpServer`,
-- “tls”, to use :class:`pymodbus.server.ModbusTlsServer`,
-- “udp”;  to use :class:`pymodbus.server.ModbusUdpServer`.
+- “serial”, to use :class:`amodbus.server.ModbusSerialServer`,
+- “tcp”, to use :class:`amodbus.server.ModbusTcpServer`,
+- “tls”, to use :class:`amodbus.server.ModbusTlsServer`,
+- “udp”;  to use :class:`amodbus.server.ModbusUdpServer`.
 
 The entry “framer” allows the following values:
 
-- “ascii” to use :class:`pymodbus.framer.FramerAscii`,
-- “rtu” to use :class:`pymodbus.framer.FramerRTU`,
-- “socket” to use :class:`pymodbus.framer.FramerSocket`.
-- “tls” to use :class:`pymodbus.framer.FramerTLS`,
+- “ascii” to use :class:`amodbus.framer.FramerAscii`,
+- “rtu” to use :class:`amodbus.framer.FramerRTU`,
+- “socket” to use :class:`amodbus.framer.FramerSocket`.
+- “tls” to use :class:`amodbus.framer.FramerTLS`,
 
 Optional entry "device_id" will limit server to only accept a single id. If
 not set, the server will accept all device id.
@@ -90,11 +90,11 @@ Server configuration examples
                 "ignore_missing_slaves": false,
                 "framer": "socket",
                 "identity": {
-                    "VendorName": "pymodbus",
+                    "VendorName": "amodbus",
                     "ProductCode": "PM",
-                    "VendorUrl": "https://github.com/pymodbus-dev/pymodbus",
-                    "ProductName": "pymodbus Server",
-                    "ModelName": "pymodbus Server",
+                    "VendorUrl": "https://github.com/UpstreamDataInc/amodbus",
+                    "ProductName": "amodbus Server",
+                    "ModelName": "amodbus Server",
                     "MajorMinorRevision": "3.1.0"
                 }
             },
@@ -109,11 +109,11 @@ Server configuration examples
                 "reconnect_delay": 2,
                 "framer": "rtu",
                 "identity": {
-                    "VendorName": "pymodbus",
+                    "VendorName": "amodbus",
                     "ProductCode": "PM",
-                    "VendorUrl": "https://github.com/pymodbus-dev/pymodbus",
-                    "ProductName": "pymodbus Server",
-                    "ModelName": "pymodbus Server",
+                    "VendorUrl": "https://github.com/UpstreamDataInc/amodbus",
+                    "ProductName": "amodbus Server",
+                    "ModelName": "amodbus Server",
                     "MajorMinorRevision": "3.1.0"
                 }
             },
@@ -121,16 +121,16 @@ Server configuration examples
                 "comm": "tls",
                 "host": "0.0.0.0",
                 "port": 5020,
-                "certfile": "certificates/pymodbus.crt",
-                "keyfile": "certificates/pymodbus.key",
+                "certfile": "certificates/amodbus.crt",
+                "keyfile": "certificates/amodbus.key",
                 "ignore_missing_slaves": false,
                 "framer": "tls",
                 "identity": {
-                    "VendorName": "pymodbus",
+                    "VendorName": "amodbus",
                     "ProductCode": "PM",
-                    "VendorUrl": "https://github.com/pymodbus-dev/pymodbus",
-                    "ProductName": "pymodbus Server",
-                    "ModelName": "pymodbus Server",
+                    "VendorUrl": "https://github.com/UpstreamDataInc/amodbus",
+                    "ProductName": "amodbus Server",
+                    "ModelName": "amodbus Server",
                     "MajorMinorRevision": "3.1.0"
                 }
             },
@@ -141,11 +141,11 @@ Server configuration examples
                 "ignore_missing_slaves": false,
                 "framer": "socket",
                 "identity": {
-                    "VendorName": "pymodbus",
+                    "VendorName": "amodbus",
                     "ProductCode": "PM",
-                    "VendorUrl": "https://github.com/pymodbus-dev/pymodbus",
-                    "ProductName": "pymodbus Server",
-                    "ModelName": "pymodbus Server",
+                    "VendorUrl": "https://github.com/UpstreamDataInc/amodbus",
+                    "ProductName": "amodbus Server",
+                    "ModelName": "amodbus Server",
                     "MajorMinorRevision": "3.1.0"
                 }
             }
@@ -652,4 +652,4 @@ Device configuration examples
 Configuration used for test
 ---------------------------
 
-.. literalinclude:: ../../../../pymodbus/server/simulator/setup.json
+.. literalinclude:: ../../../../amodbus/server/simulator/setup.json

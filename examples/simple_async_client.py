@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Pymodbus asynchronous client example.
+"""amodbus asynchronous client example.
 
 An example of a single threaded synchronous client.
 
@@ -11,18 +11,18 @@ The corresponding server must be started before e.g. as:
 """
 import asyncio
 
-import pymodbus.client as ModbusClient
-from pymodbus import (
+import amodbus.client as ModbusClient
+from amodbus import (
     FramerType,
     ModbusException,
-    pymodbus_apply_logging_config,
+    amodbus_apply_logging_config,
 )
 
 
 async def run_async_simple_client(comm, host, port, framer=FramerType.SOCKET):
     """Run async client."""
     # activate debugging
-    pymodbus_apply_logging_config("DEBUG")
+    amodbus_apply_logging_config("DEBUG")
 
     print("get client")
     client: ModbusClient.ModbusBaseClient

@@ -3,7 +3,7 @@ Changelog
 All these version would not be possible without a lot of work from volunteers!
 
 We, the maintainers, are greatful for each pull requests small or big, that
-helps make pymodbus a better product.
+helps make amodbus a better product.
 
 :ref:`Authors`: contains a complete list of volunteers have contributed to each major version.
 
@@ -115,7 +115,7 @@ Version 3.7.4
 * Update to use DecodePDU. (#2391)
 * Client/Server decoder renamed and moved to pdu. (#2390)
 * Move client/server decoder to pdu. (#2388)
-* Introducing PyModbus Guru on Gurubase.io (#2387)
+* Introducing amodbus Guru on Gurubase.io (#2387)
 * Remove IllegalFunctionRequest. (#2384)
 * remove ModbusResponse. (#2383)
 * Add typing to pdu base classes. (#2380)
@@ -227,7 +227,7 @@ Version 3.7.0
 * Solve pylint error.
 * Sync TLS needs time before reading frame (#2186)
 * Update transaction.py (#2174)
-* PDU classes --> pymodbus/pdu. (#2160)
+* PDU classes --> amodbus/pdu. (#2160)
 * Speed up no data detection. (#2150)
 * RTU decode hunt part. (#2138)
 * Dislodge client classes from modbusProtocol. (#2137)
@@ -282,7 +282,7 @@ Version 3.6.7
 * Add lock to async requests, correct logging and length calc. (FIX, not on dev)
 * test_simulator: use unused_tcp_port fixture (#2141)
 * streamline imports in Factory.py (#2140)
-* Secure testing is done with pymodbus in PR. (#2136)
+* Secure testing is done with amodbus in PR. (#2136)
 * Fix link to github in README (#2134)
 * Wildcard exception catch from pyserial. (#2125)
 * Problem with stale CI. (#2117)
@@ -457,7 +457,7 @@ Version 3.6.0
 * Eliminate more implicit optionals in client (#1844)
 * Eliminate implicit optional in transport_serial (#1843)
 * Make client type annotations compatible with async client usage (#1842)
-* Merge pull request #1838 from pymodbus-dev/ruff
+* Merge pull request #1838 from UpstreamDataInc/ruff
 * Eliminate implicit optional in simulator (#1841)
 * eliminate implicit optional for callback_disconnected (#1840)
 * pre-commit run --all-files
@@ -553,7 +553,7 @@ Version 3.5.0
 * Correct README pre-commit.
 * Fix custom message parsing in RTU framer (#1716)
 * Request tracer (#1715)
-* pymodbus.server: allow strings for "-p" paramter (#1713)
+* amodbus.server: allow strings for "-p" paramter (#1713)
 * New nullmodem and transport. (#1696)
 * xdist loadscope (test is not split). (#1708)
 * Add client performance example. (#1707)
@@ -670,11 +670,11 @@ Version 3.3.0
 * New common transport layer. (#1492)
 * Solve serial close raise problem.
 * Remove old config values (#1503)
-* Document pymodbus.simulator. (#1502)
+* Document amodbus.simulator. (#1502)
 * Refactor REPL server to reduce complexity (#1499)
 * Don't catch KeyboardInterrupt twice for REPL server (#1498)
 * Refactor REPL client to reduce complexity (#1489)
-* pymodbus.server: listen on ID 1 by default (#1496)
+* amodbus.server: listen on ID 1 by default (#1496)
 * Clean framer/__init__.py (#1494)
 * Duplicate transactions in UDP. (#1486)
 * clean ProcessIncommingPacket. (#1491)
@@ -687,8 +687,8 @@ Version 3.3.0
 * Test reuse of client object. (#1475)
 * Comment about addressing when shared=false (#1474)
 * Remove old aliases to OSError (#1473)
-* pymodbus.simulator fixes (#1463)
-* Fix wrong error message with pymodbus console (#1456)
+* amodbus.simulator fixes (#1463)
+* Fix wrong error message with amodbus console (#1456)
 * update modbusrtuframer (#1435)
 * Server multidrop test.: (#1451)
 * mypy problem ModbusResponse.
@@ -729,7 +729,7 @@ Version 3.2.0
 * Fix mypy errors in reactive server (#1381)
 * remove nosec (#1379)
 * Fix type hints for http_server (#1369)
-* Merge pull request #1380 from pymodbus-dev/requirements
+* Merge pull request #1380 from UpstreamDataInc/requirements
 * remove second client instance in async mode. (#1367)
 * Pin setuptools to prevent breakage with Version including "X" (#1373)
 * Lint and type hints for REPL (#1364)
@@ -778,7 +778,7 @@ Version 3.1.2
 * Simulator documentation (first version). (#1296)
 * Updated datastore Simulator. (#1255)
 * Update links to pydmodbus-dev (#1291)
-* Change riptideio to pymodbus-dev. (#1292)
+* Change riptideio to UpstreamDataInc. (#1292)
 * #1258 Avoid showing unit as a seperate command line argument (#1288)
 * Solve docker cache problem. (#1287)
 
@@ -1039,7 +1039,7 @@ Version 2.2.0
 * Support broadcasting in Modbus Client and Servers (sync).
 * Fix asyncio examples.
 * Improved logging in Modbus Server .
-* ReportSlaveIdRequest would fetch information from Device identity instead of hardcoded `Pymodbus`.
+* ReportSlaveIdRequest would fetch information from Device identity instead of hardcoded `amodbus`.
 * Fix regression introduced in 2.2.0rc2 (Modbus sync client transaction failing)
 * Minor update in factory.py, now server logs prints received request instead of only function code
 
@@ -1065,8 +1065,8 @@ Version 2.0.0
 * Async client implementation based on Tornado, Twisted and asyncio with backward compatibility support for twisted client.
 * Allow reusing existing[running] asyncio loop when creating async client based on asyncio.
 * Allow reusing address for Modbus TCP sync server.
-* Add support to install tornado as extra requirement while installing pymodbus.
-* Support Pymodbus REPL
+* Add support to install tornado as extra requirement while installing amodbus.
+* Support amodbus REPL
 * Add support to python 3.7.
 * Bug fix and enhancements in examples.
 * Async client implementation based on Tornado, Twisted and asyncio
@@ -1124,7 +1124,7 @@ Version 1.4.0
 * Fix minor comaptibility issues with utilities.
 * Update test requirements
 * Update/Add new unit tests
-* Move twisted requirements to extra so that it is not installed by default on pymodbus installtion
+* Move twisted requirements to extra so that it is not installed by default on amodbus installtion
 
 
 Version 1.3.2

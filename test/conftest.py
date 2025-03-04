@@ -8,10 +8,10 @@ from threading import enumerate as thread_enumerate
 import pytest
 import pytest_asyncio
 
-from pymodbus.datastore import ModbusBaseSlaveContext
-from pymodbus.server import ServerAsyncStop
-from pymodbus.transport import NULLMODEM_HOST, CommParams, CommType
-from pymodbus.transport.transport import NullModem
+from amodbus.datastore import ModbusBaseSlaveContext
+from amodbus.server import ServerAsyncStop
+from amodbus.transport import NULLMODEM_HOST, CommParams, CommType
+from amodbus.transport.transport import NullModem
 
 
 sys.path.extend(["examples", "../examples", "../../examples"])

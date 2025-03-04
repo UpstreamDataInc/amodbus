@@ -11,7 +11,7 @@ import logging
 import os
 from typing import Any
 
-from pymodbus import pymodbus_apply_logging_config
+from amodbus import amodbus_apply_logging_config
 
 
 _logger = logging.getLogger(__file__)
@@ -104,7 +104,7 @@ def get_commandline(server: bool = False, description: str | None = None, extras
         "serial": ["rtu", "/dev/ptyp0"],
         "tls": ["tls", 5020],
     }
-    pymodbus_apply_logging_config(args.log.upper())
+    amodbus_apply_logging_config(args.log.upper())
     _logger.setLevel(args.log.upper())
     if not args.framer:
         args.framer = comm_defaults[args.comm][0]
@@ -126,8 +126,8 @@ def get_certificate(suffix: str):
         path = "../../examples"
     elif cwd == "test":
         path = "../examples"
-    elif cwd == "pymodbus":
+    elif cwd == "amodbus":
         path = "examples"
     else:
         raise RuntimeError(f"**Error** Cannot find certificate path={cwd}")
-    return f"{path}/certificates/pymodbus.{suffix}"
+    return f"{path}/certificates/amodbus.{suffix}"

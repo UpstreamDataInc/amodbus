@@ -1,6 +1,6 @@
 """Bit Message Test Fixture."""
 
-import pymodbus.pdu.bit_message as bit_msg
+import amodbus.pdu.bit_message as bit_msg
 
 
 class TestModbusBitMessage:

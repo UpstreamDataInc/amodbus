@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Pymodbus Client modbus all calls example.
+"""amodbus Client modbus all calls example.
 
 Please see method **template_call**
 for a template on how to make modbus calls and check for different
@@ -13,8 +13,8 @@ All available modbus calls are present.
 If you are performing a request that is not available in the client
 mixin, you have to perform the request like this instead::
 
-    from pymodbus.pdu.diag_message import ClearCountersRequest
-    from pymodbus.pdu.diag_message import ClearCountersResponse
+    from amodbus.pdu.diag_message import ClearCountersRequest
+    from amodbus.pdu.diag_message import ClearCountersResponse
 
     request  = ClearCountersRequest()
     response = client.execute(request)
@@ -32,14 +32,14 @@ The corresponding server must be started before e.g. as:
 import logging
 import sys
 
-from pymodbus.pdu import FileRecord
+from amodbus.pdu import FileRecord
 
 
 try:
     import client_sync  # type: ignore[import-not-found]
 except ImportError:
     print("*** ERROR --> THIS EXAMPLE needs the example directory, please see \n\
-          https://pymodbus.readthedocs.io/en/latest/source/examples.html\n\
+          https://amodbus.readthedocs.io/en/latest/source/examples.html\n\
           for more information.")
     sys.exit(-1)
 
@@ -61,11 +61,11 @@ def template_call(client):
     try:
         rr = client.read_coils(32, count=1, slave=SLAVE)
     except client_sync.ModbusException as exc:
-        txt = f"ERROR: exception in pymodbus {exc}"
+        txt = f"ERROR: exception in amodbus {exc}"
         _logger.error(txt)
         raise exc
     if rr.isError():
-        txt = "ERROR: pymodbus returned an error!"
+        txt = "ERROR: amodbus returned an error!"
         _logger.error(txt)
         raise client_sync.ModbusException(txt)
 
@@ -185,7 +185,7 @@ def execute_information_requests(client):
     _logger.info("### Running information requests.")
     rr = client.read_device_information(slave=SLAVE, read_code=1, object_id=0)
     assert not rr.isError()  # test that call was OK
-    assert rr.information[0] == b"Pymodbus"
+    assert rr.information[0] == b"amodbus"
 
     rr = client.report_slave_id(slave=SLAVE)
     assert not rr.isError()  # test that call was OK

@@ -1,12 +1,12 @@
 """Test device."""
-from pymodbus.constants import DeviceInformation
-from pymodbus.device import (
+from amodbus.constants import DeviceInformation
+from amodbus.device import (
     DeviceInformationFactory,
     ModbusControlBlock,
     ModbusDeviceIdentification,
     ModbusPlusStatistics,
 )
-from pymodbus.events import RemoteReceiveEvent
+from amodbus.events import RemoteReceiveEvent
 
 
 # ---------------------------------------------------------------------------#
@@ -15,7 +15,7 @@ from pymodbus.events import RemoteReceiveEvent
 
 
 class TestDataStore:
-    """Unittest for the pymodbus.device module."""
+    """Unittest for the amodbus.device module."""
 
     # -----------------------------------------------------------------------#
     #  Setup/TearDown
@@ -32,7 +32,7 @@ class TestDataStore:
             0x01: "PTM",  # ProductCode
             0x02: "1.0",  # MajorMinorRevision
             0x03: "http://internets.com",  # VendorUrl
-            0x04: "pymodbus",  # ProductName
+            0x04: "amodbus",  # ProductName
             0x05: "bashwork",  # ModelName
             0x06: "pytest",  # UserApplicationName
             0x07: "x",  # reserved
@@ -53,7 +53,7 @@ class TestDataStore:
         assert self.control.Identity.ProductCode == "PTM"
         assert self.control.Identity.MajorMinorRevision == "1.0"
         assert self.control.Identity.VendorUrl == "http://internets.com"
-        assert self.control.Identity.ProductName == "pymodbus"
+        assert self.control.Identity.ProductName == "amodbus"
         assert self.control.Identity.ModelName == "bashwork"
         assert self.control.Identity.UserApplicationName == "pytest"
 
@@ -79,7 +79,7 @@ class TestDataStore:
         assert result[0x01] == "PTM"
         assert result[0x02] == "1.0"
         assert result[0x03] == "http://internets.com"
-        assert result[0x04] == "pymodbus"
+        assert result[0x04] == "amodbus"
         assert result[0x05] == "bashwork"
         assert result[0x06] == "pytest"
 
@@ -163,7 +163,7 @@ class TestDataStore:
         assert self.ident[0x01] == "PTM"
         assert self.ident[0x02] == "1.0"
         assert self.ident[0x03] == "http://internets.com"
-        assert self.ident[0x04] == "pymodbus"
+        assert self.ident[0x04] == "amodbus"
         assert self.ident[0x05] == "bashwork"
         assert self.ident[0x06] == "pytest"
         assert self.ident[0x07] != "x"

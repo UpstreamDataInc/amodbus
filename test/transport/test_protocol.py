@@ -4,7 +4,7 @@ from unittest import mock
 
 import pytest
 
-from pymodbus.transport import (
+from amodbus.transport import (
     CommType,
     ModbusProtocol,
 )
@@ -327,7 +327,7 @@ class TestTransportProtocol2:
 
     def test_generate_ssl_cert(self, use_clc):
         """Test ssl generation."""
-        with mock.patch("pymodbus.transport.transport.ssl.SSLContext"):
+        with mock.patch("amodbus.transport.transport.ssl.SSLContext"):
             sslctx = use_clc.generate_ssl(True, "cert_file", "key_file")
         assert sslctx
 

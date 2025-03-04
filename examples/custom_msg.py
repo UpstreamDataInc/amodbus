@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 # pylint: disable=missing-type-doc
-"""Pymodbus Synchronous Client Examples.
+"""amodbus Synchronous Client Examples.
 
 The following is an example of how to use the synchronous modbus client
-implementation from pymodbus::
+implementation from amodbus::
 
     with ModbusClient("127.0.0.1") as client:
         result = client.read_coils(1,10)
@@ -13,17 +13,17 @@ implementation from pymodbus::
 import asyncio
 import struct
 
-from pymodbus import FramerType
-from pymodbus.client import AsyncModbusTcpClient as ModbusClient
-from pymodbus.datastore import (
+from amodbus import FramerType
+from amodbus.client import AsyncModbusTcpClient as ModbusClient
+from amodbus.datastore import (
     ModbusSequentialDataBlock,
     ModbusServerContext,
     ModbusSlaveContext,
 )
-from pymodbus.exceptions import ModbusIOException
-from pymodbus.pdu import ModbusPDU
-from pymodbus.pdu.bit_message import ReadCoilsRequest
-from pymodbus.server import ServerAsyncStop, StartAsyncTcpServer
+from amodbus.exceptions import ModbusIOException
+from amodbus.pdu import ModbusPDU
+from amodbus.pdu.bit_message import ReadCoilsRequest
+from amodbus.server import ServerAsyncStop, StartAsyncTcpServer
 
 
 # --------------------------------------------------------------------------- #

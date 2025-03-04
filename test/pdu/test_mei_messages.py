@@ -5,9 +5,9 @@ mei based request/response messages:
 """
 import pytest
 
-from pymodbus.constants import DeviceInformation
-from pymodbus.device import ModbusControlBlock
-from pymodbus.pdu.mei_message import (
+from amodbus.constants import DeviceInformation
+from amodbus.device import ModbusControlBlock
+from amodbus.pdu.mei_message import (
     ReadDeviceInformationRequest,
     ReadDeviceInformationResponse,
 )
@@ -18,7 +18,7 @@ TEST_MESSAGE = b"\x00\x07Company\x01\x07Product\x02\x07v2.1.12"
 
 
 class TestMeiMessage:
-    """Unittest for the pymodbus.mei_message module."""
+    """Unittest for the amodbus.mei_message module."""
 
     # -----------------------------------------------------------------------#
     #  Read Device Information

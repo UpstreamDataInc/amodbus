@@ -6,12 +6,12 @@ from unittest import mock
 
 import pytest
 
-from pymodbus.logging import Log
-from pymodbus.transport import (
+from amodbus.logging import Log
+from amodbus.transport import (
     CommType,
     ModbusProtocol,
 )
-from pymodbus.transport.serialtransport import SerialTransport
+from amodbus.transport.serialtransport import SerialTransport
 
 
 FACTOR = 1.2 if platform.system().lower() != "windows" else 4.2
@@ -51,7 +51,7 @@ class TestTransportComm:
             (CommType.TCP, "illegal_host"),
             (CommType.TLS, "illegal_host"),
             # (CommType.UDP, "illegal_host"), udp is connectionless.
-            (CommType.SERIAL, "/dev/tty007pymodbus_5008"),
+            (CommType.SERIAL, "/dev/tty007amodbus_5008"),
         ],
     )
     async def test_connect_not_ok(self, client, use_port):
@@ -85,7 +85,7 @@ class TestTransportComm:
             (CommType.TCP, "illegal_host"),
             (CommType.TLS, "illegal_host"),
             (CommType.UDP, "illegal_host"),
-            (CommType.SERIAL, "/dev/tty007pymodbus_5016"),
+            (CommType.SERIAL, "/dev/tty007amodbus_5016"),
         ],
     )
     async def test_listen_not_ok(self, server, use_port):

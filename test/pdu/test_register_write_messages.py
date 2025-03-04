@@ -1,7 +1,7 @@
 """Test register write messages."""
-from pymodbus.payload import BinaryPayloadBuilder, Endian
-from pymodbus.pdu import ExceptionResponse
-from pymodbus.pdu.register_message import (
+from amodbus.payload import BinaryPayloadBuilder, Endian
+from amodbus.pdu import ExceptionResponse
+from amodbus.pdu.register_message import (
     MaskWriteRegisterRequest,
     MaskWriteRegisterResponse,
     WriteMultipleRegistersRequest,

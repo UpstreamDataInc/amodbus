@@ -8,8 +8,8 @@ bit based request/response messages:
 """
 import pytest
 
-from pymodbus.exceptions import ModbusException
-from pymodbus.pdu.file_message import (
+from amodbus.exceptions import ModbusException
+from amodbus.pdu.file_message import (
     FileRecord,
     ReadFifoQueueRequest,
     ReadFifoQueueResponse,

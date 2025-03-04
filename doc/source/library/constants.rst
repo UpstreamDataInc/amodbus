@@ -1,7 +1,7 @@
 Constants
 =========
 
-.. automodule:: pymodbus.constants
+.. automodule:: amodbus.constants
     :members:
     :undoc-members:
     :show-inheritance:

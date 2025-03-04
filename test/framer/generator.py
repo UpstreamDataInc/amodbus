@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
 """Build framer encode responses."""
 
-from pymodbus.framer import (
+from amodbus.framer import (
     FramerAscii,
     FramerRTU,
     FramerSocket,
     FramerTLS,
 )
-from pymodbus.pdu import DecodePDU, ExceptionResponse
-from pymodbus.pdu.register_message import (
+from amodbus.pdu import DecodePDU, ExceptionResponse
+from amodbus.pdu.register_message import (
     ReadHoldingRegistersRequest,
     ReadHoldingRegistersResponse,
 )

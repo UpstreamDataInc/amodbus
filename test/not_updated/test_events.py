@@ -1,17 +1,17 @@
 """Test events."""
 import pytest
 
-from pymodbus.events import (
+from amodbus.events import (
     CommunicationRestartEvent,
     EnteredListenModeEvent,
     RemoteReceiveEvent,
     RemoteSendEvent,
 )
-from pymodbus.exceptions import ParameterException
+from amodbus.exceptions import ParameterException
 
 
 class TestEvents:
-    """Unittest for the pymodbus.device module."""
+    """Unittest for the amodbus.device module."""
 
     def test_remote_receive_event(self):
         """Test remove receive event."""

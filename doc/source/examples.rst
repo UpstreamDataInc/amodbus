@@ -198,8 +198,8 @@ Source: :github:`examples/modbus_forwarder.py`
 Examples contributions
 ----------------------
 
-These examples are supplied by users of pymodbus.
-The pymodbus team thanks for sharing the examples.
+These examples are supplied by users of amodbus.
+The amodbus team thanks for sharing the examples.
 
 Solar
 ^^^^^

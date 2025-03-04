@@ -1,37 +1,37 @@
 Extra functions
 ===============
 
-.. automodule:: pymodbus
+.. automodule:: amodbus
     :members:
     :undoc-members:
     :show-inheritance:
 
-.. automodule:: pymodbus.device
+.. automodule:: amodbus.device
     :members:
     :undoc-members:
     :show-inheritance:
 
-.. automodule:: pymodbus.events
+.. automodule:: amodbus.events
     :members:
     :undoc-members:
     :show-inheritance:
 
-.. automodule:: pymodbus.exceptions
+.. automodule:: amodbus.exceptions
     :members:
     :undoc-members:
     :show-inheritance:
 
-.. automodule:: pymodbus.payload
+.. automodule:: amodbus.payload
     :members:
     :undoc-members:
     :show-inheritance:
 
-.. automodule:: pymodbus.transaction
+.. automodule:: amodbus.transaction
     :members:
     :undoc-members:
     :show-inheritance:
 
-.. automodule:: pymodbus.utilities
+.. automodule:: amodbus.utilities
     :members:
     :undoc-members:
     :show-inheritance:
@@ -40,43 +40,43 @@ Extra functions
 PDU classes
 ===========
 
-.. automodule:: pymodbus.pdu.decoders
+.. automodule:: amodbus.pdu.decoders
     :members:
     :undoc-members:
     :show-inheritance:
 
-.. automodule:: pymodbus.pdu.bit_message
+.. automodule:: amodbus.pdu.bit_message
     :members:
     :undoc-members:
     :show-inheritance:
 
-.. automodule:: pymodbus.pdu.diag_message
+.. automodule:: amodbus.pdu.diag_message
     :members:
     :undoc-members:
     :show-inheritance:
 
-.. automodule:: pymodbus.pdu.file_message
+.. automodule:: amodbus.pdu.file_message
     :members:
     :undoc-members:
     :show-inheritance:
 
-.. automodule:: pymodbus.pdu.mei_message
+.. automodule:: amodbus.pdu.mei_message
     :members:
     :undoc-members:
     :show-inheritance:
 
-.. automodule:: pymodbus.pdu.other_message
+.. automodule:: amodbus.pdu.other_message
     :members:
     :undoc-members:
     :show-inheritance:
 
-.. automodule:: pymodbus.pdu.pdu
+.. automodule:: amodbus.pdu.pdu
     :members:
     :undoc-members:
     :show-inheritance:
     :noindex:
 
-.. automodule:: pymodbus.pdu.register_message
+.. automodule:: amodbus.pdu.register_message
     :members:
     :undoc-members:
     :show-inheritance:

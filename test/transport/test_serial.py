@@ -9,14 +9,14 @@ from unittest import mock
 import pytest
 import serial
 
-from pymodbus.transport.serialtransport import (
+from amodbus.transport.serialtransport import (
     SerialTransport,
     create_serial_connection,
 )
 
 
 @mock.patch(
-    "pymodbus.transport.serialtransport.serial.serial_for_url", mock.MagicMock()
+    "amodbus.transport.serialtransport.serial.serial_for_url", mock.MagicMock()
 )
 class TestTransportSerial:
     """Test transport serial module."""

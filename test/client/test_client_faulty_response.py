@@ -2,9 +2,9 @@
 
 import pytest
 
-from pymodbus.exceptions import ModbusIOException
-from pymodbus.framer import FramerRTU, FramerSocket
-from pymodbus.pdu import DecodePDU
+from amodbus.exceptions import ModbusIOException
+from amodbus.framer import FramerRTU, FramerSocket
+from amodbus.pdu import DecodePDU
 
 
 class TestFaultyResponses:

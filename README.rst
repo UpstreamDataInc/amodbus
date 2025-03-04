@@ -1,51 +1,51 @@
-PyModbus - A Python Modbus Stack
+amodbus - A Python Modbus Stack
 ================================
-.. image:: https://github.com/pymodbus-dev/pymodbus/actions/workflows/ci.yml/badge.svg?branch=dev
-   :target: https://github.com/pymodbus-dev/pymodbus/actions/workflows/ci.yml
-.. image:: https://readthedocs.org/projects/pymodbus/badge/?version=latest
-   :target: https://pymodbus.readthedocs.io/en/latest/?badge=latest
+.. image:: https://github.com/UpstreamDataInc/amodbus/actions/workflows/ci.yml/badge.svg?branch=dev
+   :target: https://github.com/UpstreamDataInc/amodbus/actions/workflows/ci.yml
+.. image:: https://readthedocs.org/projects/amodbus/badge/?version=latest
+   :target: https://amodbus.readthedocs.io/en/latest/?badge=latest
    :alt: Documentation Status
-.. image:: https://pepy.tech/badge/pymodbus
-   :target: https://pepy.tech/project/pymodbus
+.. image:: https://pepy.tech/badge/amodbus
+   :target: https://pepy.tech/project/amodbus
    :alt: Downloads
-.. image:: https://img.shields.io/badge/Gurubase-Ask%20PyModbus%20Guru-006BFF
-   :target: https://gurubase.io/g/pymodbus
-   :alt: PyModbus Guru
+.. image:: https://img.shields.io/badge/Gurubase-Ask%20amodbus%20Guru-006BFF
+   :target: https://gurubase.io/g/amodbus
+   :alt: amodbus Guru
 
-Pymodbus is a full Modbus protocol implementation offering client/server with synchronous/asynchronous API and simulators.
+amodbus is a full Modbus protocol implementation offering client/server with synchronous/asynchronous API and simulators.
 
 Our releases is defined as X.Y.Z, and we have strict rules what to release when:
 
 - **Z**, No API changes! bug fixes and smaller enhancements.
 - **Y**, API changes, bug fixes and bigger enhancements.
-- **X**, Major changes in API and/or method to use pymodbus
+- **X**, Major changes in API and/or method to use amodbus
 
 Upgrade examples:
 
 - 3.8.1 -> 3.8.5: just plugin the new version, no changes needed.
-- 3.7.1 -> 3.8.0: Smaller changes to the pymodbus calls might be needed
+- 3.7.1 -> 3.8.0: Smaller changes to the amodbus calls might be needed
 - 2.5.4 -> 3.0.0: Major changes in the application might be needed
 
-Current release is `3.8.6 <https://github.com/pymodbus-dev/pymodbus/releases/tag/v3.8.6>`_.
+Current release is `3.8.6 <https://github.com/UpstreamDataInc/amodbus/releases/tag/v3.8.6>`_.
 
-Bleeding edge (not released) is `dev <https://github.com/pymodbus-dev/pymodbus/tree/dev>`_.
+Bleeding edge (not released) is `dev <https://github.com/UpstreamDataInc/amodbus/tree/dev>`_.
 
-Waiting for v3.9.0 (not released) is `wait_next_api <https://github.com/pymodbus-dev/pymodbus/tree/wait_next_api>`_. This contains
+Waiting for v3.9.0 (not released) is `wait_next_api <https://github.com/UpstreamDataInc/amodbus/tree/wait_next_api>`_. This contains
 dev + merged pull requests that have API changes, and thus have to wait.
 
-All changes are described in `release notes <https://pymodbus.readthedocs.io/en/latest/source/changelog.html>`_
-and all API changes are `documented <https://pymodbus.readthedocs.io/en/latest/source/api_changes.html>`_
+All changes are described in `release notes <https://amodbus.readthedocs.io/en/latest/source/changelog.html>`_
+and all API changes are `documented <https://amodbus.readthedocs.io/en/latest/source/api_changes.html>`_
 
-A big thanks to all the `volunteers <https://pymodbus.readthedocs.io/en/latest/source/authors.html>`_ that helps make pymodbus a great project.
+A big thanks to all the `volunteers <https://amodbus.readthedocs.io/en/latest/source/authors.html>`_ that helps make amodbus a great project.
 
-Source code on `github <https://github.com/pymodbus-dev/pymodbus>`_
+Source code on `github <https://github.com/UpstreamDataInc/amodbus>`_
 
-Full documentation for newest releases as well as the bleeding edge (dev) `readthedocs <https://pymodbus.readthedocs.io>`_
+Full documentation for newest releases as well as the bleeding edge (dev) `readthedocs <https://amodbus.readthedocs.io>`_
 
 
-Pymodbus in a nutshell
+amodbus in a nutshell
 ----------------------
-Pymodbus consist of 5 parts:
+amodbus consist of 5 parts:
 
 - **client**, connect to your favorite device(s)
 - **server**, simulate your favorite device(s)
@@ -77,7 +77,7 @@ Client Features
 * utilities to convert int/float to/from multiple registers
 * payload builder/decoder to help with complex data
 
-`Client documentation <https://pymodbus.readthedocs.io/en/latest/source/client.html>`_
+`Client documentation <https://amodbus.readthedocs.io/en/latest/source/client.html>`_
 
 
 Server Features
@@ -90,7 +90,7 @@ Server Features
 * callback to intercept requests/responses
 * work on RS485 in parallel with other devices
 
-`Server documentation <https://pymodbus.readthedocs.io/en/latest/source/server.html>`_
+`Server documentation <https://amodbus.readthedocs.io/en/latest/source/server.html>`_
 
 
 REPL Features
@@ -101,7 +101,7 @@ REPL Features
 - simulation of broken requests/responses
 - simulation of error responses (hard to provoke in real devices)
 
-`REPL documentation <https://github.com/pymodbus-dev/repl>`_
+`REPL documentation <https://github.com/UpstreamDataInc/repl>`_
 
 
 Simulator Features
@@ -113,7 +113,7 @@ Simulator Features
 - simulation of broken requests/responses
 - simulation of error responses (hard to provoke in real devices)
 
-`Simulator documentation <https://pymodbus.readthedocs.io/en/dev/source/simulator.html>`_
+`Simulator documentation <https://amodbus.readthedocs.io/en/dev/source/simulator.html>`_
 
 Use Cases
 ---------
@@ -135,7 +135,7 @@ solutions.
 
 For more information please browse the project documentation:
 
-https://readthedocs.org/docs/pymodbus/en/latest/index.html
+https://readthedocs.org/docs/amodbus/en/latest/index.html
 
 
 
@@ -146,10 +146,10 @@ The library is available on pypi.org and github.com to install with
 - :code:`pip` for those who just want to use the library
 - :code:`git clone` for those who wants to help or just are curious
 
-Be aware that there are a number of project, who have forked pymodbus and
+Be aware that there are a number of project, who have forked amodbus and
 
 - seems just to provide a version frozen in time
-- extended pymodbus with extra functionality
+- extended amodbus with extra functionality
 
 The latter is not because we rejected the extra functionality (we welcome all changes),
 but because the codeowners made that decision.
@@ -157,7 +157,7 @@ but because the codeowners made that decision.
 In both cases, please understand, we cannot offer support to users of these projects as we do not known
 what have been changed nor what status the forked code have.
 
-A growing number of Linux distributions include pymodbus in their standard installation.
+A growing number of Linux distributions include amodbus in their standard installation.
 
 You need to have python3 installed, preferable 3.11.
 
@@ -166,41 +166,41 @@ Install with pip
 You can install using pip by issuing the following
 commands in a terminal window::
 
-   pip install pymodbus
+   pip install amodbus
 
 If you want to use the serial interface::
 
-   pip install pymodbus[serial]
+   pip install amodbus[serial]
 
-This will install pymodbus with the pyserial dependency.
+This will install amodbus with the pyserial dependency.
 
-Pymodbus offers a number of extra options:
+amodbus offers a number of extra options:
 
-- **repl**, needed by pymodbus.repl
+- **repl**, needed by amodbus.repl
 - **serial**, needed for serial communication
-- **simulator**, needed by pymodbus.simulator
+- **simulator**, needed by amodbus.simulator
 - **documentation**, needed to generate documentation
 - **development**, needed for development
 - **all**, installs all of the above
 
 which can be installed as::
 
-   pip install pymodbus[<option>,...]
+   pip install amodbus[<option>,...]
 
 It is possible to install old releases if needed::
 
-   pip install pymodbus==3.5.4
+   pip install amodbus==3.5.4
 
 
 Install with github
 ^^^^^^^^^^^^^^^^^^^
-On github, fork https://github.com/pymodbus-dev/pymodbus.git
+On github, fork https://github.com/UpstreamDataInc/amodbus.git
 
 Clone the source, and make a virtual environment::
 
 
-   git clone git://github.com/<your account>/pymodbus.git
-   cd pymodbus
+   git clone git://github.com/<your account>/amodbus.git
+   cd amodbus
    python3 -m venv .venv
 
 Activate the virtual environment, this command needs repeated in every new terminal::
@@ -232,7 +232,7 @@ Install git hooks, that helps control the commit and avoid errors when submittin
   cp githooks/* .git/hooks
 
 This installs dependencies in your virtual environment
-with pointers directly to the pymodbus directory,
+with pointers directly to the amodbus directory,
 so any change you make is immediately available as if installed.
 
 The repository contains a number of important branches and tags.
@@ -245,7 +245,7 @@ Example Code
 ------------
 For those of you that just want to get started fast, here you go::
 
-    from pymodbus.client import ModbusTcpClient
+    from amodbus.client import ModbusTcpClient
 
     client = ModbusTcpClient('MyDevice.lan')
     client.connect()
@@ -256,20 +256,20 @@ For those of you that just want to get started fast, here you go::
 
 We provide a couple of simple ready to go clients:
 
-- `async client <https://github.com/pymodbus-dev/pymodbus/blob/dev/examples/simple_async_client.py>`_
-- `sync client <https://github.com/pymodbus-dev/pymodbus/blob/dev/examples/simple_sync_client.py>`_
+- `async client <https://github.com/UpstreamDataInc/amodbus/blob/dev/examples/simple_async_client.py>`_
+- `sync client <https://github.com/UpstreamDataInc/amodbus/blob/dev/examples/simple_sync_client.py>`_
 
-For more advanced examples, check out `Examples <https://pymodbus.readthedocs.io/en/dev/source/examples.html>`_ included in the
+For more advanced examples, check out `Examples <https://amodbus.readthedocs.io/en/dev/source/examples.html>`_ included in the
 repository. If you have created any utilities that meet a specific
 need, feel free to submit them so others can benefit.
 
-Also, if you have a question, please `create a post in discussions q&a topic <https://github.com/pymodbus-dev/pymodbus/discussions/new?category=q-a>`_,
+Also, if you have a question, please `create a post in discussions q&a topic <https://github.com/UpstreamDataInc/amodbus/discussions/new?category=q-a>`_,
 so that others can benefit from the results.
 
-If you think, that something in the code is broken/not running well, please `open an issue <https://github.com/pymodbus-dev/pymodbus/issues/new>`_,
+If you think, that something in the code is broken/not running well, please `open an issue <https://github.com/UpstreamDataInc/amodbus/issues/new>`_,
 read the Template-text first and then post your issue with your setup information.
 
-`Example documentation <https://pymodbus.readthedocs.io/en/dev/source/examples.html>`_
+`Example documentation <https://amodbus.readthedocs.io/en/dev/source/examples.html>`_
 
 
 Contributing
@@ -332,7 +332,7 @@ Internals
 There are no documentation of the architecture (help is welcome), but most classes and
 methods are documented:
 
-`Pymodbus internals <https://pymodbus.readthedocs.io/en/dev/source/internals.html>`_
+`amodbus internals <https://amodbus.readthedocs.io/en/dev/source/internals.html>`_
 
 
 Generate documentation
@@ -355,4 +355,4 @@ Remark: this generates a new zip/tgz file of examples which are uploaded.
 License Information
 -------------------
 
-Released under the `BSD License <https://github.com/pymodbus-dev/pymodbus/blob/dev/LICENSE>`_
+Released under the `BSD License <https://github.com/UpstreamDataInc/amodbus/blob/dev/LICENSE>`_

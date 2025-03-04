@@ -12,8 +12,8 @@ import asyncio
 import logging
 from datetime import datetime
 
-from pymodbus.datastore import ModbusSequentialDataBlock, ModbusSlaveContext, ModbusServerContext
-from pymodbus.server import StartAsyncTcpServer
+from amodbus.datastore import ModbusSequentialDataBlock, ModbusSlaveContext, ModbusServerContext
+from amodbus.server import StartAsyncTcpServer
 
 INITIAL_WATER_LEVEL = 300
 WATER_INFLOW = 1

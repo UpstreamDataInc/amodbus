@@ -5,12 +5,12 @@ import json
 import pytest
 from aiohttp import ClientSession
 
-from pymodbus.server import ModbusSimulatorServer
-from pymodbus.server.simulator import http_server
+from amodbus.server import ModbusSimulatorServer
+from amodbus.server.simulator import http_server
 
 
 class TestSimulatorApi:
-    """Integration tests for the pymodbus.SimutorServer module."""
+    """Integration tests for the amodbus.SimutorServer module."""
 
     default_config = {
         "server_list": {

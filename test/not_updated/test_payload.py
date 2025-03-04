@@ -8,9 +8,9 @@ utilities.
 """
 import pytest
 
-from pymodbus.constants import Endian
-from pymodbus.exceptions import ParameterException
-from pymodbus.payload import BinaryPayloadBuilder, BinaryPayloadDecoder
+from amodbus.constants import Endian
+from amodbus.exceptions import ParameterException
+from amodbus.payload import BinaryPayloadBuilder, BinaryPayloadDecoder
 
 
 # ---------------------------------------------------------------------------#

@@ -1,6 +1,6 @@
 """Document configuration."""
 #
-# PyModbus documentation build configuration file,
+# amodbus documentation build configuration file,
 #
 # This file is execfile()d with the current directory set to its
 # containing dir.
@@ -11,7 +11,7 @@ import sys
 
 from recommonmark.transform import AutoStructify
 
-from pymodbus import __version__ as pymodbus_version
+from amodbus import __version__ as amodbus_version
 
 
 # -- General configuration ------------------------------------------------
@@ -23,14 +23,14 @@ extensions = [
 ]
 source_suffix = {'.rst': 'restructuredtext'}
 root_doc = "index"
-project = "PyModbus"
+project = "amodbus"
 copyright = "See license"
 author = "Open Source volunteers"
-if "dev" in pymodbus_version:
+if "dev" in amodbus_version:
     version = "dev"
 else:
-    version = "v" + pymodbus_version
-release = pymodbus_version
+    version = "v" + amodbus_version
+release = amodbus_version
 language = "en"
 exclude_patterns = ["build", "Thumbs.db", ".DS_Store"]
 pygments_style = "sphinx"
@@ -50,7 +50,7 @@ html_sidebars = {
 parent_dir = os.path.abspath(os.pardir)
 sys.path.insert(0, parent_dir)
 sys.path.append(os.path.join(parent_dir, "examples"))
-github = f"https://github.com/pymodbus-dev/pymodbus/blob/{version}/"
+github = f"https://github.com/UpstreamDataInc/amodbus/blob/{version}/"
 extlinks = {'github': (github + '%s', '%s')}
 
 def setup(app):

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Pymodbus simulator datamodel examples.
+"""amodbus simulator datamodel examples.
 
 **WORK IN PROGRESS, do NOT use**
 
@@ -8,10 +8,10 @@ device.
 
 There are different examples, to show the flexibility of the simulator datamodel.
 
-.. tip:: This is NOT the pymodbus simulator, that is started as pymodbus.simulator.
+.. tip:: This is NOT the amodbus simulator, that is started as amodbus.simulator.
 """
 
-from pymodbus.simulator import SimCheckConfig, SimData, SimDataType, SimDevice
+from amodbus.simulator import SimCheckConfig, SimData, SimDataType, SimDevice
 
 
 def define_registers():

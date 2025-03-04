@@ -21,8 +21,8 @@ from examples.client_sync import (
 )
 from examples.server_async import setup_server
 from examples.server_sync import run_sync_server
-from pymodbus.exceptions import ConnectionException
-from pymodbus.server import ServerStop
+from amodbus.exceptions import ConnectionException
+from amodbus.server import ServerStop
 
 
 SLEEPING = 5 if os.name == "nt" else 1

@@ -4,15 +4,15 @@ from unittest import mock
 
 import pytest
 
-from pymodbus.logging import Log, pymodbus_apply_logging_config
+from amodbus.logging import Log, amodbus_apply_logging_config
 
 
 class TestLogging:
-    """Tests of pymodbus logging."""
+    """Tests of amodbus logging."""
 
     def test_log_dont_call_build_msg(self):
         """Verify that build_msg is not called unnecessary."""
-        with mock.patch("pymodbus.logging.Log.build_msg") as build_msg_mock:
+        with mock.patch("amodbus.logging.Log.build_msg") as build_msg_mock:
             Log.setLevel(logging.INFO)
             Log.debug("test")
             build_msg_mock.assert_not_called()
@@ -42,15 +42,15 @@ class TestLogging:
         assert log_txt == result
 
     def test_apply_logging(self):
-        """Test pymodbus_apply_logging_config."""
-        pymodbus_apply_logging_config("debug")
-        pymodbus_apply_logging_config(logging.NOTSET)
-        pymodbus_apply_logging_config("debug", "pymodbus.log")
-        pymodbus_apply_logging_config("info")
+        """Test amodbus_apply_logging_config."""
+        amodbus_apply_logging_config("debug")
+        amodbus_apply_logging_config(logging.NOTSET)
+        amodbus_apply_logging_config("debug", "amodbus.log")
+        amodbus_apply_logging_config("info")
         Log.info("test")
-        pymodbus_apply_logging_config("warning")
+        amodbus_apply_logging_config("warning")
         Log.warning("test")
-        pymodbus_apply_logging_config("critical")
+        amodbus_apply_logging_config("critical")
         Log.critical("test")
-        pymodbus_apply_logging_config("error")
+        amodbus_apply_logging_config("error")
         Log.error("test")

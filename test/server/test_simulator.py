@@ -7,11 +7,11 @@ from unittest.mock import mock_open, patch
 
 import pytest
 
-from pymodbus.client import AsyncModbusTcpClient
-from pymodbus.datastore import ModbusSimulatorContext
-from pymodbus.datastore.simulator import Cell, CellType, Label
-from pymodbus.server import ModbusSimulatorServer
-from pymodbus.transport import NULLMODEM_HOST
+from amodbus.client import AsyncModbusTcpClient
+from amodbus.datastore import ModbusSimulatorContext
+from amodbus.datastore.simulator import Cell, CellType, Label
+from amodbus.server import ModbusSimulatorServer
+from amodbus.transport import NULLMODEM_HOST
 
 
 FX_READ_BIT = 1
@@ -21,7 +21,7 @@ FX_WRITE_REG = 6
 
 
 class TestSimulator:
-    """Unittest for the pymodbus.Simutor module."""
+    """Unittest for the amodbus.Simutor module."""
 
     default_device = {
         "setup": {
@@ -108,11 +108,11 @@ class TestSimulator:
             "ignore_missing_slaves": False,
             "framer": "socket",
             "identity": {
-                "VendorName": "pymodbus",
+                "VendorName": "amodbus",
                 "ProductCode": "PM",
-                "VendorUrl": "https://github.com/pymodbus-dev/pymodbus/",
-                "ProductName": "pymodbus Server",
-                "ModelName": "pymodbus Server",
+                "VendorUrl": "https://github.com/UpstreamDataInc/amodbus/",
+                "ProductName": "amodbus Server",
+                "ModelName": "amodbus Server",
                 "MajorMinorRevision": "3.1.0",
             },
         },

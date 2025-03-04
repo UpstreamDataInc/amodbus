@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Pymodbus Client Payload Example.
+"""amodbus Client Payload Example.
 
 This example shows how to build a client with a
 complicated memory layout using builder.
@@ -15,12 +15,12 @@ try:
     import client_async  # type: ignore[import-not-found]
 except ImportError:
     print("*** ERROR --> THIS EXAMPLE needs the example directory, please see \n\
-          https://pymodbus.readthedocs.io/en/latest/source/examples.html\n\
+          https://amodbus.readthedocs.io/en/latest/source/examples.html\n\
           for more information.")
     sys.exit(-1)
 
-from pymodbus.constants import Endian
-from pymodbus.payload import BinaryPayloadBuilder, BinaryPayloadDecoder
+from amodbus.constants import Endian
+from amodbus.payload import BinaryPayloadBuilder, BinaryPayloadDecoder
 
 
 ORDER_DICT = {"<": "LITTLE", ">": "BIG"}

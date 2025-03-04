@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Pymodbus asynchronous Server with updating task Example.
+"""amodbus asynchronous Server with updating task Example.
 
 An example of an asynchronous server and
 a task that runs continuously alongside the server and updates values.
@@ -40,11 +40,11 @@ try:
     import server_async  # type: ignore[import-not-found]
 except ImportError:
     print("*** ERROR --> THIS EXAMPLE needs the example directory, please see \n\
-          https://pymodbus.readthedocs.io/en/latest/source/examples.html\n\
+          https://amodbus.readthedocs.io/en/latest/source/examples.html\n\
           for more information.")
     sys.exit(-1)
 
-from pymodbus.datastore import (
+from amodbus.datastore import (
     ModbusSequentialDataBlock,
     ModbusServerContext,
     ModbusSlaveContext,

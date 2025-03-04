@@ -8,16 +8,16 @@ from unittest import mock
 
 import pytest
 
-from pymodbus import FramerType
-from pymodbus.client import AsyncModbusTcpClient
-from pymodbus.datastore import (
+from amodbus import FramerType
+from amodbus.client import AsyncModbusTcpClient
+from amodbus.datastore import (
     ModbusSequentialDataBlock,
     ModbusServerContext,
     ModbusSlaveContext,
 )
-from pymodbus.device import ModbusDeviceIdentification
-from pymodbus.exceptions import NoSuchSlaveException
-from pymodbus.server import ModbusTcpServer, ModbusTlsServer, ModbusUdpServer
+from amodbus.device import ModbusDeviceIdentification
+from amodbus.exceptions import NoSuchSlaveException
+from amodbus.server import ModbusTcpServer, ModbusTlsServer, ModbusUdpServer
 
 
 _logger = logging.getLogger()
@@ -93,7 +93,7 @@ class BasicClient(asyncio.BaseProtocol):
 
 
 class TestAsyncioServer:
-    """Unittest for the pymodbus.server.asyncio module.
+    """Unittest for the amodbus.server.asyncio module.
 
     The scope of this test is the life-cycle management of the network
     connections and server objects.
@@ -225,7 +225,7 @@ class TestAsyncioServer:
         BasicClient.data = b"\x01\x00\x00\x00\x00\x06\x01\x03\x00\x00\x00\x19"
         await self.start_server()
         with mock.patch(
-            "pymodbus.framer.FramerSocket.processIncomingFrame",
+            "amodbus.framer.FramerSocket.processIncomingFrame",
             new_callable=mock.Mock,
         ) as process:
             await self.connect_server()
@@ -291,7 +291,7 @@ class TestAsyncioServer:
         BasicClient.data = TEST_DATA
         await self.start_server()
         with mock.patch(
-            "pymodbus.pdu.register_message.ReadHoldingRegistersRequest.update_datastore",
+            "amodbus.pdu.register_message.ReadHoldingRegistersRequest.update_datastore",
             side_effect=NoSuchSlaveException,
         ):
             await self.connect_server()
@@ -370,7 +370,7 @@ class TestAsyncioServer:
         BasicClient.done = asyncio.Future()
         await self.start_server(do_udp=True)
         with mock.patch(
-            "pymodbus.framer.FramerSocket.processIncomingFrame",
+            "amodbus.framer.FramerSocket.processIncomingFrame",
             new_callable=lambda: mock.Mock(side_effect=Exception),
         ):
             # get the random server port pylint: disable=protected-access
@@ -387,7 +387,7 @@ class TestAsyncioServer:
         BasicClient.data = b"\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF"
         await self.start_server()
         with mock.patch(
-            "pymodbus.framer.FramerSocket.processIncomingFrame",
+            "amodbus.framer.FramerSocket.processIncomingFrame",
             new_callable=lambda: mock.Mock(side_effect=Exception),
         ):
             await self.connect_server()

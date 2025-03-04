@@ -1,15 +1,15 @@
 """Test pdu."""
 import pytest
 
-import pymodbus.pdu.bit_message as bit_msg
-import pymodbus.pdu.diag_message as diag_msg
-import pymodbus.pdu.file_message as file_msg
-import pymodbus.pdu.mei_message as mei_msg
-import pymodbus.pdu.other_message as o_msg
-import pymodbus.pdu.register_message as reg_msg
-from pymodbus.constants import ModbusStatus
-from pymodbus.exceptions import NotImplementedException
-from pymodbus.pdu import (
+import amodbus.pdu.bit_message as bit_msg
+import amodbus.pdu.diag_message as diag_msg
+import amodbus.pdu.file_message as file_msg
+import amodbus.pdu.mei_message as mei_msg
+import amodbus.pdu.other_message as o_msg
+import amodbus.pdu.register_message as reg_msg
+from amodbus.constants import ModbusStatus
+from amodbus.exceptions import NotImplementedException
+from amodbus.pdu import (
     ExceptionResponse,
     ModbusPDU,
 )

@@ -28,9 +28,9 @@ from examples.simple_async_client import run_async_simple_client
 from examples.simple_sync_client import run_sync_simple_client
 from examples.simulator import run_simulator as run_simulator3
 from examples.simulator_datamodel import main as run_main_simulator_datamodel
-from pymodbus.exceptions import ModbusException
-from pymodbus.pdu import ExceptionResponse
-from pymodbus.server import ServerAsyncStop, ServerStop
+from amodbus.exceptions import ModbusException
+from amodbus.pdu import ExceptionResponse
+from amodbus.server import ServerAsyncStop, ServerStop
 
 
 class TestExamples:

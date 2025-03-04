@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Pymodbus Synchronous Client Example.
+"""amodbus Synchronous Client Example.
 
 Modified to test long term connection.
 
@@ -12,15 +12,15 @@ from enum import Enum
 from math import log10
 from time import sleep
 
-from pymodbus import pymodbus_apply_logging_config
+from amodbus import amodbus_apply_logging_config
 
 # --------------------------------------------------------------------------- #
 # import the various client implementations
 # --------------------------------------------------------------------------- #
-from pymodbus.client import ModbusTcpClient
-from pymodbus.exceptions import ModbusException
-from pymodbus.pdu import ExceptionResponse
-from pymodbus import FramerType
+from amodbus.client import ModbusTcpClient
+from amodbus.exceptions import ModbusException
+from amodbus.pdu import ExceptionResponse
+from amodbus import FramerType
 
 
 HOST = "modbusServer.lan"
@@ -28,7 +28,7 @@ PORT = 502
 CYCLES = 4
 
 
-pymodbus_apply_logging_config(logging.ERROR)
+amodbus_apply_logging_config(logging.ERROR)
 logging.basicConfig(level=logging.DEBUG,
                     format='%(asctime)s %(levelname)s %(message)s')
 _logger = logging.getLogger(__file__)

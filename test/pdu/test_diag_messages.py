@@ -1,8 +1,8 @@
 """Test diag messages."""
 import pytest
 
-from pymodbus.constants import ModbusPlusOperation, ModbusStatus
-from pymodbus.pdu.diag_message import (
+from amodbus.constants import ModbusPlusOperation, ModbusStatus
+from amodbus.pdu.diag_message import (
     ChangeAsciiInputDelimiterRequest,
     ChangeAsciiInputDelimiterResponse,
     ClearCountersRequest,
@@ -42,7 +42,7 @@ from pymodbus.pdu.diag_message import (
 
 
 class TestDataStore:
-    """Unittest for the pymodbus.diag_message module."""
+    """Unittest for the amodbus.diag_message module."""
 
     requests = [
         (

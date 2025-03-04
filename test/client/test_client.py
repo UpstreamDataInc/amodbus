@@ -5,20 +5,20 @@ from unittest import mock
 
 import pytest
 
-import pymodbus.client as lib_client
-import pymodbus.pdu.bit_message as pdu_bit
-import pymodbus.pdu.diag_message as pdu_diag
-import pymodbus.pdu.file_message as pdu_file_msg
-import pymodbus.pdu.mei_message as pdu_mei
-import pymodbus.pdu.other_message as pdu_other_msg
-import pymodbus.pdu.register_message as pdu_reg
+import amodbus.client as lib_client
+import amodbus.pdu.bit_message as pdu_bit
+import amodbus.pdu.diag_message as pdu_diag
+import amodbus.pdu.file_message as pdu_file_msg
+import amodbus.pdu.mei_message as pdu_mei
+import amodbus.pdu.other_message as pdu_other_msg
+import amodbus.pdu.register_message as pdu_reg
 from examples.helper import get_certificate
-from pymodbus import FramerType
-from pymodbus.client.base import ModbusBaseClient
-from pymodbus.client.mixin import ModbusClientMixin
-from pymodbus.exceptions import ConnectionException, ModbusException
-from pymodbus.pdu import ModbusPDU
-from pymodbus.transport import CommParams, CommType
+from amodbus import FramerType
+from amodbus.client.base import ModbusBaseClient
+from amodbus.client.mixin import ModbusClientMixin
+from amodbus.exceptions import ConnectionException, ModbusException
+from amodbus.pdu import ModbusPDU
+from amodbus.transport import CommParams, CommType
 
 
 BASE_PORT = 6500

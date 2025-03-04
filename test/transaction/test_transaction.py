@@ -4,17 +4,17 @@ from unittest import mock
 
 import pytest
 
-from pymodbus.client import ModbusBaseSyncClient
-from pymodbus.exceptions import ConnectionException, ModbusIOException
-from pymodbus.framer import FramerRTU, FramerSocket, FramerType
-from pymodbus.pdu import DecodePDU, ExceptionResponse
-from pymodbus.pdu.bit_message import ReadCoilsRequest, ReadCoilsResponse
-from pymodbus.transaction import TransactionManager
+from amodbus.client import ModbusBaseSyncClient
+from amodbus.exceptions import ConnectionException, ModbusIOException
+from amodbus.framer import FramerRTU, FramerSocket, FramerType
+from amodbus.pdu import DecodePDU, ExceptionResponse
+from amodbus.pdu.bit_message import ReadCoilsRequest, ReadCoilsResponse
+from amodbus.transaction import TransactionManager
 
 
 @pytest.mark.parametrize("use_port", [5098])
 class TestTransaction:
-    """Test the pymodbus.transaction module."""
+    """Test the amodbus.transaction module."""
 
     async def test_transaction_instance(self, use_clc):
         """Test instantiate class."""
@@ -318,7 +318,7 @@ class TestTransaction:
 
 @pytest.mark.parametrize("use_port", [5098])
 class TestSyncTransaction:
-    """Test the pymodbus.transaction module."""
+    """Test the amodbus.transaction module."""
 
     def test_sync_transaction_instance(self, use_clc):
         """Test instantiate class."""

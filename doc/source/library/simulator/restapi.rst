@@ -1,4 +1,4 @@
-Pymodbus simulator ReST API
+amodbus simulator ReST API
 ===========================
 
 This is still a Work In Progress. There may be large changes to the API in the

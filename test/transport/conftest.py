@@ -6,8 +6,8 @@ from unittest import mock
 
 import pytest
 
-from pymodbus.logging import Log
-from pymodbus.transport import CommParams, CommType, ModbusProtocol
+from amodbus.logging import Log
+from amodbus.transport import CommParams, CommType, ModbusProtocol
 
 
 class DummyProtocol(ModbusProtocol):
@@ -44,7 +44,7 @@ async def prepare_dummy_protocol():
 async def prepare_protocol(use_clc):
     """Prepare transport object."""
     if use_clc.comm_type == CommType.TLS:
-        cwd = os.path.dirname(__file__) + "/../../examples/certificates/pymodbus."
+        cwd = os.path.dirname(__file__) + "/../../examples/certificates/amodbus."
         use_clc.sslctx = use_clc.generate_ssl(
             False, certfile=cwd + "crt", keyfile=cwd + "key"
         )
@@ -61,7 +61,7 @@ async def prepare_protocol(use_clc):
 async def prepare_transport_server(use_cls):
     """Prepare transport object."""
     if use_cls.comm_type == CommType.TLS:
-        cwd = os.path.dirname(__file__) + "/../../examples/certificates/pymodbus."
+        cwd = os.path.dirname(__file__) + "/../../examples/certificates/amodbus."
         use_cls.sslctx = use_cls.generate_ssl(
             True, certfile=cwd + "crt", keyfile=cwd + "key"
         )

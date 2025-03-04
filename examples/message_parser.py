@@ -11,13 +11,13 @@ import collections
 import logging
 import textwrap
 
-from pymodbus import pymodbus_apply_logging_config
-from pymodbus.framer import (
+from amodbus import amodbus_apply_logging_config
+from amodbus.framer import (
     FramerAscii,
     FramerRTU,
     FramerSocket,
 )
-from pymodbus.pdu import DecodePDU
+from amodbus.pdu import DecodePDU
 
 
 _logger = logging.getLogger(__file__)
@@ -119,7 +119,7 @@ class Decoder:
 def parse_messages(cmdline=None):
     """Do a helper method to generate the messages to parse."""
     args = get_commandline(cmdline=cmdline)
-    pymodbus_apply_logging_config(args.log.upper())
+    amodbus_apply_logging_config(args.log.upper())
     _logger.setLevel(args.log.upper())
     if not args.message:
         _logger.error("Missing --message.")

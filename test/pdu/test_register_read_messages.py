@@ -1,9 +1,9 @@
 """Test register read messages."""
 import pytest
 
-from pymodbus.exceptions import ModbusIOException
-from pymodbus.pdu import ExceptionResponse
-from pymodbus.pdu.register_message import (
+from amodbus.exceptions import ModbusIOException
+from amodbus.pdu import ExceptionResponse
+from amodbus.pdu.register_message import (
     ReadHoldingRegistersRequest,
     ReadHoldingRegistersResponse,
     ReadInputRegistersRequest,

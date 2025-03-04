@@ -1,5 +1,5 @@
 ================================
-PyModbus - A Python Modbus Stack
+amodbus - A Python Modbus Stack
 ================================
 =================
 Making a release.
@@ -9,7 +9,7 @@ Making a release.
 Prepare/make release on dev.
 ------------------------------------------------------------
 * Make pull request "prepare v3.7.x", with the following:
-   * Update pymodbus/__init__.py with version number (__version__ X.Y.Zpre)
+   * Update amodbus/__init__.py with version number (__version__ X.Y.Zpre)
    * Update README.rst "Supported versions"
    * Update roadmap.rst
    * Control / Update API_changes.rst
@@ -33,7 +33,7 @@ Prepare/make release on dev.
    * wait for CI to complete on all branches
 * On github "prepare release"
    * Create tag e.g. v3.9.0dev0
-   * Title "pymodbus v3.9.0dev0"
+   * Title "amodbus v3.9.0dev0"
    * do NOT generate release notes, but copy from CHANGELOG.rst
    * make release (remember to mark pre-release if so)
 * on local repo
@@ -43,7 +43,7 @@ Prepare/make release on dev.
    * python3 -m build
    * twine upload dist/*  (upload to pypi)
    * Double check Read me docs are updated
-      * trigger build https://readthedocs.org/projects/pymodbus/builds/
+      * trigger build https://readthedocs.org/projects/amodbus/builds/
    * Mark release as active in readthedocs.org
 * Make an announcement in discussions.
 
@@ -52,12 +52,12 @@ Prepare/make release on dev.
 Prepare release on dev for new commits.
 ------------------------------------------------------------
 * Make pull request "prepare dev", with the following:
-   * Update pymodbus/__init__.py with version number (__version__ X.Y.Zpre)
+   * Update amodbus/__init__.py with version number (__version__ X.Y.Zpre)
 
 
 ------------------------------------------------------------
 Architecture documentation.
 ------------------------------------------------------------
 * install graphviz
-* pyreverse -k -o jpg pymodbus
+* pyreverse -k -o jpg amodbus
 l

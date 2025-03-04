@@ -1,9 +1,9 @@
 """Test factory."""
 import pytest
 
-from pymodbus.exceptions import MessageRegisterException
-from pymodbus.pdu import ModbusPDU
-from pymodbus.pdu.decoders import DecodePDU
+from amodbus.exceptions import MessageRegisterException
+from amodbus.pdu import ModbusPDU
+from amodbus.pdu.decoders import DecodePDU
 
 
 class TestModbusPDU:

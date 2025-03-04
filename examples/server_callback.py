@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Pymodbus Server With Callbacks.
+"""amodbus Server With Callbacks.
 
 This is an example of adding callbacks to a running modbus server
 when a value is written to it.
@@ -13,11 +13,11 @@ try:
     import server_async  # type: ignore[import-not-found]
 except ImportError:
     print("*** ERROR --> THIS EXAMPLE needs the example directory, please see \n\
-          https://pymodbus.readthedocs.io/en/latest/source/examples.html\n\
+          https://amodbus.readthedocs.io/en/latest/source/examples.html\n\
           for more information.")
     sys.exit(-1)
 
-from pymodbus.datastore import (
+from amodbus.datastore import (
     ModbusSequentialDataBlock,
     ModbusServerContext,
     ModbusSlaveContext,

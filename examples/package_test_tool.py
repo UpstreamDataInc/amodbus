@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Pymodbus client testing tool.
+"""amodbus client testing tool.
 
 usage::
 
@@ -23,7 +23,7 @@ There are 4 functions which can be modified to test the client/server functional
 
     Called when the client is connected.
 
-    The full client API is available, just as if it was a normal App using pymodbus
+    The full client API is available, just as if it was a normal App using amodbus
 
 *** server_calls(transport) ***
 
@@ -47,17 +47,17 @@ from __future__ import annotations
 import asyncio
 from collections.abc import Callable
 
-import pymodbus.client as modbusClient
-import pymodbus.server as modbusServer
-from pymodbus import FramerType, ModbusException, pymodbus_apply_logging_config
-from pymodbus.datastore import (
+import amodbus.client as modbusClient
+import amodbus.server as modbusServer
+from amodbus import FramerType, ModbusException, amodbus_apply_logging_config
+from amodbus.datastore import (
     ModbusSequentialDataBlock,
     ModbusServerContext,
     ModbusSlaveContext,
 )
-from pymodbus.device import ModbusDeviceIdentification
-from pymodbus.logging import Log
-from pymodbus.transport import NULLMODEM_HOST, CommParams, CommType, ModbusProtocol
+from amodbus.device import ModbusDeviceIdentification
+from amodbus.logging import Log
+from amodbus.transport import NULLMODEM_HOST, CommParams, CommType, ModbusProtocol
 
 
 class TransportStub(ModbusProtocol):
@@ -130,7 +130,7 @@ class ClientTester:  # pylint: disable=too-few-public-methods
 
     async def run(self):
         """Execute test run."""
-        pymodbus_apply_logging_config()
+        amodbus_apply_logging_config()
         Log.debug("--> Start testing.")
         await self.stub.start_run()
         await self.client.connect()
@@ -185,7 +185,7 @@ class ServerTester:  # pylint: disable=too-few-public-methods
 
     async def run(self):
         """Execute test run."""
-        pymodbus_apply_logging_config()
+        amodbus_apply_logging_config()
         Log.debug("--> Start testing.")
         await self.server.listen()
         await self.stub.start_run()
@@ -212,11 +212,11 @@ async def client_calls(client):
     try:
         resp = await client.read_holding_registers(address=124, count=4, slave=1)
     except ModbusException as exc:
-        txt = f"ERROR: exception in pymodbus {exc}"
+        txt = f"ERROR: exception in amodbus {exc}"
         Log.error(txt)
         return
     if resp.isError():
-        txt = "ERROR: pymodbus returned an error!"
+        txt = "ERROR: amodbus returned an error!"
         Log.error(txt)
     await asyncio.sleep(1)
     client.close()

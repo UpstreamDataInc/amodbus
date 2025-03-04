@@ -5,15 +5,15 @@ from unittest import mock
 import pytest
 import serial
 
-from pymodbus import FramerType
-from pymodbus.client import (
+from amodbus import FramerType
+from amodbus.client import (
     ModbusSerialClient,
     ModbusTcpClient,
     ModbusTlsClient,
     ModbusUdpClient,
 )
-from pymodbus.exceptions import ConnectionException
-from pymodbus.framer import (
+from amodbus.exceptions import ConnectionException
+from amodbus.framer import (
     FramerAscii,
     FramerRTU,
     FramerTLS,
@@ -27,7 +27,7 @@ from test.conftest import mockSocket
 
 
 class TestSyncClientUdp:
-    """Unittest for the pymodbus.client module."""
+    """Unittest for the amodbus.client module."""
 
     def test_basic_syn_udp_client(self):
         """Test the basic methods for the udp sync client."""
@@ -97,14 +97,14 @@ class TestSyncClientUdp:
 
 
 class TestSyncClientTcp:
-    """Unittest for the pymodbus.client module."""
+    """Unittest for the amodbus.client module."""
 
     def test_syn_tcp_client_instantiation(self):
         """Test sync tcp client."""
         client = ModbusTcpClient("127.0.0.1")
         assert client
 
-    @mock.patch("pymodbus.client.tcp.select")
+    @mock.patch("amodbus.client.tcp.select")
     def test_basic_syn_tcp_client(self, mock_select):
         """Test the basic methods for the tcp sync client."""
         # receive/send
@@ -143,8 +143,8 @@ class TestSyncClientTcp:
         assert not client.send(None)
         assert client.send("1234") == 4
 
-    @mock.patch("pymodbus.client.tcp.time")
-    @mock.patch("pymodbus.client.tcp.select")
+    @mock.patch("amodbus.client.tcp.time")
+    @mock.patch("amodbus.client.tcp.select")
     def test_tcp_client_recv(self, mock_select, mock_time):
         """Test the tcp client receive method."""
         mock_select.select.return_value = [True]
@@ -191,7 +191,7 @@ class TestSyncClientTcp:
         client.set_max_no_responses(110)
 
 class TestSyncClientTls:
-    """Unittest for the pymodbus.client module."""
+    """Unittest for the amodbus.client module."""
 
     def test_syn_tls_client_instantiation(self):
         """Test sync tls client."""
@@ -201,7 +201,7 @@ class TestSyncClientTls:
         assert isinstance(client.framer, FramerTLS)
         assert client.comm_params.sslctx
 
-    @mock.patch("pymodbus.client.tcp.select")
+    @mock.patch("amodbus.client.tcp.select")
     def test_basic_syn_tls_client(self, mock_select):
         """Test the basic methods for the tls sync client."""
         # receive/send
@@ -237,8 +237,8 @@ class TestSyncClientTls:
         assert not client.send(None)
         assert client.send("1234") == 4
 
-    @mock.patch("pymodbus.client.tcp.time")
-    @mock.patch("pymodbus.client.tcp.select")
+    @mock.patch("amodbus.client.tcp.time")
+    @mock.patch("amodbus.client.tcp.select")
     def test_tls_client_recv(self, mock_select, mock_time):
         """Test the tls client receive method."""
         mock_select.select.return_value = [True]
@@ -267,7 +267,7 @@ class TestSyncClientTls:
         assert repr(client) == rep
 
 class TestSyncClientSerial:
-    """Unittest for the pymodbus.client module."""
+    """Unittest for the amodbus.client module."""
 
     def test_sync_serial_client_instantiation(self):
         """Test sync serial client."""
@@ -412,6 +412,6 @@ class TestSyncClientSerial:
 
     def test_serial_client_with(self):
         """Test with block."""
-        with mock.patch("pymodbus.client.serial.ModbusSerialClient.connect"), ModbusSerialClient("/dev/null") as client:
+        with mock.patch("amodbus.client.serial.ModbusSerialClient.connect"), ModbusSerialClient("/dev/null") as client:
                 assert client
                 client.socket = mockSocket()

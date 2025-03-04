@@ -100,12 +100,12 @@ jobs:
       - name: pylint
         if: matrix.run_lint == true
         run: |
-          pylint --recursive=y examples pymodbus test
+          pylint --recursive=y examples amodbus test
 
       - name: mypy
         if: matrix.run_lint == true
         run: |
-          mypy pymodbus examples
+          mypy amodbus examples
 
       - name: ruff
         if: matrix.run_lint == true
