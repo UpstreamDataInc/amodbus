@@ -204,7 +204,7 @@ class TestTransaction:
             await asyncio.sleep(0.1)
             resp.cancel()
             await asyncio.sleep(0.1)
-            with pytest.raises(ModbusIOException):
+            with pytest.raises(asyncio.CancelledError):
                 await resp
         else:  # if scenario == 7: # response
             transact.comm_params.timeout_connect = 0.2
