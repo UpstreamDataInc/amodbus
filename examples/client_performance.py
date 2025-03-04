@@ -17,7 +17,7 @@ import asyncio
 import time
 
 from amodbus import FramerType
-from amodbus.client import AsyncModbusSerialClient, ModbusSerialClient
+from amodbus.client import ModbusSerialClient
 
 LOOP_COUNT = 1000
 REGISTER_COUNT = 10
@@ -51,7 +51,7 @@ def run_sync_client_test():
 async def run_async_client_test():
     """Run async client."""
     print("--- Testing async client v3.4.1")
-    client = AsyncModbusSerialClient(
+    client = ModbusSerialClient(
         "/dev/ttys007",
         framer=FramerType.RTU,
         baudrate=9600,

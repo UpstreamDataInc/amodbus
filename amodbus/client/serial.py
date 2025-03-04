@@ -15,8 +15,8 @@ with contextlib.suppress(ImportError):
     import serial
 
 
-class AsyncModbusSerialClient(ModbusBaseClient):
-    """**AsyncModbusSerialClient**.
+class ModbusSerialClient(ModbusBaseClient):
+    """**ModbusSerialClient**.
 
     Fixed parameters:
 
@@ -49,10 +49,10 @@ class AsyncModbusSerialClient(ModbusBaseClient):
 
     Example::
 
-        from amodbus.client import AsyncModbusSerialClient
+        from amodbus.client import ModbusSerialClient
 
         async def run():
-            client = AsyncModbusSerialClient("dev/serial0")
+            client = ModbusSerialClient("dev/serial0")
 
             await client.connect()
             ...

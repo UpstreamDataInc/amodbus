@@ -5,14 +5,14 @@ from __future__ import annotations
 import ssl
 from collections.abc import Callable
 
-from amodbus.client.tcp import AsyncModbusTcpClient
+from amodbus.client.tcp import ModbusTcpClient
 from amodbus.framer import FramerType
 from amodbus.pdu import ModbusPDU
 from amodbus.transport import CommParams, CommType
 
 
-class AsyncModbusTlsClient(AsyncModbusTcpClient):
-    """**AsyncModbusTlsClient**.
+class ModbusTlsClient(ModbusTcpClient):
+    """**ModbusTlsClient**.
 
     Fixed parameters:
 
@@ -43,10 +43,10 @@ class AsyncModbusTlsClient(AsyncModbusTcpClient):
 
     Example::
 
-        from amodbus.client import AsyncModbusTlsClient
+        from amodbus.client import ModbusTlsClient
 
         async def run():
-            client = AsyncModbusTlsClient("localhost")
+            client = ModbusTlsClient("localhost")
 
             await client.connect()
             ...
@@ -86,7 +86,7 @@ class AsyncModbusTlsClient(AsyncModbusTcpClient):
             reconnect_delay_max=reconnect_delay_max,
             timeout_connect=timeout,
         )
-        AsyncModbusTcpClient.__init__(
+        ModbusTcpClient.__init__(
             self,
             "",
             framer=framer,

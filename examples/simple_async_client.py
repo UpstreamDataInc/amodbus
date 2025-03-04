@@ -23,7 +23,7 @@ async def run_async_simple_client(comm, host, port, framer=FramerType.SOCKET):
     print("get client")
     client: ModbusClient.ModbusBaseClient
     if comm == "tcp":
-        client = ModbusClient.AsyncModbusTcpClient(
+        client = ModbusClient.ModbusTcpClient(
             host,
             port=port,
             framer=framer,
@@ -32,7 +32,7 @@ async def run_async_simple_client(comm, host, port, framer=FramerType.SOCKET):
             # source_address=("localhost", 0),
         )
     elif comm == "udp":
-        client = ModbusClient.AsyncModbusUdpClient(
+        client = ModbusClient.ModbusUdpClient(
             host,
             port=port,
             framer=framer,
@@ -41,7 +41,7 @@ async def run_async_simple_client(comm, host, port, framer=FramerType.SOCKET):
             # source_address=None,
         )
     elif comm == "serial":
-        client = ModbusClient.AsyncModbusSerialClient(
+        client = ModbusClient.ModbusSerialClient(
             port,
             framer=framer,
             # timeout=10,

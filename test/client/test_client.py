@@ -387,10 +387,10 @@ class TestClientBase:
     @pytest.mark.parametrize(
         ("type_args", "clientclass"),
         [
-            # TBD ("serial", lib_client.AsyncModbusSerialClient),
-            ("tcp", lib_client.AsyncModbusTcpClient),
-            ("tls", lib_client.AsyncModbusTlsClient),
-            ("udp", lib_client.AsyncModbusUdpClient),
+            # TBD ("serial", lib_client.ModbusSerialClient),
+            ("tcp", lib_client.ModbusTcpClient),
+            ("tls", lib_client.ModbusTlsClient),
+            ("udp", lib_client.ModbusUdpClient),
         ],
     )
     @pytest.mark.parametrize("test_default", [True, False])
@@ -448,7 +448,7 @@ class TestClientBase:
 
     async def test_client_connection_made(self):
         """Test protocol made connection."""
-        client = lib_client.AsyncModbusTcpClient("127.0.0.1")
+        client = lib_client.ModbusTcpClient("127.0.0.1")
         assert not client.connected
 
         transport = mock.AsyncMock()
@@ -480,11 +480,11 @@ class TestClientBase:
 
     async def test_client_protocol(self):
         """Test protocol made connection."""
-        client = lib_client.AsyncModbusTcpClient("127.0.0.1")
+        client = lib_client.ModbusTcpClient("127.0.0.1")
         client.ctx.loop = mock.Mock()
         client.ctx.callback_connected()
         client.ctx.callback_disconnected(None)
-        client = lib_client.AsyncModbusTcpClient("127.0.0.1", trace_connect=client.ctx.dummy_trace_connect)
+        client = lib_client.ModbusTcpClient("127.0.0.1", trace_connect=client.ctx.dummy_trace_connect)
         client.ctx.loop = mock.Mock()
         client.ctx.callback_connected()
         client.ctx.callback_disconnected(None)
@@ -511,12 +511,12 @@ class TestClientBase:
 
     async def test_client_tls_connect(self):
         """Test the tls client connection method."""
-        sslctx = lib_client.AsyncModbusTlsClient.generate_ssl(
+        sslctx = lib_client.ModbusTlsClient.generate_ssl(
             certfile=get_certificate("crt"),
             keyfile=get_certificate("key"),
         )
         with mock.patch.object(ssl.SSLSocket, "connect") as mock_method:
-            client = lib_client.AsyncModbusTlsClient(
+            client = lib_client.ModbusTlsClient(
                 "127.0.0.1",
                 sslctx=sslctx,
             )
@@ -526,16 +526,16 @@ class TestClientBase:
 
         with mock.patch.object(socket, "create_connection") as mock_method:
             mock_method.side_effect = OSError()
-            client = lib_client.AsyncModbusTlsClient("127.0.0.1", sslctx=sslctx)
+            client = lib_client.ModbusTlsClient("127.0.0.1", sslctx=sslctx)
             assert not await client.connect()
 
     @pytest.mark.parametrize(
         ("client_class"),
         [
-            lib_client.AsyncModbusSerialClient,
-            lib_client.AsyncModbusTcpClient,
-            lib_client.AsyncModbusTlsClient,
-            lib_client.AsyncModbusUdpClient,
+            lib_client.ModbusSerialClient,
+            lib_client.ModbusTcpClient,
+            lib_client.ModbusTlsClient,
+            lib_client.ModbusUdpClient,
         ],
     )
     async def test_wrong_framer(self, client_class):
@@ -545,4 +545,4 @@ class TestClientBase:
 
     async def test_instance_serial(self):
         """Test instantiate."""
-        _client = lib_client.AsyncModbusSerialClient("port")
+        _client = lib_client.ModbusSerialClient("port")

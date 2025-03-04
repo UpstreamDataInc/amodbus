@@ -145,16 +145,16 @@ Asynchronous example
 
 ::
 
-    from amodbus.client import AsyncModbusTcpClient
+    from amodbus.client import ModbusTcpClient
 
-    client = AsyncModbusTcpClient('MyDevice.lan')    # Create client object
+    client = ModbusTcpClient('MyDevice.lan')    # Create client object
     await client.connect()                           # connect to device, reconnect automatically
     await client.write_coil(1, True, slave=1)        # set information in device
     result = await client.read_coils(2, 3, slave=1)  # get information from device
     print(result.bits[0])                            # use information
     client.close()                                   # Disconnect device
 
-The line :mod:`client = AsyncModbusTcpClient('MyDevice.lan')` only creates the object; it does not activate
+The line :mod:`client = ModbusTcpClient('MyDevice.lan')` only creates the object; it does not activate
 anything.
 
 The line :mod:`await client.connect()` connects to the device (or comm port), if this cannot connect successfully within
@@ -245,16 +245,16 @@ There are a client class for each type of communication and for asynchronous/syn
 .. list-table::
 
    * - **Serial**
-     - :mod:`AsyncModbusSerialClient`
+     - :mod:`ModbusSerialClient`
      - :mod:`ModbusSerialClient`
    * - **TCP**
-     - :mod:`AsyncModbusTcpClient`
+     - :mod:`ModbusTcpClient`
      - :mod:`ModbusTcpClient`
    * - **TLS**
-     - :mod:`AsyncModbusTlsClient`
+     - :mod:`ModbusTlsClient`
      - :mod:`ModbusTlsClient`
    * - **UDP**
-     - :mod:`AsyncModbusUdpClient`
+     - :mod:`ModbusUdpClient`
      - :mod:`ModbusUdpClient`
 
 Client common
@@ -273,7 +273,7 @@ Some methods are common to all clients:
 
 Client serial
 ^^^^^^^^^^^^^
-.. autoclass:: amodbus.client.AsyncModbusSerialClient
+.. autoclass:: amodbus.client.ModbusSerialClient
     :members:
     :member-order: bysource
     :show-inheritance:
@@ -285,7 +285,7 @@ Client serial
 
 Client TCP
 ^^^^^^^^^^
-.. autoclass:: amodbus.client.AsyncModbusTcpClient
+.. autoclass:: amodbus.client.ModbusTcpClient
     :members:
     :member-order: bysource
     :show-inheritance:
@@ -297,7 +297,7 @@ Client TCP
 
 Client TLS
 ^^^^^^^^^^
-.. autoclass:: amodbus.client.AsyncModbusTlsClient
+.. autoclass:: amodbus.client.ModbusTlsClient
     :members:
     :member-order: bysource
     :show-inheritance:
@@ -309,7 +309,7 @@ Client TLS
 
 Client UDP
 ^^^^^^^^^^
-.. autoclass:: amodbus.client.AsyncModbusUdpClient
+.. autoclass:: amodbus.client.ModbusUdpClient
     :members:
     :member-order: bysource
     :show-inheritance:

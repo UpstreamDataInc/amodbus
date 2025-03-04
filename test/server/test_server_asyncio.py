@@ -10,7 +10,7 @@ from unittest import mock
 import pytest
 
 from amodbus import FramerType
-from amodbus.client import AsyncModbusTcpClient
+from amodbus.client import ModbusTcpClient
 from amodbus.datastore import (
     ModbusSequentialDataBlock,
     ModbusServerContext,
@@ -249,7 +249,7 @@ class TestAsyncioServer:
         addr = ("127.0.0.1", 25001)
         await self.start_server(serv_addr=addr)
         for _ in range(2048):
-            client = AsyncModbusTcpClient(addr[0], framer=FramerType.SOCKET, port=addr[1])
+            client = ModbusTcpClient(addr[0], framer=FramerType.SOCKET, port=addr[1])
             await client.connect()
             response = await client.read_coils(31, count=1, slave=1)
             assert not response.isError()
