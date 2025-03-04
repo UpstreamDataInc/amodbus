@@ -13,8 +13,8 @@ python:
     - method: pip
       path: .
       extra_requirements:
-      - documentation
+        - documentation
 
 formats:
-    - epub
-    - pdf
+  - epub
+  - pdf

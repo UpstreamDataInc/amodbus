@@ -1,9 +1,9 @@
 NullModem
 =========
 
-Pymodbus offers a special NullModem transport to help end-to-end test without network.
+amodbus offers a special NullModem transport to help end-to-end test without network.
 
-The NullModem is activated by setting host= (port= for serial) to NULLMODEM_HOST (import pymodbus.transport)
+The NullModem is activated by setting host= (port= for serial) to NULLMODEM_HOST (import amodbus.transport)
 
 The NullModem works with the normal transport types, and simply substitutes the physical connection:
 - *Serial* (RS-485) typically using a dongle

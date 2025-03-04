@@ -1,4 +1,4 @@
-Welcome to PyModbus's documentation!
+Welcome to amodbus's documentation!
 ====================================
 
 Please select a topic in the left hand column.

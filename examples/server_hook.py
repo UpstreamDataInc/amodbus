@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Pymodbus Server With request/response manipulator.
+"""amodbus Server With request/response manipulator.
 
 This is an example of using the builtin request/response tracer to
 manipulate the messages to/from the modbus server
@@ -9,14 +9,14 @@ from __future__ import annotations
 import asyncio
 import logging
 
-from pymodbus import FramerType, pymodbus_apply_logging_config
-from pymodbus.datastore import (
+from amodbus import FramerType, amodbus_apply_logging_config
+from amodbus.datastore import (
     ModbusSequentialDataBlock,
     ModbusServerContext,
     ModbusSlaveContext,
 )
-from pymodbus.pdu import ModbusPDU
-from pymodbus.server import ModbusTcpServer
+from amodbus.pdu import ModbusPDU
+from amodbus.server import ModbusTcpServer
 
 
 class Manipulator:
@@ -45,12 +45,10 @@ class Manipulator:
 
     async def setup(self):
         """Prepare server."""
-        pymodbus_apply_logging_config(logging.DEBUG)
+        amodbus_apply_logging_config(logging.DEBUG)
         datablock = ModbusSequentialDataBlock(0x00, [17] * 100)
         context = ModbusServerContext(
-            slaves=ModbusSlaveContext(
-                di=datablock, co=datablock, hr=datablock, ir=datablock
-            ),
+            slaves=ModbusSlaveContext(di=datablock, co=datablock, hr=datablock, ir=datablock),
             single=True,
         )
         self.server = ModbusTcpServer(

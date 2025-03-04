@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Pymodbus synchronous forwarder.
+"""amodbus synchronous forwarder.
 
 This is a repeater or converter and an example of just how powerful datastore is.
 
@@ -22,20 +22,20 @@ import asyncio
 import logging
 import sys
 
-
 try:
     import helper  # type: ignore[import-not-found]
 except ImportError:
-    print("*** ERROR --> THIS EXAMPLE needs the example directory, please see \n\
-          https://pymodbus.readthedocs.io/en/latest/source/examples.html\n\
-          for more information.")
+    print(
+        "*** ERROR --> THIS EXAMPLE needs the example directory, please see \n\
+          https://amodbus.readthedocs.io/en/latest/source/examples.html\n\
+          for more information."
+    )
     sys.exit(-1)
 
-from pymodbus.client import ModbusTcpClient
-from pymodbus.datastore import ModbusServerContext
-from pymodbus.datastore.remote import RemoteSlaveContext
-from pymodbus.server import StartAsyncTcpServer
-
+from amodbus.client import ModbusTcpClient
+from amodbus.datastore import ModbusServerContext
+from amodbus.datastore.remote import RemoteSlaveContext
+from amodbus.server import StartAsyncTcpServer
 
 _logger = logging.getLogger(__file__)
 

@@ -1,7 +1,7 @@
 Architecture
 =============
 
-The internal structure of pymodbus is a bit complicated, mostly due to the mixture of sync and async.
+The internal structure of amodbus is a bit complicated, mostly due to the mixture of sync and async.
 
 The overall architecture can be viewed as:
 
@@ -25,4 +25,3 @@ In detail the packages can viewed as:
 In detail the classes can be viewed as:
 
 .. image:: classes.png
-

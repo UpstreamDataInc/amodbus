@@ -5,7 +5,7 @@ This example show how much faster the async version is.
 
 example run:
 
-(pymodbus) % ./client_performance.py
+(amodbus) % ./client_performance.py
 --- Testing sync client v3.4.1
 running 1000 call (each 10 registers), took 114.10 seconds
 Averages 114.10 ms pr call and 11.41 ms pr register.
@@ -16,9 +16,8 @@ Averages 0.33 ms pr call and 0.03 ms pr register.
 import asyncio
 import time
 
-from pymodbus import FramerType
-from pymodbus.client import AsyncModbusSerialClient, ModbusSerialClient
-
+from amodbus import FramerType
+from amodbus.client import AsyncModbusSerialClient, ModbusSerialClient
 
 LOOP_COUNT = 1000
 REGISTER_COUNT = 10
@@ -45,9 +44,7 @@ def run_sync_client_test():
     run_time = time.time() - start_time
     avg_call = (run_time / LOOP_COUNT) * 1000
     avg_register = avg_call / REGISTER_COUNT
-    print(
-        f"running {LOOP_COUNT} call (each {REGISTER_COUNT} registers), took {run_time:.2f} seconds"
-    )
+    print(f"running {LOOP_COUNT} call (each {REGISTER_COUNT} registers), took {run_time:.2f} seconds")
     print(f"Averages {avg_call:.2f} ms pr call and {avg_register:.2f} ms pr register.")
 
 
@@ -72,9 +69,7 @@ async def run_async_client_test():
     run_time = time.time() - start_time
     avg_call = (run_time / LOOP_COUNT) * 1000
     avg_register = avg_call / REGISTER_COUNT
-    print(
-        f"running {LOOP_COUNT} call (each {REGISTER_COUNT} registers), took {run_time:.2f} seconds"
-    )
+    print(f"running {LOOP_COUNT} call (each {REGISTER_COUNT} registers), took {run_time:.2f} seconds")
     print(f"Averages {avg_call:.2f} ms pr call and {avg_register:.2f} ms pr register.")
 
 

@@ -1,27 +1,24 @@
 #!/usr/bin/env python3
-"""Pymodbus simulator server/client Example.
+"""amodbus simulator server/client Example.
 
 An example of how to use the simulator (server) with a client.
 
 for usage see documentation of simulator
 
-.. tip:: pymodbus.simulator starts the server directly from the commandline
+.. tip:: amodbus.simulator starts the server directly from the commandline
 """
 import asyncio
 import logging
 
-from pymodbus import FramerType
-from pymodbus.client import AsyncModbusTcpClient
-from pymodbus.datastore import ModbusSimulatorContext
-from pymodbus.server import ModbusSimulatorServer, get_simulator_commandline
-
+from amodbus import FramerType
+from amodbus.client import AsyncModbusTcpClient
+from amodbus.datastore import ModbusSimulatorContext
+from amodbus.server import ModbusSimulatorServer, get_simulator_commandline
 
 _logger = logging.getLogger(__file__)
 
 
-async def read_registers(
-    client, addr, count, is_int, curval=None, minval=None, maxval=None
-):
+async def read_registers(client, addr, count, is_int, curval=None, minval=None, maxval=None):
     """Run modbus call."""
     rr = await client.read_holding_registers(addr, count=count, slave=1)
     assert not rr.isError()

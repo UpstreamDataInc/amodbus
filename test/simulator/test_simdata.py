@@ -2,7 +2,7 @@
 
 import pytest
 
-from pymodbus.simulator import SimData, SimDataType, SimDevice
+from amodbus.simulator import SimData, SimDataType, SimDevice
 
 
 class TestSimData:
@@ -37,10 +37,10 @@ class TestSimData:
     @pytest.mark.parametrize("action", ["my action"])
     def test_simdata_action(self, action):
         """Test that simdata can be objects."""
+
         def dummy_action():
             """Set action."""
 
         with pytest.raises(TypeError):
             SimData(0, action=action)
         SimData(0, action=dummy_action)
-

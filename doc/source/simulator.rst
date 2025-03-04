@@ -66,7 +66,7 @@ A server consist of communication parameters and a device or a list of devices
 SimData
 ^^^^^^^
 
-.. autoclass:: pymodbus.simulator.SimData
+.. autoclass:: amodbus.simulator.SimData
     :members:
     :undoc-members:
     :show-inheritance:
@@ -74,7 +74,7 @@ SimData
 SimDevice
 ^^^^^^^^^
 
-.. autoclass:: pymodbus.simulator.SimDevice
+.. autoclass:: amodbus.simulator.SimDevice
     :members:
     :undoc-members:
     :show-inheritance:
@@ -82,7 +82,7 @@ SimDevice
 SimDataType
 ^^^^^^^^^^^
 
-.. autoclass:: pymodbus.simulator.SimDataType
+.. autoclass:: amodbus.simulator.SimDataType
     :members:
     :undoc-members:
     :show-inheritance:
@@ -90,7 +90,7 @@ SimDataType
 SimDataValue
 ^^^^^^^^^^^^
 
-.. autoclass:: pymodbus.simulator.SimDataValue
+.. autoclass:: amodbus.simulator.SimDataValue
     :members:
     :undoc-members:
     :show-inheritance:

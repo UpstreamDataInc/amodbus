@@ -1,7 +1,7 @@
 Server
 ======
 
-Pymodbus offers servers with transport protocols for
+amodbus offers servers with transport protocols for
 
 - *Serial* (RS-485) typically using a dongle
 - *TCP*
@@ -20,7 +20,7 @@ applications to use the server as if it was synchronous.
 
 *Warning* The current framer implementation does not support running the server on a shared rs485 line (multipoint).
 
-.. automodule:: pymodbus.server
+.. automodule:: amodbus.server
     :members:
     :undoc-members:
     :show-inheritance:

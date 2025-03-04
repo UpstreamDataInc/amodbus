@@ -1,4 +1,4 @@
-Pymodbus internals
+amodbus internals
 ==================
 
 .. toctree::
@@ -9,7 +9,6 @@ Pymodbus internals
    library/datastore.rst
    library/framer.rst
    library/constants.rst
-   library/pymodbus.rst
+   library/amodbus.rst
 
    library/architecture/architecture.rst
-

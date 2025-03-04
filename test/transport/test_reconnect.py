@@ -1,10 +1,11 @@
 """Test transport."""
+
 import asyncio
 from unittest import mock
 
 import pytest
 
-from pymodbus.transport import NULLMODEM_HOST, CommType
+from amodbus.transport import NULLMODEM_HOST, CommType
 
 
 class TestTransportReconnect:
@@ -100,4 +101,3 @@ class TestTransportReconnect:
         server.connection_lost(RuntimeError("Listener disconnected lost"))
         assert server.reconnect_task
         server.close()
-

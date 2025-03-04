@@ -1,9 +1,10 @@
 """Test register read messages."""
+
 import pytest
 
-from pymodbus.exceptions import ModbusIOException
-from pymodbus.pdu import ExceptionResponse
-from pymodbus.pdu.register_message import (
+from amodbus.exceptions import ModbusIOException
+from amodbus.pdu import ExceptionResponse
+from amodbus.pdu.register_message import (
     ReadHoldingRegistersRequest,
     ReadHoldingRegistersResponse,
     ReadInputRegistersRequest,
@@ -11,7 +12,6 @@ from pymodbus.pdu.register_message import (
     ReadWriteMultipleRegistersRequest,
     ReadWriteMultipleRegistersResponse,
 )
-
 
 TEST_MESSAGE = b"\x06\x00\x0a\x00\x0b\x00\x0c"
 
@@ -54,7 +54,8 @@ class TestReadRegisterMessages:
             ReadWriteMultipleRegistersRequest(
                 write_registers=[0xAB],
                 **arguments,
-            ): b"\x00\x01\x00\x05\x00\x01\x00" b"\x01\x02\x00\xAB",
+            ): b"\x00\x01\x00\x05\x00\x01\x00"
+            b"\x01\x02\x00\xAB",
         }
         self.response_read = {
             ReadHoldingRegistersResponse(registers=self.values): TEST_MESSAGE,
@@ -80,9 +81,9 @@ class TestReadRegisterMessages:
 
     def test_register_read_response_decode_error(self):
         """Test register read response."""
-        reg = ReadHoldingRegistersResponse(count = 5)
+        reg = ReadHoldingRegistersResponse(count=5)
         with pytest.raises(ModbusIOException):
-            reg.decode(b'\x14\x00\x03\x00\x11')
+            reg.decode(b"\x14\x00\x03\x00\x11")
 
     async def test_register_read_requests_count_errors(self):
         """This tests that the register request messages.
@@ -90,14 +91,10 @@ class TestReadRegisterMessages:
         will break on counts that are out of range
         """
         requests = [
-            #ReadHoldingRegistersRequest(address=1, count=0x800),
-            #ReadInputRegistersRequest(address=1, count=0x800),
-            ReadWriteMultipleRegistersRequest(
-                read_address=1, read_count=0x800, write_address=1, write_registers=[5]
-            ),
-            ReadWriteMultipleRegistersRequest(
-                read_address=1, read_count=5, write_address=1, write_registers=[]
-            ),
+            # ReadHoldingRegistersRequest(address=1, count=0x800),
+            # ReadInputRegistersRequest(address=1, count=0x800),
+            ReadWriteMultipleRegistersRequest(read_address=1, read_count=0x800, write_address=1, write_registers=[5]),
+            ReadWriteMultipleRegistersRequest(read_address=1, read_count=5, write_address=1, write_registers=[]),
         ]
         for request in requests:
             result = await request.update_datastore(None)
@@ -148,14 +145,14 @@ class TestReadRegisterMessages:
             read_address=1, read_count=10, write_address=2, write_registers=[0x00]
         )
         await request.update_datastore(context)
-        #assert response.exception_code == ExceptionResponse.ILLEGAL_ADDRESS
+        # assert response.exception_code == ExceptionResponse.ILLEGAL_ADDRESS
 
         await request.update_datastore(context)
-        #assert response.exception_code == ExceptionResponse.ILLEGAL_ADDRESS
+        # assert response.exception_code == ExceptionResponse.ILLEGAL_ADDRESS
 
         request.write_byte_count = 0x100
         await request.update_datastore(context)
-        #assert response.exception_code == ExceptionResponse.ILLEGAL_VALUE
+        # assert response.exception_code == ExceptionResponse.ILLEGAL_VALUE
 
     def test_serializing_to_string(self):
         """Test serializing to string."""

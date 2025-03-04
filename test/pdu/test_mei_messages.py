@@ -3,22 +3,22 @@
 This fixture tests the functionality of all the
 mei based request/response messages:
 """
+
 import pytest
 
-from pymodbus.constants import DeviceInformation
-from pymodbus.device import ModbusControlBlock
-from pymodbus.pdu.mei_message import (
+from amodbus.constants import DeviceInformation
+from amodbus.device import ModbusControlBlock
+from amodbus.pdu.mei_message import (
     ReadDeviceInformationRequest,
     ReadDeviceInformationResponse,
 )
-
 
 TEST_VERSION = b"v2.1.12"
 TEST_MESSAGE = b"\x00\x07Company\x01\x07Product\x02\x07v2.1.12"
 
 
 class TestMeiMessage:
-    """Unittest for the pymodbus.mei_message module."""
+    """Unittest for the amodbus.mei_message module."""
 
     # -----------------------------------------------------------------------#
     #  Read Device Information
@@ -57,9 +57,7 @@ class TestMeiMessage:
         with pytest.raises(KeyError):
             _ = result.information[0x81]
 
-        handle = ReadDeviceInformationRequest(
-            read_code=DeviceInformation.EXTENDED, object_id=0x80
-        )
+        handle = ReadDeviceInformationRequest(read_code=DeviceInformation.EXTENDED, object_id=0x80)
         result = await handle.update_datastore(context)
         assert result.information[0x81] == ["Test", "Repeated"]
 
@@ -90,9 +88,7 @@ class TestMeiMessage:
             0x01: "Product",
             0x02: TEST_VERSION,
         }
-        handle = ReadDeviceInformationResponse(
-            read_code=DeviceInformation.BASIC, information=dataset
-        )
+        handle = ReadDeviceInformationResponse(read_code=DeviceInformation.BASIC, information=dataset)
         result = handle.encode()
         assert result == message
         assert "ReadDeviceInformationResponse" in str(handle)
@@ -106,9 +102,7 @@ class TestMeiMessage:
         message = b"\x0e\x03\x83\x00\x00\x05"
         message += TEST_MESSAGE
         message += b"\x81\x04Test\x81\x08Repeated"
-        handle = ReadDeviceInformationResponse(
-            read_code=DeviceInformation.EXTENDED, information=dataset
-        )
+        handle = ReadDeviceInformationResponse(read_code=DeviceInformation.EXTENDED, information=dataset)
         result = handle.encode()
         assert result == message
 
@@ -130,9 +124,7 @@ class TestMeiMessage:
             0x02: TEST_VERSION,
             0x80: longstring,
         }
-        handle = ReadDeviceInformationResponse(
-            read_code=DeviceInformation.BASIC, information=dataset
-        )
+        handle = ReadDeviceInformationResponse(read_code=DeviceInformation.BASIC, information=dataset)
         result = handle.encode()
         assert result == message
         assert "ReadDeviceInformationResponse" in str(handle)
@@ -153,9 +145,7 @@ class TestMeiMessage:
 
     def test_frame_size(self):
         """Test that the read device information response can decode."""
-        message = (
-            b"\x04\x2B\x0E\x01\x81\x00\x01\x01\x00\x06\x66\x6F\x6F\x62\x61\x72\xD7\x3B"
-        )
+        message = b"\x04\x2B\x0E\x01\x81\x00\x01\x01\x00\x06\x66\x6F\x6F\x62\x61\x72\xD7\x3B"
         result = ReadDeviceInformationResponse.calculateRtuFrameSize(message)
         assert result == 18
         message = b"\x00\x2B\x0E\x02\x00\x4D\x47"

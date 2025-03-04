@@ -6,12 +6,12 @@ utilities.
 * PayloadBuilder
 * PayloadDecoder
 """
+
 import pytest
 
-from pymodbus.constants import Endian
-from pymodbus.exceptions import ParameterException
-from pymodbus.payload import BinaryPayloadBuilder, BinaryPayloadDecoder
-
+from amodbus.constants import Endian
+from amodbus.exceptions import ParameterException
+from amodbus.payload import BinaryPayloadBuilder, BinaryPayloadDecoder
 
 # ---------------------------------------------------------------------------#
 #  Fixture
@@ -163,17 +163,13 @@ class TestPayloadUtility:
             False,
         ]
 
-        builder = BinaryPayloadBuilder(
-            [b"\x12", b"\x34", b"\x56", b"\x78"], repack=True
-        )
+        builder = BinaryPayloadBuilder([b"\x12", b"\x34", b"\x56", b"\x78"], repack=True)
         assert builder.encode() == b"\x12\x34\x56\x78"
         assert builder.to_registers() == [13330, 30806]
         coils = builder.to_coils()
         assert _coils1 == coils
 
-        builder = BinaryPayloadBuilder(
-            [b"\x12", b"\x34", b"\x56", b"\x78"], byteorder=Endian.BIG
-        )
+        builder = BinaryPayloadBuilder([b"\x12", b"\x34", b"\x56", b"\x78"], byteorder=Endian.BIG)
         assert builder.encode() == b"\x12\x34\x56\x78"
         assert builder.to_registers() == [4660, 22136]
         assert str(builder) == "\x12\x34\x56\x78"
@@ -186,9 +182,7 @@ class TestPayloadUtility:
 
     def test_little_endian_payload_decoder(self):
         """Test basic bit message encoding/decoding."""
-        decoder = BinaryPayloadDecoder(
-            self.little_endian_payload, byteorder=Endian.LITTLE, wordorder=Endian.LITTLE
-        )
+        decoder = BinaryPayloadDecoder(self.little_endian_payload, byteorder=Endian.LITTLE, wordorder=Endian.LITTLE)
         assert decoder.decode_8bit_uint() == 1
         assert decoder.decode_16bit_uint() == 2
         assert decoder.decode_32bit_uint() == 3

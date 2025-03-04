@@ -1,11 +1,11 @@
-Pymodbus REPL (Read Evaluate Print Loop)
+amodbus REPL (Read Evaluate Print Loop)
 =========================================
 
-Pymodbus provides a simple UI to maniplute server/client, this is handled
-by a separate repo `pymodbus-repl <https://github.com/pymodbus-dev/repl>`__
+amodbus provides a simple UI to maniplute server/client, this is handled
+by a separate repo `amodbus-repl <https://github.com/UpstreamDataInc/repl>`__
 
 
-Install as pymodbus optional dependency
+Install as amodbus optional dependency
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 ::
@@ -17,4 +17,4 @@ Install directly from the github repo
 
 ::
 
-   $ pip install "git+https://github.com/pymodbus-dev/repl"
+   $ pip install "git+https://github.com/UpstreamDataInc/repl"

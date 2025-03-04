@@ -1,7 +1,8 @@
 """Test exceptions."""
+
 import pytest
 
-from pymodbus.exceptions import (
+from amodbus.exceptions import (
     ConnectionException,
     ModbusException,
     ModbusIOException,
@@ -11,7 +12,7 @@ from pymodbus.exceptions import (
 
 
 class TestExceptions:  # pylint: disable=too-few-public-methods
-    """Unittest for the pymodbus.exceptions module."""
+    """Unittest for the amodbus.exceptions module."""
 
     exceptions = [
         ModbusException("bad base"),

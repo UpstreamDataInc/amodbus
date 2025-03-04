@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
-"""Pymodbus datastore simulator Example.
+"""amodbus datastore simulator Example.
 
 An example of using simulator datastore with json interface.
 
 Detailed description of the device definition can be found at:
 
-    https://pymodbus.readthedocs.io/en/latest/source/library/simulator/config.html#device-entries
+    https://amodbus.readthedocs.io/en/latest/source/library/simulator/config.html#device-entries
 
 usage::
 
@@ -26,17 +26,16 @@ usage::
 The corresponding client can be started as:
     python3 client_sync.py
 
-.. tip:: This is NOT the pymodbus simulator, that is started as pymodbus.simulator.
+.. tip:: This is NOT the amodbus simulator, that is started as amodbus.simulator.
 """
 import argparse
 import asyncio
 import logging
 
-from pymodbus import pymodbus_apply_logging_config
-from pymodbus.datastore import ModbusServerContext, ModbusSimulatorContext
-from pymodbus.device import ModbusDeviceIdentification
-from pymodbus.server import StartAsyncTcpServer
-
+from amodbus import amodbus_apply_logging_config
+from amodbus.datastore import ModbusServerContext, ModbusSimulatorContext
+from amodbus.device import ModbusDeviceIdentification
+from amodbus.server import StartAsyncTcpServer
 
 _logger = logging.getLogger(__file__)
 
@@ -144,11 +143,11 @@ def get_commandline(cmdline=None):
 def setup_simulator(setup=None, actions=None, cmdline=None):
     """Run server setup."""
     if not setup:
-        setup=demo_config
+        setup = demo_config
     if not actions:
-        actions=demo_actions
+        actions = demo_actions
     args = get_commandline(cmdline=cmdline)
-    pymodbus_apply_logging_config(args.log.upper())
+    amodbus_apply_logging_config(args.log.upper())
     _logger.setLevel(args.log.upper())
     args.port = int(args.port)
 
@@ -156,11 +155,11 @@ def setup_simulator(setup=None, actions=None, cmdline=None):
     args.context = ModbusServerContext(slaves=context, single=True)
     args.identity = ModbusDeviceIdentification(
         info_name={
-            "VendorName": "Pymodbus",
+            "VendorName": "amodbus",
             "ProductCode": "PM",
-            "VendorUrl": "https://github.com/pymodbus-dev/pymodbus/",
-            "ProductName": "Pymodbus Server",
-            "ModelName": "Pymodbus Server",
+            "VendorUrl": "https://github.com/UpstreamDataInc/amodbus/",
+            "ProductName": "amodbus Server",
+            "ModelName": "amodbus Server",
             "MajorMinorRevision": "test",
         }
     )

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Pymodbus simulator datamodel examples.
+"""amodbus simulator datamodel examples.
 
 **WORK IN PROGRESS, do NOT use**
 
@@ -8,10 +8,10 @@ device.
 
 There are different examples, to show the flexibility of the simulator datamodel.
 
-.. tip:: This is NOT the pymodbus simulator, that is started as pymodbus.simulator.
+.. tip:: This is NOT the amodbus simulator, that is started as amodbus.simulator.
 """
 
-from pymodbus.simulator import SimCheckConfig, SimData, SimDataType, SimDevice
+from amodbus.simulator import SimCheckConfig, SimData, SimDataType, SimDevice
 
 
 def define_registers():
@@ -32,40 +32,50 @@ def define_registers():
     be addressed directly.
     """
     # Define a group of coils (remark difference between shared and non-shared)
-    block_coil = [SimData(0, count=100, datatype=SimDataType.DEFAULT),
-                  SimData(0, True, 16)]
+    block_coil = [
+        SimData(0, count=100, datatype=SimDataType.DEFAULT),
+        SimData(0, True, 16),
+    ]
     block_coil_shared = [SimData(0, 0xFFFF, 16)]
 
     # SimData can be reused with copying
     block_direct = block_coil
 
     # Define a group of registers (remark NO difference between shared and non-shared)
-    block_holding = [SimData(10, count=100, datatype=SimDataType.DEFAULT),
-                    SimData(10, 123.4, datatype=SimDataType.FLOAT32),
-                    SimData(12, 123456789.3, datatype=SimDataType.FLOAT64),
-                    SimData(17, value=123, count=5, datatype=SimDataType.INT32),
-                    SimData(27, "Hello ", datatype=SimDataType.STRING)]
+    block_holding = [
+        SimData(10, count=100, datatype=SimDataType.DEFAULT),
+        SimData(10, 123.4, datatype=SimDataType.FLOAT32),
+        SimData(12, 123456789.3, datatype=SimDataType.FLOAT64),
+        SimData(17, value=123, count=5, datatype=SimDataType.INT32),
+        SimData(27, "Hello ", datatype=SimDataType.STRING),
+    ]
     block_input = block_holding
-    block_shared = [SimData(10, 123.4, datatype=SimDataType.FLOAT32),
-                    SimData(12, 123456789.3, datatype=SimDataType.FLOAT64),
-                    SimData(16, 0xf0f0, datatype=SimDataType.BITS),
-                    SimData(17, value=123, count=5, datatype=SimDataType.INT32),
-                    SimData(27, "Hello ", datatype=SimDataType.STRING)]
+    block_shared = [
+        SimData(10, 123.4, datatype=SimDataType.FLOAT32),
+        SimData(12, 123456789.3, datatype=SimDataType.FLOAT64),
+        SimData(16, 0xF0F0, datatype=SimDataType.BITS),
+        SimData(17, value=123, count=5, datatype=SimDataType.INT32),
+        SimData(27, "Hello ", datatype=SimDataType.STRING),
+    ]
 
-    device_block = SimDevice(1, False,
-                            block_coil=block_coil,
-                            block_direct=block_direct,
-                            block_holding=block_holding,
-                            block_input=block_input)
-    device_shared = SimDevice(2, False,
-                            block_shared=block_coil_shared+block_shared)
+    device_block = SimDevice(
+        1,
+        False,
+        block_coil=block_coil,
+        block_direct=block_direct,
+        block_holding=block_holding,
+        block_input=block_input,
+    )
+    device_shared = SimDevice(2, False, block_shared=block_coil_shared + block_shared)
     assert not SimCheckConfig([device_block])
     assert not SimCheckConfig([device_shared])
     assert not SimCheckConfig([device_shared, device_block])
 
+
 def main():
     """Combine setup and run."""
     define_registers()
+
 
 if __name__ == "__main__":
     main()

@@ -4,15 +4,15 @@ from unittest import mock
 
 import pytest
 
-from pymodbus.datastore.remote import RemoteSlaveContext
-from pymodbus.exceptions import NotImplementedException
-from pymodbus.pdu import ExceptionResponse
-from pymodbus.pdu.bit_message import ReadCoilsResponse, WriteMultipleCoilsResponse
-from pymodbus.pdu.register_message import ReadInputRegistersResponse
+from amodbus.datastore.remote import RemoteSlaveContext
+from amodbus.exceptions import NotImplementedException
+from amodbus.pdu import ExceptionResponse
+from amodbus.pdu.bit_message import ReadCoilsResponse, WriteMultipleCoilsResponse
+from amodbus.pdu.register_message import ReadInputRegistersResponse
 
 
 class TestRemoteDataStore:
-    """Unittest for the pymodbus.datastore.remote module."""
+    """Unittest for the amodbus.datastore.remote module."""
 
     def test_remote_slave_context(self):
         """Test a modbus remote slave context."""
@@ -38,9 +38,7 @@ class TestRemoteDataStore:
         """Test setting values against a remote slave context."""
         client = mock.MagicMock()
         client.write_coils = mock.MagicMock(return_value=WriteMultipleCoilsResponse())
-        client.write_registers = mock.MagicMock(
-            return_value=ExceptionResponse(0x10, 0x02)
-        )
+        client.write_registers = mock.MagicMock(return_value=ExceptionResponse(0x10, 0x02))
 
         context = RemoteSlaveContext(client)
         await context.async_setValues(0x0F, 0, [1])
@@ -71,12 +69,8 @@ class TestRemoteDataStore:
         client = mock.MagicMock()
         pdu = ReadCoilsResponse(bits=[True] * 10)
         client.read_coils = mock.MagicMock(return_value=pdu)
-        client.read_input_registers = mock.MagicMock(
-            return_value=ReadInputRegistersResponse(registers=[10] * 10)
-        )
-        client.read_holding_registers = mock.MagicMock(
-            return_value=ExceptionResponse(0x15)
-        )
+        client.read_input_registers = mock.MagicMock(return_value=ReadInputRegistersResponse(registers=[10] * 10))
+        client.read_holding_registers = mock.MagicMock(return_value=ExceptionResponse(0x15))
 
         context = RemoteSlaveContext(client)
         result = await context.async_getValues(1, 0, 10)

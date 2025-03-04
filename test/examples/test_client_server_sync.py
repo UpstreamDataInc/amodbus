@@ -7,12 +7,15 @@ examples.
 
 These are basis for most examples and thus tested separately
 """
+
 import os
 from threading import Thread
 from time import sleep
 
 import pytest
 
+from amodbus.exceptions import ConnectionException
+from amodbus.server import ServerStop
 from examples.client_sync import (
     main,
     run_a_few_calls,
@@ -21,9 +24,6 @@ from examples.client_sync import (
 )
 from examples.server_async import setup_server
 from examples.server_sync import run_sync_server
-from pymodbus.exceptions import ConnectionException
-from pymodbus.server import ServerStop
-
 
 SLEEPING = 5 if os.name == "nt" else 1
 

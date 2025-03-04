@@ -4,6 +4,7 @@ Contains common functions get get_command_line() to avoid duplicating
 code that are not relevant for the code as such, like e.g.
 get_command_line
 """
+
 from __future__ import annotations
 
 import argparse
@@ -11,13 +12,17 @@ import logging
 import os
 from typing import Any
 
-from pymodbus import pymodbus_apply_logging_config
-
+from amodbus import amodbus_apply_logging_config
 
 _logger = logging.getLogger(__file__)
 
 
-def get_commandline(server: bool = False, description: str | None = None, extras: Any = None, cmdline: str | None = None):
+def get_commandline(
+    server: bool = False,
+    description: str | None = None,
+    extras: Any = None,
+    cmdline: str | None = None,
+):
     """Read and check command line arguments."""
     parser = argparse.ArgumentParser(description=description)
     parser.add_argument(
@@ -104,7 +109,7 @@ def get_commandline(server: bool = False, description: str | None = None, extras
         "serial": ["rtu", "/dev/ptyp0"],
         "tls": ["tls", 5020],
     }
-    pymodbus_apply_logging_config(args.log.upper())
+    amodbus_apply_logging_config(args.log.upper())
     _logger.setLevel(args.log.upper())
     if not args.framer:
         args.framer = comm_defaults[args.comm][0]
@@ -126,8 +131,8 @@ def get_certificate(suffix: str):
         path = "../../examples"
     elif cwd == "test":
         path = "../examples"
-    elif cwd == "pymodbus":
+    elif cwd == "amodbus":
         path = "examples"
     else:
         raise RuntimeError(f"**Error** Cannot find certificate path={cwd}")
-    return f"{path}/certificates/pymodbus.{suffix}"
+    return f"{path}/certificates/amodbus.{suffix}"

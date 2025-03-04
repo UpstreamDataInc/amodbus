@@ -12,20 +12,25 @@ import asyncio
 import logging
 from datetime import datetime
 
-from pymodbus.datastore import ModbusSequentialDataBlock, ModbusSlaveContext, ModbusServerContext
-from pymodbus.server import StartAsyncTcpServer
+from amodbus.datastore import (
+    ModbusSequentialDataBlock,
+    ModbusServerContext,
+    ModbusSlaveContext,
+)
+from amodbus.server import StartAsyncTcpServer
 
 INITIAL_WATER_LEVEL = 300
 WATER_INFLOW = 1
 PUMP_OUTFLOW = 8
 
-logging.basicConfig(level = logging.INFO)
+logging.basicConfig(level=logging.INFO)
 
 dio_di = ModbusSequentialDataBlock(1, [False] * 8)
 dio_co = ModbusSequentialDataBlock(1, [False] * 8)
-dio_context = ModbusSlaveContext(di = dio_di, co = dio_co)
+dio_context = ModbusSlaveContext(di=dio_di, co=dio_co)
 wlm_ir = ModbusSequentialDataBlock(1, [INITIAL_WATER_LEVEL])
-wlm_context = ModbusSlaveContext(ir = wlm_ir)
+wlm_context = ModbusSlaveContext(ir=wlm_ir)
+
 
 async def update():
     while True:
@@ -40,6 +45,7 @@ async def update():
         water_level = max(0, min(INITIAL_WATER_LEVEL * 10, water_level))
         wlm_ir.setValues(1, [water_level])
 
+
 async def log():
     while True:
         await asyncio.sleep(10)
@@ -49,13 +55,14 @@ async def log():
 
         logging.info(f"{datetime.now()}: WLM water level: {wlm_level}, DIO outputs: {dio_outputs}")
 
+
 async def run():
-    ctx = ModbusServerContext(slaves = dio_context)
-    dio_server = asyncio.create_task(StartAsyncTcpServer(context = ctx, address = ("0.0.0.0", 5020)))
+    ctx = ModbusServerContext(slaves=dio_context)
+    dio_server = asyncio.create_task(StartAsyncTcpServer(context=ctx, address=("0.0.0.0", 5020)))
     logging.info("Initialising slave server DIO on port 5020")
 
-    ctx = ModbusServerContext(slaves = wlm_context)
-    wlm_server = asyncio.create_task(StartAsyncTcpServer(context = ctx, address = ("0.0.0.0", 5021)))
+    ctx = ModbusServerContext(slaves=wlm_context)
+    wlm_server = asyncio.create_task(StartAsyncTcpServer(context=ctx, address=("0.0.0.0", 5021)))
     logging.info("Initialising slave server WLM on port 5021")
 
     update_task = asyncio.create_task(update())
@@ -63,6 +70,7 @@ async def run():
 
     logging.info("Init complete")
     await asyncio.gather(dio_server, wlm_server, update_task, logging_task)
+
 
 if __name__ == "__main__":
     asyncio.run(run(), debug=True)

@@ -1,12 +1,13 @@
 """Test server context."""
+
 import pytest
 
-from pymodbus.datastore import ModbusServerContext, ModbusSlaveContext
-from pymodbus.exceptions import NoSuchSlaveException
+from amodbus.datastore import ModbusServerContext, ModbusSlaveContext
+from amodbus.exceptions import NoSuchSlaveException
 
 
 class TestServerSingleContext:
-    """This is the test for the pymodbus.datastore.ModbusServerContext using a single slave context."""
+    """This is the test for the amodbus.datastore.ModbusServerContext using a single slave context."""
 
     slave = ModbusSlaveContext()
     context = None
@@ -58,7 +59,7 @@ class TestServerSingleContext:
 
 
 class TestServerMultipleContext:
-    """This is the test for the pymodbus.datastore.ModbusServerContext using multiple slave contexts."""
+    """This is the test for the amodbus.datastore.ModbusServerContext using multiple slave contexts."""
 
     slaves = None
     context = None

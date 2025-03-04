@@ -7,7 +7,7 @@ trap 'echo "\"${last_command}\" command filed with exit code $?."' EXIT
 
 codespell
 ruff check --fix --exit-non-zero-on-fix .
-pylint --recursive=y examples pymodbus test
-mypy pymodbus examples
+pylint --recursive=y examples amodbus test
+mypy amodbus examples
 pytest -x --cov --numprocesses auto
 echo "Ready to push"

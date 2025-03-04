@@ -1,4 +1,5 @@
 """Test example helper function."""
+
 from unittest import mock
 
 import pytest
@@ -33,9 +34,7 @@ class TestHelperExamples:
 
     def test_commandline(self):
         """Test defaults."""
-        args = helper.get_commandline(
-            server=False, cmdline=["--log", "debug", "--comm", "udp"]
-        )
+        args = helper.get_commandline(server=False, cmdline=["--log", "debug", "--comm", "udp"])
         assert args.comm == "udp"
         assert args.log == "debug"
 
@@ -48,7 +47,8 @@ class TestHelperExamples:
 
     def test_certificate_illegal(self):
         """Test illegal path."""
-        with mock.patch(
-            "examples.helper.os.getcwd", return_value="no/good/path"
-        ), pytest.raises(RuntimeError):
+        with (
+            mock.patch("examples.helper.os.getcwd", return_value="no/good/path"),
+            pytest.raises(RuntimeError),
+        ):
             helper.get_certificate("crt")

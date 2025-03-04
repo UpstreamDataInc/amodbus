@@ -1,34 +1,34 @@
 Framer
 ======
 
-pymodbus\.framer\.FramerAscii module
+amodbus\.framer\.FramerAscii module
 ------------------------------------------
 
-.. automodule:: pymodbus.framer.FramerAscii
+.. automodule:: amodbus.framer.FramerAscii
     :members:
     :undoc-members:
     :show-inheritance:
 
-pymodbus\.framer\.FramerRTU module
+amodbus\.framer\.FramerRTU module
 ----------------------------------------
 
-.. automodule:: pymodbus.framer.FramerRTU
+.. automodule:: amodbus.framer.FramerRTU
     :members:
     :undoc-members:
     :show-inheritance:
 
-pymodbus\.framer\.FramerSocket module
+amodbus\.framer\.FramerSocket module
 -------------------------------------------
 
-.. automodule:: pymodbus.framer.FramerSocket
+.. automodule:: amodbus.framer.FramerSocket
     :members:
     :undoc-members:
     :show-inheritance:
 
-pymodbus\.framer\.FramerTLS module
+amodbus\.framer\.FramerTLS module
 ----------------------------------------
 
-.. automodule:: pymodbus.framer.FramerTLS
+.. automodule:: amodbus.framer.FramerTLS
     :members:
     :undoc-members:
     :show-inheritance:

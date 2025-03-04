@@ -1,4 +1,5 @@
 """Test transport."""
+
 import asyncio
 import platform
 import time
@@ -6,13 +7,9 @@ from unittest import mock
 
 import pytest
 
-from pymodbus.logging import Log
-from pymodbus.transport import (
-    CommType,
-    ModbusProtocol,
-)
-from pymodbus.transport.serialtransport import SerialTransport
-
+from amodbus.logging import Log
+from amodbus.transport import CommType, ModbusProtocol
+from amodbus.transport.serialtransport import SerialTransport
 
 FACTOR = 1.2 if platform.system().lower() != "windows" else 4.2
 
@@ -51,7 +48,7 @@ class TestTransportComm:
             (CommType.TCP, "illegal_host"),
             (CommType.TLS, "illegal_host"),
             # (CommType.UDP, "illegal_host"), udp is connectionless.
-            (CommType.SERIAL, "/dev/tty007pymodbus_5008"),
+            (CommType.SERIAL, "/dev/tty007amodbus_5008"),
         ],
     )
     async def test_connect_not_ok(self, client, use_port):
@@ -85,7 +82,7 @@ class TestTransportComm:
             (CommType.TCP, "illegal_host"),
             (CommType.TLS, "illegal_host"),
             (CommType.UDP, "illegal_host"),
-            (CommType.SERIAL, "/dev/tty007pymodbus_5016"),
+            (CommType.SERIAL, "/dev/tty007amodbus_5016"),
         ],
     )
     async def test_listen_not_ok(self, server, use_port):
@@ -153,12 +150,8 @@ class TestTransportComm:
         server_connected = list(server.active_connections.values())[0]
         test_data = b"abcd"
 
-        self.serial_write = (  # pylint: disable=attribute-defined-outside-init
-            client.transport.sync_serial.write
-        )
-        with mock.patch.object(
-            client.transport.sync_serial, "write", wraps=self.wrapped_write
-        ):
+        self.serial_write = client.transport.sync_serial.write  # pylint: disable=attribute-defined-outside-init
+        with mock.patch.object(client.transport.sync_serial, "write", wraps=self.wrapped_write):
             client.send(test_data)
             await asyncio.sleep(0.5)
         assert server_connected.recv_buffer == test_data
@@ -239,7 +232,7 @@ class TestTransportComm:
 
         client2.send(test_data)
         await asyncio.sleep(0.5)
-        assert server2_connected.recv_buffer ==  test_data
+        assert server2_connected.recv_buffer == test_data
         client2.close()
         server.close()
         await asyncio.sleep(0.5)

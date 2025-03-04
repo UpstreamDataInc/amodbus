@@ -1,13 +1,13 @@
 """Test device."""
-from pymodbus.constants import DeviceInformation
-from pymodbus.device import (
+
+from amodbus.constants import DeviceInformation
+from amodbus.device import (
     DeviceInformationFactory,
     ModbusControlBlock,
     ModbusDeviceIdentification,
     ModbusPlusStatistics,
 )
-from pymodbus.events import RemoteReceiveEvent
-
+from amodbus.events import RemoteReceiveEvent
 
 # ---------------------------------------------------------------------------#
 #  Fixture
@@ -15,7 +15,7 @@ from pymodbus.events import RemoteReceiveEvent
 
 
 class TestDataStore:
-    """Unittest for the pymodbus.device module."""
+    """Unittest for the amodbus.device module."""
 
     # -----------------------------------------------------------------------#
     #  Setup/TearDown
@@ -32,7 +32,7 @@ class TestDataStore:
             0x01: "PTM",  # ProductCode
             0x02: "1.0",  # MajorMinorRevision
             0x03: "http://internets.com",  # VendorUrl
-            0x04: "pymodbus",  # ProductName
+            0x04: "amodbus",  # ProductName
             0x05: "bashwork",  # ModelName
             0x06: "pytest",  # UserApplicationName
             0x07: "x",  # reserved
@@ -53,61 +53,43 @@ class TestDataStore:
         assert self.control.Identity.ProductCode == "PTM"
         assert self.control.Identity.MajorMinorRevision == "1.0"
         assert self.control.Identity.VendorUrl == "http://internets.com"
-        assert self.control.Identity.ProductName == "pymodbus"
+        assert self.control.Identity.ProductName == "amodbus"
         assert self.control.Identity.ModelName == "bashwork"
         assert self.control.Identity.UserApplicationName == "pytest"
 
     def test_device_identification_factory(self):
         """Test device identification reading."""
         self.control.Identity.update(self.ident)
-        result = DeviceInformationFactory.get(
-            self.control, DeviceInformation.SPECIFIC, 0x00
-        )
+        result = DeviceInformationFactory.get(self.control, DeviceInformation.SPECIFIC, 0x00)
         assert result[0x00] == "Bashwork"
 
-        result = DeviceInformationFactory.get(
-            self.control, DeviceInformation.BASIC, 0x00
-        )
+        result = DeviceInformationFactory.get(self.control, DeviceInformation.BASIC, 0x00)
         assert result[0x00] == "Bashwork"
         assert result[0x01] == "PTM"
         assert result[0x02] == "1.0"
 
-        result = DeviceInformationFactory.get(
-            self.control, DeviceInformation.REGULAR, 0x00
-        )
+        result = DeviceInformationFactory.get(self.control, DeviceInformation.REGULAR, 0x00)
         assert result[0x00] == "Bashwork"
         assert result[0x01] == "PTM"
         assert result[0x02] == "1.0"
         assert result[0x03] == "http://internets.com"
-        assert result[0x04] == "pymodbus"
+        assert result[0x04] == "amodbus"
         assert result[0x05] == "bashwork"
         assert result[0x06] == "pytest"
 
     def test_device_identification_factory_lookup(self):
         """Test device identification factory lookup."""
-        result = DeviceInformationFactory.get(
-            self.control, DeviceInformation.BASIC, 0x00
-        )
+        result = DeviceInformationFactory.get(self.control, DeviceInformation.BASIC, 0x00)
         assert sorted(result.keys()) == [0x00, 0x01, 0x02]
-        result = DeviceInformationFactory.get(
-            self.control, DeviceInformation.BASIC, 0x02
-        )
+        result = DeviceInformationFactory.get(self.control, DeviceInformation.BASIC, 0x02)
         assert sorted(result.keys()) == [0x02]
-        result = DeviceInformationFactory.get(
-            self.control, DeviceInformation.REGULAR, 0x00
-        )
+        result = DeviceInformationFactory.get(self.control, DeviceInformation.REGULAR, 0x00)
         assert sorted(result.keys()) == [0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06]
-        result = DeviceInformationFactory.get(
-            self.control, DeviceInformation.REGULAR, 0x01
-        )
+        result = DeviceInformationFactory.get(self.control, DeviceInformation.REGULAR, 0x01)
         assert sorted(result.keys()) == [0x01, 0x02, 0x03, 0x04, 0x05, 0x06]
-        result = DeviceInformationFactory.get(
-            self.control, DeviceInformation.REGULAR, 0x05
-        )
+        result = DeviceInformationFactory.get(self.control, DeviceInformation.REGULAR, 0x05)
         assert sorted(result.keys()) == [0x05, 0x06]
-        result = DeviceInformationFactory.get(
-            self.control, DeviceInformation.EXTENDED, 0x00
-        )
+        result = DeviceInformationFactory.get(self.control, DeviceInformation.EXTENDED, 0x00)
         assert sorted(result.keys()) == [
             0x00,
             0x01,
@@ -120,25 +102,15 @@ class TestDataStore:
             0x82,
             0xFF,
         ]
-        result = DeviceInformationFactory.get(
-            self.control, DeviceInformation.EXTENDED, 0x02
-        )
+        result = DeviceInformationFactory.get(self.control, DeviceInformation.EXTENDED, 0x02)
         assert sorted(result.keys()) == [0x02, 0x03, 0x04, 0x05, 0x06, 0x80, 0x82, 0xFF]
-        result = DeviceInformationFactory.get(
-            self.control, DeviceInformation.EXTENDED, 0x06
-        )
+        result = DeviceInformationFactory.get(self.control, DeviceInformation.EXTENDED, 0x06)
         assert sorted(result.keys()) == [0x06, 0x80, 0x82, 0xFF]
-        result = DeviceInformationFactory.get(
-            self.control, DeviceInformation.EXTENDED, 0x80
-        )
+        result = DeviceInformationFactory.get(self.control, DeviceInformation.EXTENDED, 0x80)
         assert sorted(result.keys()) == [0x80, 0x82, 0xFF]
-        result = DeviceInformationFactory.get(
-            self.control, DeviceInformation.EXTENDED, 0x82
-        )
+        result = DeviceInformationFactory.get(self.control, DeviceInformation.EXTENDED, 0x82)
         assert sorted(result.keys()) == [0x82, 0xFF]
-        result = DeviceInformationFactory.get(
-            self.control, DeviceInformation.EXTENDED, 0x81
-        )
+        result = DeviceInformationFactory.get(self.control, DeviceInformation.EXTENDED, 0x81)
         assert sorted(result.keys()) == [
             0x00,
             0x01,
@@ -163,7 +135,7 @@ class TestDataStore:
         assert self.ident[0x01] == "PTM"
         assert self.ident[0x02] == "1.0"
         assert self.ident[0x03] == "http://internets.com"
-        assert self.ident[0x04] == "pymodbus"
+        assert self.ident[0x04] == "amodbus"
         assert self.ident[0x05] == "bashwork"
         assert self.ident[0x06] == "pytest"
         assert self.ident[0x07] != "x"

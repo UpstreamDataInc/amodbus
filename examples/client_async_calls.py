@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Pymodbus Client modbus async all calls example.
+"""amodbus Client modbus async all calls example.
 
 Please see method **async_template_call**
 for a template on how to make modbus calls and check for different
@@ -13,8 +13,8 @@ All available modbus calls are present.
 If you are performing a request that is not available in the client
 mixin, you have to perform the request like this instead::
 
-    from pymodbus.pdu.diag_message import ClearCountersRequest
-    from pymodbus.pdu.diag_message import ClearCountersResponse
+    from amodbus.pdu.diag_message import ClearCountersRequest
+    from amodbus.pdu.diag_message import ClearCountersResponse
 
     request  = ClearCountersRequest()
     response = client.execute(request)
@@ -33,17 +33,18 @@ import asyncio
 import logging
 import sys
 
-from pymodbus import ModbusException
-from pymodbus.client import ModbusBaseClient
-from pymodbus.pdu import FileRecord
-
+from amodbus import ModbusException
+from amodbus.client import ModbusBaseClient
+from amodbus.pdu import FileRecord
 
 try:
     import client_async  # type: ignore[import-not-found]
 except ImportError:
-    print("*** ERROR --> THIS EXAMPLE needs the example directory, please see \n\
-          https://pymodbus.readthedocs.io/en/latest/source/examples.html\n\
-          for more information.")
+    print(
+        "*** ERROR --> THIS EXAMPLE needs the example directory, please see \n\
+          https://amodbus.readthedocs.io/en/latest/source/examples.html\n\
+          for more information."
+    )
     sys.exit(-1)
 
 _logger = logging.getLogger(__file__)
@@ -62,11 +63,11 @@ async def async_template_call(client):
     try:
         rr = await client.read_coils(1, count=1, slave=SLAVE)
     except ModbusException as exc:
-        txt = f"ERROR: exception in pymodbus {exc}"
+        txt = f"ERROR: exception in amodbus {exc}"
         _logger.error(txt)
         raise exc
     if rr.isError():
-        txt = "ERROR: pymodbus returned an error!"
+        txt = "ERROR: amodbus returned an error!"
         _logger.error(txt)
         raise ModbusException(txt)
 
@@ -166,6 +167,7 @@ async def async_handle_holding_registers(client):
     assert not rr.isError()  # test that call was OK
     assert rr.registers == arguments["values"]
 
+
 async def async_write_registers_mypy(client: ModbusBaseClient) -> None:
     """Read/write holding registers."""
     regs1: list[int] = [10] * 8
@@ -193,15 +195,13 @@ async def async_handle_file_records(client):
     rr = await client.read_file_record([record, record], slave=SLAVE)
     assert not rr.isError()
     assert len(rr.records) == 2
-    assert rr.records[0].record_data == b'SERVER DUMMY RECORD.'
-    assert rr.records[1].record_data == b'SERVER DUMMY RECORD.'
-    record.record_data = b'Pure test '
+    assert rr.records[0].record_data == b"SERVER DUMMY RECORD."
+    assert rr.records[1].record_data == b"SERVER DUMMY RECORD."
+    record.record_data = b"Pure test "
     record.record_length = len(record.record_data) // 2
-    record = FileRecord(file_number=14, record_number=12, record_data=b'Pure test ')
+    record = FileRecord(file_number=14, record_number=12, record_data=b"Pure test ")
     rr = await client.write_file_record([record], slave=1)
     assert not rr.isError()
-
-
 
 
 async def async_execute_information_requests(client):
@@ -209,7 +209,7 @@ async def async_execute_information_requests(client):
     _logger.info("### Running information requests.")
     rr = await client.read_device_information(slave=SLAVE, read_code=1, object_id=0)
     assert not rr.isError()  # test that call was OK
-    assert rr.information[0] == b"Pymodbus"
+    assert rr.information[0] == b"amodbus"
 
     rr = await client.report_slave_id(slave=SLAVE)
     assert not rr.isError()  # test that call was OK
@@ -288,9 +288,7 @@ async def run_async_calls(client):
 
 async def main(cmdline=None):
     """Combine setup and run."""
-    testclient = client_async.setup_async_client(
-        description="Run asynchronous client.", cmdline=cmdline
-    )
+    testclient = client_async.setup_async_client(description="Run asynchronous client.", cmdline=cmdline)
     await client_async.run_async_client(testclient, modbus_calls=run_async_calls)
 
 

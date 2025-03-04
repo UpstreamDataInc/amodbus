@@ -1,19 +1,19 @@
 <!--
 Before opening a new issue, make sure you do the following:
 
-- Check that your issue isn't already filed: https://github.com/pymodbus-dev/pymodbus/issues
-- Check the discussions forum https://github.com/pymodbus-dev/pymodbus/discussions
-- Prepare a short, runnable example that reproduce the issue with the latest development version of Pymodbus
+- Check that your issue isn't already filed: https://github.com/UpstreamDataInc/amodbus/issues
+- Check the discussions forum https://github.com/UpstreamDataInc/amodbus/discussions
+- Prepare a short, runnable example that reproduce the issue with the latest development version of amodbus
 -->
 
 ### Versions
 
 - Python:
 - OS:
-- Pymodbus:
+- amodbus:
 - Modbus Hardware (if used):
 
-### Pymodbus Specific
+### amodbus Specific
 
 - Server: tcp/rtu/ascii - sync/async
 - Client: tcp/rtu/ascii - sync/async
@@ -28,7 +28,7 @@ Before opening a new issue, make sure you do the following:
 # code and logs here.
 
 # please use the following to format logs when posting them here
-import pymodbus
+import amodbus
 
-pymodbus.pymodbus_apply_logging_config("DEBUG")
+amodbus.amodbus_apply_logging_config("DEBUG")
 ```

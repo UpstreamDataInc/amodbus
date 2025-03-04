@@ -2,7 +2,7 @@
 
 import pytest
 
-from pymodbus.datastore import ModbusSparseDataBlock
+from amodbus.datastore import ModbusSparseDataBlock
 
 
 @pytest.mark.asyncio

@@ -1,10 +1,10 @@
 Client
 ======
-Pymodbus offers both a :mod:`synchronous client` and a :mod:`asynchronous client`.
+amodbus offers both a :mod:`synchronous client` and a :mod:`asynchronous client`.
 Both clients offer simple calls for each type of request, as well as a unified response, removing
 a lot of the complexities in the modbus protocol.
 
-In addition to the "pure" client, pymodbus offers a set of utilities converting to/from registers to/from "normal" python values.
+In addition to the "pure" client, amodbus offers a set of utilities converting to/from registers to/from "normal" python values.
 
 The client is NOT thread safe, meaning the application must ensure that calls are serialized.
 This is only a problem for synchronous applications that use multiple threads or for asynchronous applications
@@ -46,7 +46,7 @@ Table below is a test with 1000 calls each reading 10 registers.
 
 Client protocols/framers
 ------------------------
-Pymodbus offers clients with transport different protocols and different framers
+amodbus offers clients with transport different protocols and different framers
 
 .. list-table::
    :header-rows: 1
@@ -85,7 +85,7 @@ Pymodbus offers clients with transport different protocols and different framers
 
 Serial (RS-485)
 ^^^^^^^^^^^^^^^
-Pymodbus do not connect to the device (server) but connects to a comm port or usb port on the local computer.
+amodbus do not connect to the device (server) but connects to a comm port or usb port on the local computer.
 
 RS-485 is a half duplex protocol, meaning the servers do nothing until the client sends a request then the server
 being addressed responds. The client controls the traffic and as a consequence one RS-485 line can only have 1 client
@@ -97,7 +97,7 @@ builtin resistor, this must be added manually. When experiencing many faulty pac
 
 TCP
 ^^^
-Pymodbus connects directly to the device using a standard socket and have a one-to-one connection with the device.
+amodbus connects directly to the device using a standard socket and have a one-to-one connection with the device.
 In case of multiple TCP devices the application must instantiate multiple client objects one for each connection.
 
 .. tip:: a TCP device often represent multiple physical devices (e.g Ethernet-RS485 converter), each of these devices
@@ -117,7 +117,7 @@ that a device have received the packet.
 
 Client usage
 ------------
-Using pymodbus client to set/get information from a device (server)
+Using amodbus client to set/get information from a device (server)
 is done in a few simple steps.
 
 Synchronous example
@@ -125,7 +125,7 @@ Synchronous example
 
 ::
 
-    from pymodbus.client import ModbusTcpClient
+    from amodbus.client import ModbusTcpClient
 
     client = ModbusTcpClient('MyDevice.lan')   # Create client object
     client.connect()                           # connect to device
@@ -145,7 +145,7 @@ Asynchronous example
 
 ::
 
-    from pymodbus.client import AsyncModbusTcpClient
+    from amodbus.client import AsyncModbusTcpClient
 
     client = AsyncModbusTcpClient('MyDevice.lan')    # Create client object
     await client.connect()                           # connect to device, reconnect automatically
@@ -199,7 +199,7 @@ Logical devices represented by the device is addressed with the :mod:`slave=` pa
 With **Serial**, the comm port is defined when creating the object.
 The physical devices are addressed with the :mod:`slave=` parameter.
 
-:mod:`slave=0` is defined as broadcast in the modbus standard, but pymodbus treats it as a normal device.
+:mod:`slave=0` is defined as broadcast in the modbus standard, but amodbus treats it as a normal device.
 please note :mod:`slave=0` can only be used to address devices that truly have id=0 ! Using :mod:`slave=0` to
 address a single device with id not 0 is against the protocol.
 
@@ -219,13 +219,13 @@ The application should evaluate the result generically::
     try:
         rr = await client.read_coils(1, 1, slave=1)
     except ModbusException as exc:
-        _logger.error(f"ERROR: exception in pymodbus {exc}")
+        _logger.error(f"ERROR: exception in amodbus {exc}")
         raise exc
     if rr.isError():
-        _logger.error("ERROR: pymodbus returned an error!")
+        _logger.error("ERROR: amodbus returned an error!")
         raise ModbusException(txt)
 
-:mod:`except ModbusException as exc:` happens generally when pymodbus experiences an internal error.
+:mod:`except ModbusException as exc:` happens generally when amodbus experiences an internal error.
 There are a few situation where an unexpected response from a device can cause an exception.
 
 :mod:`rr.isError()` is set whenever the device reports a problem.
@@ -261,60 +261,60 @@ Client common
 ^^^^^^^^^^^^^
 Some methods are common to all clients:
 
-.. autoclass:: pymodbus.client.base.ModbusBaseClient
+.. autoclass:: amodbus.client.base.ModbusBaseClient
     :members:
     :member-order: bysource
     :show-inheritance:
 
-.. autoclass:: pymodbus.client.base.ModbusBaseSyncClient
+.. autoclass:: amodbus.client.base.ModbusBaseSyncClient
     :members:
     :member-order: bysource
     :show-inheritance:
 
 Client serial
 ^^^^^^^^^^^^^
-.. autoclass:: pymodbus.client.AsyncModbusSerialClient
+.. autoclass:: amodbus.client.AsyncModbusSerialClient
     :members:
     :member-order: bysource
     :show-inheritance:
 
-.. autoclass:: pymodbus.client.ModbusSerialClient
+.. autoclass:: amodbus.client.ModbusSerialClient
     :members:
     :member-order: bysource
     :show-inheritance:
 
 Client TCP
 ^^^^^^^^^^
-.. autoclass:: pymodbus.client.AsyncModbusTcpClient
+.. autoclass:: amodbus.client.AsyncModbusTcpClient
     :members:
     :member-order: bysource
     :show-inheritance:
 
-.. autoclass:: pymodbus.client.ModbusTcpClient
+.. autoclass:: amodbus.client.ModbusTcpClient
     :members:
     :member-order: bysource
     :show-inheritance:
 
 Client TLS
 ^^^^^^^^^^
-.. autoclass:: pymodbus.client.AsyncModbusTlsClient
+.. autoclass:: amodbus.client.AsyncModbusTlsClient
     :members:
     :member-order: bysource
     :show-inheritance:
 
-.. autoclass:: pymodbus.client.ModbusTlsClient
+.. autoclass:: amodbus.client.ModbusTlsClient
     :members:
     :member-order: bysource
     :show-inheritance:
 
 Client UDP
 ^^^^^^^^^^
-.. autoclass:: pymodbus.client.AsyncModbusUdpClient
+.. autoclass:: amodbus.client.AsyncModbusUdpClient
     :members:
     :member-order: bysource
     :show-inheritance:
 
-.. autoclass:: pymodbus.client.ModbusUdpClient
+.. autoclass:: amodbus.client.ModbusUdpClient
     :members:
     :member-order: bysource
     :show-inheritance:
@@ -323,12 +323,12 @@ Client UDP
 Modbus calls
 ------------
 
-Pymodbus makes all standard modbus requests/responses available as simple calls.
+amodbus makes all standard modbus requests/responses available as simple calls.
 
-Using Modbus<transport>Client.register() custom messages can be added to pymodbus,
+Using Modbus<transport>Client.register() custom messages can be added to amodbus,
 and handled automatically.
 
-.. autoclass:: pymodbus.client.mixin.ModbusClientMixin
+.. autoclass:: amodbus.client.mixin.ModbusClientMixin
     :members:
     :member-order: bysource
     :show-inheritance:

@@ -6,7 +6,7 @@ This is a complete list for each major version.
 
 A big "thank you" to everybody who helped out.
 
-Pymodbus version 3 family
+amodbus version 3 family
 -------------------------
 Thanks to
 
@@ -93,7 +93,7 @@ Thanks to
 - yyokusa
 
 
-Pymodbus version 2 family
+amodbus version 2 family
 -------------------------
 Thanks to
 
@@ -135,7 +135,7 @@ Thanks to
 - Yegor Yefremov
 
 
-Pymodbus version 1 family
+amodbus version 1 family
 -------------------------
 Thanks to
 
@@ -177,7 +177,7 @@ Thanks to
 - Yegor Yefremov
 
 
-Pymodbus version 0 family
+amodbus version 0 family
 -------------------------
 Thanks to
 
