@@ -6,13 +6,13 @@ build-backend = "poetry.core.masonry.api"
 name = "amodbus"
 version = "0.1.0"
 license = {text = "BSD-3-Clause"}
-authors = [{name = "Galen Collins"}, {name = "Jan Iversen"}]
-maintainers = [{name = "dhoomakethu"}, {name = "janiversen"}]
-description = "A fully featured modbus protocol stack in python"
+authors = [{name = "Upstream Data"}, {name = "James Hilliard"}]
+maintainers = [{name = "UpstreamData"}, {name = "jameshilliard"}]
+description = " A properly async fork of pymodbus "
 keywords = ["modbus", "asyncio", "scada", "client", "server", "simulator"]
 readme = "README.rst"
 classifiers = [
-    "Development Status :: 5 - Production/Stable",
+    "Development Status :: 4 - Beta",
     "Environment :: Console",
     "Framework :: AsyncIO",
     "Intended Audience :: Developers",
@@ -37,8 +37,6 @@ dependencies = ["pyserial>=3.5"]
 Homepage = "https://github.com/UpstreamDataInc/amodbus/"
 "Source Code" = "https://github.com/UpstreamDataInc/amodbus"
 "Bug Reports" = "https://github.com/UpstreamDataInc/amodbus/issues"
-"Docs: Dev" = "https://amodbus.readthedocs.io/en/latest/?badge=latest"
-Discord = "https://discord.gg/vcP8qAz2"
 
 [project.scripts]
 "amodbus.simulator" = "amodbus.server.simulator.main:main"
