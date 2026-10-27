@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import struct
+
 import amodbus.pdu.bit_message as bit_msg
 import amodbus.pdu.diag_message as diag_msg
 import amodbus.pdu.file_message as file_msg
@@ -148,6 +150,6 @@ class DecodePDU:
                 if subtype := lookup.get(pdu.sub_function_code, None):
                     pdu.__class__ = subtype
             return pdu
-        except (ModbusException, ValueError, IndexError) as exc:
+        except (ModbusException, ValueError, IndexError, struct.error) as exc:
             Log.warning("Unable to decode frame {}", exc)
         return None
