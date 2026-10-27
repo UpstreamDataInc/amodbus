@@ -120,7 +120,7 @@ class TestModbusPDU:
         pdu = self.server.decode(frame)
         assert pdu.function_code == code
 
-    @pytest.mark.parametrize(("frame"), [b"", b"NO FRAME"])
+    @pytest.mark.parametrize(("frame"), [b"", b"NO FRAME", b"\x06\x00\x01\x00\x03\x00"])
     @pytest.mark.parametrize(("decoder"), [server, client])
     def test_decode_bad_frame(self, decoder, frame):
         """Test lookup bad frames."""
