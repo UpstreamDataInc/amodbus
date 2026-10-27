@@ -116,7 +116,10 @@ class FramerRTU(FramerBase):
             if data_len < used_len + size:
                 Log.debug("Frame - not ready")
                 return 0, dev_id, 0, self.EMPTY
-            for test_len in range(used_len + size, data_len + 1):
+            # Exact size first: a frame followed by 0x00 also passes one byte
+            # longer. Then longest first, as some sizes are only a minimum.
+            exact_len = used_len + size
+            for test_len in (exact_len, *range(data_len, exact_len, -1)):
                 start_crc = test_len - 2
                 crc = data[start_crc : start_crc + 2]
                 crc_val = (int(crc[0]) << 8) + int(crc[1])

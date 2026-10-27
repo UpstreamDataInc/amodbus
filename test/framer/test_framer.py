@@ -717,6 +717,13 @@ class TestFramerType:
                     (0, b""),
                 ],
             ),
+            (
+                FramerType.RTU,
+                b"\x11\x08\x00\x15\x00\x03\x07\x5e\x77\x01\x02\x03\x04\xa1\x0f",
+                [  # good crc, longer than minimum size, crc match inside
+                    (15, b"\x08\x00\x15\x00\x03\x07\x5e\x77\x01\x02\x03\x04"),
+                ],
+            ),
         ],
     )
     async def test_decode_complicated(self, test_framer, data, exp):
