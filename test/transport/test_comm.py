@@ -9,7 +9,6 @@ import pytest
 
 from amodbus.logging import Log
 from amodbus.transport import CommType, ModbusProtocol
-from amodbus.transport.serialtransport import SerialTransport
 
 FACTOR = 1.2 if platform.system().lower() != "windows" else 4.2
 
@@ -130,47 +129,16 @@ class TestTransportComm:
             assert not server.active_connections
         server.close()
 
-    def wrapped_write(self, data):
-        """Wrap serial write, to split parameters."""
-        return self.serial_write(data[:2])
-
-    @pytest.mark.parametrize(
-        ("use_comm_type", "use_host"),
-        [
-            (CommType.SERIAL, "socket://localhost:7303"),
-        ],
-    )
-    async def test_split_serial_packet(self, client, server, use_port):
-        """Test connection and data exchange."""
-        Log.debug("test_split_serial_packet {}", use_port)
-        assert await server.listen()
-        assert await client.connect()
-        await asyncio.sleep(0.5)
-        assert len(server.active_connections) == 1
-        server_connected = list(server.active_connections.values())[0]
-        test_data = b"abcd"
-
-        self.serial_write = client.transport.sync_serial.write  # pylint: disable=attribute-defined-outside-init
-        with mock.patch.object(client.transport.sync_serial, "write", wraps=self.wrapped_write):
-            client.send(test_data)
-            await asyncio.sleep(0.5)
-        assert server_connected.recv_buffer == test_data
-        assert not client.recv_buffer
-        client.close()
-        server.close()
-
     @pytest.mark.parametrize(
         ("use_comm_type", "use_host"),
         [
             (CommType.SERIAL, "socket://localhost:7300"),
         ],
     )
-    @pytest.mark.skipif(SerialTransport.force_poll, reason="Serial poll not supported")
-    async def test_serial_poll(self, client, server, use_port):
+    async def test_serial_large_packet(self, client, server, use_port):
         """Test connection and data exchange."""
-        Log.debug("test_serial_poll {}", use_port)
+        Log.debug("test_serial_large_packet {}", use_port)
         assert await server.listen()
-        SerialTransport.force_poll = True
         assert await client.connect()
         await asyncio.sleep(0.5)
         assert len(server.active_connections) == 1
@@ -182,7 +150,50 @@ class TestTransportComm:
         assert not client.recv_buffer
         client.close()
         server.close()
-        SerialTransport.force_poll = False
+
+    @pytest.mark.parametrize(
+        ("use_comm_type", "use_host"),
+        [(CommType.SERIAL, "socket://localhost:7303")],
+    )
+    async def test_serial_reconnect(self, client, server):
+        """A peer disconnect triggers reconnect through the serialx backend."""
+        connected = asyncio.Event()
+        accepted = asyncio.Event()
+        new_connection = server.callback_new_connection
+
+        def accept():
+            protocol = new_connection()
+            protocol.callback_connected = accepted.set
+            return protocol
+
+        server.callback_new_connection = accept
+        client.callback_connected.side_effect = connected.set
+        try:
+            assert await server.listen()
+            assert await client.connect()
+            await asyncio.wait_for(accepted.wait(), 2)
+            old_transport = client.transport
+            connected.clear()
+            accepted.clear()
+            next(iter(server.active_connections.values())).close()
+            await asyncio.wait_for(connected.wait(), 5)
+            await asyncio.wait_for(accepted.wait(), 2)
+            assert client.transport is not old_transport
+            client.callback_disconnected.assert_called_once()
+            received = asyncio.Event()
+            server_connected = next(iter(server.active_connections.values()))
+            server_connected.callback_data = mock.Mock(
+                return_value=0, side_effect=lambda *_args, **_kwargs: received.set() or 0
+            )
+            client.send(b"reconnected")
+            await asyncio.wait_for(received.wait(), 2)
+            assert server_connected.recv_buffer == b"reconnected"
+        finally:
+            transport = client.transport
+            client.close()
+            if transport:
+                await asyncio.wait_for(transport.wait_closed(), 2)
+            server.close()
 
     @pytest.mark.parametrize(
         ("use_comm_type", "use_host"),

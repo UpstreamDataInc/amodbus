@@ -59,7 +59,7 @@ Common features
 * Support for custom function codes
 * support serial (rs-485), tcp, tls and udp communication
 * support all standard frames: socket, rtu, rtu-over-tcp, tcp and ascii
-* does not have third party dependencies, apart from pyserial (optional)
+* uses serialx for native asyncio serial communication
 * very lightweight project
 * requires Python >= 3.10
 * thorough test suite, that test all corners of the library
@@ -168,16 +168,11 @@ commands in a terminal window::
 
    pip install amodbus
 
-If you want to use the serial interface::
-
-   pip install amodbus[serial]
-
-This will install amodbus with the pyserial dependency.
+This also installs serialx for serial communication.
 
 amodbus offers a number of extra options:
 
 - **repl**, needed by amodbus.repl
-- **serial**, needed for serial communication
 - **simulator**, needed by amodbus.simulator
 - **documentation**, needed to generate documentation
 - **development**, needed for development
