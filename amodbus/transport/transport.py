@@ -27,11 +27,11 @@ Host/Port/SourceAddress explanation:
 - client: remote port to connect to (as host:port)
 - client serial: no used
 
-Pyserial allow the comm_port to be a socket e.g. "socket://localhost:502",
+Serial ports can be sockets, e.g. "socket://localhost:502",
 this allows serial clients to connect to a tcp server with RTU framer.
 
 amodbus allows this format for both server and client.
-For clients the string is passed to pyserial,
+For clients the string is passed to serialx,
 but for servers it is used to start a modbus tcp server.
 This allows for serial testing, without a serial cable.
 
@@ -40,7 +40,7 @@ if <host> is set to NULLMODEM_HOST it will be automatically invoked.
 This allows testing without actual network traffic and is a lot faster.
 
 Class NullModem is a asyncio transport class,
-that replaces the socket class or pyserial.
+that replaces the socket class or serialx.
 
 The class is designed to take care of differences between the different
 transport mediums, and provide a neutral interface for the upper layers.
@@ -59,8 +59,9 @@ from enum import Enum
 from functools import partial
 from typing import Any
 
+import serialx
+
 from amodbus.logging import Log
-from amodbus.transport.serialtransport import create_serial_connection
 
 NULLMODEM_HOST = "__amodbus_nullmodem"
 
@@ -142,6 +143,7 @@ class ModbusProtocol(asyncio.BaseProtocol):
         self.is_closing = False
 
         self.transport: asyncio.BaseTransport = None  # type: ignore[assignment]
+        self._closing_serial_transport: serialx.BaseSerialTransport | None = None
         self.recv_buffer: bytes = b""
         self.call_create: Callable[[], Coroutine[Any, Any, Any]] = None  # type: ignore[assignment]
         self.reconnect_task: asyncio.Task | None = None
@@ -182,17 +184,7 @@ class ModbusProtocol(asyncio.BaseProtocol):
     def init_setup_connect_listen(self, host: str, port: int) -> None:
         """Handle connect/listen handler."""
         if self.comm_params.comm_type == CommType.SERIAL:
-            self.call_create = partial(
-                create_serial_connection,
-                self.loop,
-                self.handle_new_connection,
-                host,
-                baudrate=self.comm_params.baudrate,
-                bytesize=self.comm_params.bytesize,
-                parity=self.comm_params.parity,
-                stopbits=self.comm_params.stopbits,
-                timeout=self.comm_params.timeout_connect,
-            )
+            self.call_create = partial(self._create_serial_connection, host)
             return
         if self.comm_params.comm_type == CommType.UDP:
             if self.is_server:
@@ -229,6 +221,24 @@ class ModbusProtocol(asyncio.BaseProtocol):
                 ssl=self.comm_params.sslctx,
             )
 
+    async def _create_serial_connection(self, host: str) -> tuple[serialx.BaseSerialTransport, asyncio.Protocol]:
+        """Open serial only after the previous transport has finished closing."""
+        if self._closing_serial_transport:
+            # A delayed connection_lost callback must not close the new connection.
+            # Shield serialx's close waiter so a connect timeout cannot cancel it.
+            await asyncio.shield(self._closing_serial_transport.wait_closed())
+            self._closing_serial_transport = None
+        return await serialx.create_serial_connection(
+            self.loop,
+            self.handle_new_connection,
+            host,
+            baudrate=self.comm_params.baudrate,
+            byte_size=self.comm_params.bytesize,
+            parity=serialx.Parity(self.comm_params.parity),
+            stopbits=serialx.StopBits(self.comm_params.stopbits),
+            exclusive=True,
+        )
+
     async def connect(self) -> bool:
         """Handle generic connect and call on to specific transport connect."""
         Log.debug("Connecting {}", self.comm_params.comm_name)
@@ -241,6 +251,7 @@ class ModbusProtocol(asyncio.BaseProtocol):
         except (
             asyncio.TimeoutError,
             OSError,
+            serialx.SerialException,
         ) as exc:  # pylint: disable=overlapping-except
             Log.warning("Failed to connect {}", exc)
             return False
@@ -255,7 +266,7 @@ class ModbusProtocol(asyncio.BaseProtocol):
             self.transport = await self.call_create()
             if isinstance(self.transport, tuple):
                 self.transport = self.transport[0]
-        except OSError as exc:
+        except (OSError, serialx.SerialException) as exc:
             Log.warning("Failed to start server {}", exc)
             self.__close()
             return False
@@ -394,8 +405,14 @@ class ModbusProtocol(asyncio.BaseProtocol):
         :param reconnect: (default false), try to reconnect
         """
         if self.transport:
-            self.transport.close()
+            transport = self.transport
             self.transport = None  # type: ignore[assignment]
+            if isinstance(transport, serialx.BaseSerialTransport):
+                self._closing_serial_transport = transport
+                # Preserve serial close semantics: discard unsent requests.
+                transport.abort()
+            else:
+                transport.close()
         self.recv_buffer = b""
         if self.is_listener:
             for _key, value in self.active_connections.items():

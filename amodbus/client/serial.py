@@ -2,17 +2,12 @@
 
 from __future__ import annotations
 
-import contextlib
-import sys
 from collections.abc import Callable
 
 from amodbus.client.base import ModbusBaseClient
 from amodbus.framer import FramerType
 from amodbus.pdu import ModbusPDU
 from amodbus.transport import CommParams, CommType
-
-with contextlib.suppress(ImportError):
-    import serial
 
 
 class ModbusSerialClient(ModbusBaseClient):
@@ -81,10 +76,6 @@ class ModbusSerialClient(ModbusBaseClient):
         trace_connect: Callable[[bool], None] | None = None,
     ) -> None:
         """Initialize Asyncio Modbus Serial Client."""
-        if "serial" not in sys.modules:  # pragma: no cover
-            raise RuntimeError(
-                "Serial client requires pyserial " 'Please install with "pip install pyserial" and try again.'
-            )
         if framer not in [FramerType.ASCII, FramerType.RTU]:
             raise TypeError("Only FramerType RTU/ASCII allowed.")
         self.comm_params = CommParams(
