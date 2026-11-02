@@ -734,6 +734,13 @@ class TestFramerType:
             assert used_len == ent[0]
             assert res_data == ent[1]
 
+    @pytest.mark.parametrize(("entry"), [FramerType.RTU])
+    @pytest.mark.parametrize(("is_server"), [False, True])
+    async def test_decode_minimum_size_crc_match_at_minimum(self, test_framer):
+        """Test a minimum size frame is not cut at a crc match at its minimum size."""
+        data = b"\x11\x08\x00\x00\x12\x34\xef\xec\x56\x78\x3f\x82"
+        assert test_framer.decode(data) == (12, 0x11, 0, data[1:-2])
+
     @pytest.mark.parametrize(
         ("entry", "data", "dev_id", "res_msg"),
         [

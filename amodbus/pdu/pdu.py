@@ -17,6 +17,7 @@ class ModbusPDU:
     function_code: int = 0
     sub_function_code: int = -1
     rtu_frame_size: int = 0
+    rtu_frame_size_is_minimum: bool = False
     rtu_byte_count_pos: int = 0
 
     def __init__(

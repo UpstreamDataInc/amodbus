@@ -20,6 +20,7 @@ class DiagnosticBase(ModbusPDU):
     function_code = 0x08
     sub_function_code: int = 9999
     rtu_frame_size = 8
+    rtu_frame_size_is_minimum = True
 
     def __init__(
         self,
