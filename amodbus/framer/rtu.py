@@ -111,18 +111,22 @@ class FramerRTU(FramerBase):
             dev_id = int(data[used_len])
             if not (pdu_class := self.decoder.lookupPduClass(data[used_len:])):
                 continue
-            if not (size := pdu_class.calculateRtuFrameSize(data[used_len:])):
-                continue
-            start_crc = used_len + size - 2
-            if start_crc + 2 > data_len:
-                continue
-            crc = data[start_crc : start_crc + 2]
-            crc_val = (int(crc[0]) << 8) + int(crc[1])
-            if FramerRTU.check_CRC(data[used_len:start_crc], crc_val):
-                return start_crc + 2, dev_id, 0, data[used_len + 1 : start_crc]
-            Log.debug("Frame check failed, possible garbage after frame, testing..")
-            continue
-        Log.debug("Frame - not ready")
+            size = pdu_class.calculateRtuFrameSize(data[used_len:])
+            if not size or data_len < used_len + size:
+                # Payload bytes can themselves form a CRC-valid frame. Do not
+                # hunt inside a candidate that still needs more data.
+                Log.debug("Frame - not ready")
+                return 0, dev_id, 0, self.EMPTY
+            frame_end = used_len + size
+            # Most PDUs provide an exact length. Diagnostics with arbitrary
+            # data only provide a minimum, so preserve the longest CRC match.
+            test_ends = range(data_len, frame_end - 1, -1) if pdu_class.rtu_frame_size_is_minimum else (frame_end,)
+            for test_end in test_ends:
+                start_crc = test_end - 2
+                crc_val = int.from_bytes(data[start_crc:test_end], "big")
+                if FramerRTU.check_CRC(data[used_len:start_crc], crc_val):
+                    return test_end, dev_id, 0, data[used_len + 1 : start_crc]
+                Log.debug("Frame check failed, possible garbage after frame, testing..")
         return 0, 0, 0, self.EMPTY
 
     def encode(self, pdu: bytes, device_id: int, _tid: int) -> bytes:

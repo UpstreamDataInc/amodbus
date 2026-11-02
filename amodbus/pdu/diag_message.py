@@ -84,12 +84,14 @@ class ReturnQueryDataRequest(DiagnosticBase):
     """ReturnQueryDataRequest."""
 
     sub_function_code = 0x0000
+    rtu_frame_size_is_minimum = True
 
 
 class ReturnQueryDataResponse(DiagnosticBase):
     """ReturnQueryDataResponse."""
 
     sub_function_code = 0x0000
+    rtu_frame_size_is_minimum = True
 
 
 class RestartCommunicationsOptionRequest(DiagnosticBase):
@@ -396,3 +398,4 @@ class GetClearModbusPlusResponse(DiagnosticBase):
     """GetClearModbusPlusResponse."""
 
     sub_function_code = 0x0015
+    rtu_frame_size_is_minimum = True
